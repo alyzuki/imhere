@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<declare-styleable name="ZukiMenu">
+    <attr name="bg" format="color" />
+    <attr name="indicator" format="enum" >
+        <enum name="left" value="0"/>
+        <enum name="right" value="1"/>
+    </attr>
+    <attr name="title" format="string" />
+    <attr name="strColor" format="color" />
+    <attr name="strSize" format="integer" />
+    <attr name="indicatorColor" format="color" />
+    <attr name="indicatorSize" format="integer" />
+    <attr name="android:padding"/>
+    <attr name="fontname" format="string"/>
+</declare-styleable>
+</resources>
