@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- No Active Bar them-->
     <style name="Theme.AppCompat.NoActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>

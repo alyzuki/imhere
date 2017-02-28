@@ -3,7 +3,8 @@
 xmlns:tools="http://schemas.android.com/tools"
 android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:id="@+id/settinglayout">
+android:id="@+id/settinglayout"
+android:background="#ffffff">
 
     <LinearLayout
         android:orientation="vertical"
@@ -58,5 +59,4 @@ android:id="@+id/settinglayout">
             android:textStyle="normal|italic" />
     </LinearLayout>
     </LinearLayout>
-
 </merge>
