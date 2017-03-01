@@ -7,9 +7,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -27,29 +25,6 @@ class SettingOptsView extends LinearLayout {
     private  float pad;
     private  View btnView;
 
-    private OnClickListener listener;
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_UP) {
-            if(listener != null) listener.onClick(this);
-        }
-        return super.dispatchTouchEvent(event);
-    }
-
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if(event.getAction() == KeyEvent.ACTION_UP && (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER || event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-            if(listener != null) listener.onClick(this);
-        }
-        return super.dispatchKeyEvent(event);
-    }
-
-    public void setOnClickListener(OnClickListener listener) {
-        this.listener = listener;
-    }
-
     public SettingOptsView(Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.setting_opt_view, this);
@@ -62,10 +37,6 @@ class SettingOptsView extends LinearLayout {
 
     public SettingOptsView(Context context, AttributeSet attrs, int defStyle) {
         this(context, attrs);
-        this.setClickable(true);
-        this.setEnabled(true);
-        this.setFocusable(true);
-        this.setFocusableInTouchMode(true);
         initViews(context, attrs);
     }
 
@@ -75,10 +46,6 @@ class SettingOptsView extends LinearLayout {
                 attrs,
                 R.styleable.ZukiMenu,
                 0, 0);
-        int[] set = {
-                android.R.attr.background, // idx 0
-                android.R.attr.onClick        // idx 1
-        };
         TextView text;
         try
         {
@@ -102,7 +69,6 @@ class SettingOptsView extends LinearLayout {
                     float size = text.getTextSize();// + (float) 0.0002;
                     text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size + 10);
                     Log.d("=>Set text size:", String.valueOf(text.getTextSize()));
-                    findViewById(R.id.seperate).setVisibility(View.INVISIBLE);
                     break;
                 default:
                     btnView = findViewById(R.id.btnMnNext);

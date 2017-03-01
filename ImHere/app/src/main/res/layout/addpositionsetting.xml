@@ -10,7 +10,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:title="Add new location"
-        custom:indicator="left"
-        android:id="@+id/mn1"
-        android:onClick="mnOnclick" />
+        custom:indicator="left"/>
 </LinearLayout>

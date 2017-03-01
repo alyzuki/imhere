@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
-android:orientation="vertical"
-android:layout_width="match_parent"
+android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:id="@+id/settinglayout">
 
@@ -15,8 +14,7 @@ android:id="@+id/settinglayout">
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:id="@+id/seperate"
-            android:background="@color/cast_expanded_controller_ad_label_background_color"></LinearLayout>
+            android:id="@+id/seperate"></LinearLayout>
 
         <LinearLayout
         android:orientation="horizontal"
