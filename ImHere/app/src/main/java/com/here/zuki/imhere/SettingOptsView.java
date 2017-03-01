@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -44,23 +46,29 @@ class SettingOptsView extends LinearLayout {
                 attrs,
                 R.styleable.ZukiMenu,
                 0, 0);
+        TextView text;
         try
         {
             iIndicator  = ta.getInt(R.styleable.ZukiMenu_indicatorSize, 13);
             iFont       = ta.getInt(R.styleable.ZukiMenu_strSize, 12);
             iPos        = ta.getInt(R.styleable.ZukiMenu_indicator, 1);
-            cBackground = ta.getColor(R.styleable.ZukiMenu_bg, Color.WHITE);
+            cBackground = ta.getColor(R.styleable.ZukiMenu_wbackground, Color.WHITE);
             cFont       = ta.getColor(R.styleable.ZukiMenu_strColor, Color.BLACK);
             cIndicator  = ta.getColor(R.styleable.ZukiMenu_indicatorColor, Color.BLACK);
             sFont       = ta.getString(R.styleable.ZukiMenu_fontname);
             sTitle      = ta.getString(R.styleable.ZukiMenu_title);
             pad         = ta.getDimension(R.styleable.ZukiMenu_android_padding, 0);
             LayoutInflater.from(context).inflate(R.layout.setting_opt_view, this);
+            text = ((TextView)(findViewById(R.id.textTilte)));
             switch (iPos)
             {
                 case  0:
                     btnView = findViewById(R.id.btnMnBack);
                     findViewById(R.id.btnMnNext).setVisibility(View.INVISIBLE);
+                    Log.d("=>Set text size:", String.valueOf(text.getTextSize()));
+                    float size = text.getTextSize();// + (float) 0.0002;
+                    text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size + 10);
+                    Log.d("=>Set text size:", String.valueOf(text.getTextSize()));
                     break;
                 default:
                     btnView = findViewById(R.id.btnMnNext);
@@ -68,11 +76,12 @@ class SettingOptsView extends LinearLayout {
                     break;
             }
             btnView.setVisibility(VISIBLE);
+
             if(sTitle != null)
             {
-                ((TextView)(findViewById(R.id.textTilte))).setText(sTitle);
+                text.setText(sTitle);
             }else
-                ((TextView)(findViewById(R.id.textTilte))).setText("Application demo menu");
+                text.setText("Application demo menu");
 
             ((Button)findViewById(R.id.btnMnBack)).setTextColor(cIndicator);
             ((Button)findViewById(R.id.btnMnNext)).setTextColor(cIndicator);
