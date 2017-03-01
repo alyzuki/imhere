@@ -10,94 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:gravity="end">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:ignore="DisableBaselineAlignment,UselessLeaf"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/button11"
-                        android:layout_weight="1"
-                        tools:ignore="ButtonStyle,HardcodedText,InefficientWeight,NestedWeights"
-                        style="@style/Widget.AppCompat.Button.Small"
-                        android:background="@mipmap/imhere"
-                        android:gravity="start"
-                        android:paddingBottom="2dp"
-                        android:paddingRight="2dp"
-                        android:paddingLeft="2dp"
-                        android:paddingTop="2dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/btnSearch"
-                        android:layout_weight="1"
-                        tools:ignore="ButtonStyle,HardcodedText,NestedWeights"
-                        style="@style/Widget.AppCompat.Button.Small"
-                        android:background="@android:drawable/ic_menu_search" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/btnAddNew"
-                        android:layout_weight="1"
-                        tools:ignore="ButtonStyle,HardcodedText"
-                        style="@style/Widget.AppCompat.Button.Small"
-                        android:background="@android:drawable/ic_menu_myplaces" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/btnSOS"
-                        android:layout_weight="1"
-                        tools:ignore="ButtonStyle,HardcodedText"
-                        style="@style/Widget.AppCompat.Button.Small"
-                        android:background="@drawable/sos_dark" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/btnSettings"
-                        android:layout_weight="1"
-                        tools:ignore="ButtonStyle,HardcodedText"
-                        android:background="@android:drawable/ic_menu_preferences"
-                        style="@style/Widget.AppCompat.Button.Small" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
         <RelativeLayout
             android:id="@+id/settings_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
             <ScrollView
                 android:layout_width="match_parent"

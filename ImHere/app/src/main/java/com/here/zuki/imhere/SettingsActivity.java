@@ -1,12 +1,11 @@
 package com.here.zuki.imhere;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -27,7 +26,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void goSearchOptions(View view)
     {
-        onBackPressed();
+
+        Intent intent = new Intent(this, SearchOptions.class);
+        startActivity(intent);
     }
 
     public void goAddOptions(View view)
