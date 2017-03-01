@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
-android:orientation="vertical" android:layout_width="match_parent"
+android:orientation="vertical"
+android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:id="@+id/settinglayout"
-android:background="#ffffff">
+android:id="@+id/settinglayout">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:id="@+id/seperate"></LinearLayout>
+            android:id="@+id/seperate"
+            android:background="@color/cast_expanded_controller_ad_label_background_color"></LinearLayout>
 
         <LinearLayout
         android:orientation="horizontal"

@@ -103,7 +103,8 @@
                         android:layout_weight="1"
                         tools:ignore="ButtonStyle,HardcodedText"
                         android:background="@android:drawable/ic_menu_preferences"
-                        style="@style/Widget.AppCompat.Button.Small" />
+                        style="@style/Widget.AppCompat.Button.Small"
+                        android:onClick="SearchOptsClick" />
                 </LinearLayout>
 
             </LinearLayout>

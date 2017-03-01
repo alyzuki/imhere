@@ -10,9 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:title="Add new location"
-        custom:indicator="left"/>
-    <com.here.zuki.imhere.SettingOptsView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        custom:title="Add new location 2" />
+        custom:indicator="left"
+        android:id="@+id/mn1"
+        android:onClick="mnOnclick" />
 </LinearLayout>

@@ -17,6 +17,7 @@
 package com.here.zuki.imhere;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -77,6 +78,11 @@ public class MapActivity extends AppCompatActivity implements
     public void SearchOptClick(View v) {
         showStylesDialog();
     }
+    public void SearchOptsClick(View v) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);ko
+    }
+
 
     /**
      * Returns whether the checkbox with the given id is checked.
