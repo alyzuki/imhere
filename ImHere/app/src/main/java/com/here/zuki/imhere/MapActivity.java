@@ -80,7 +80,7 @@ public class MapActivity extends AppCompatActivity implements
     }
     public void SearchOptsClick(View v) {
         Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);ko
+        startActivity(intent);
     }
 
 
