@@ -14,4 +14,13 @@
     <attr name="android:padding"/>
     <attr name="fontname" format="string"/>
 </declare-styleable>
+
+<declare-styleable name="HeaderGroup">
+</declare-styleable>
+
+<declare-styleable name="Expandable">
+    <attr name="headerBg" format="color"/>
+    <attr name="header" format="string"/>
+    <attr name="headerfontsize" format="float"/>
+</declare-styleable>
 </resources>

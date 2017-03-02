@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        tools:ignore="UselessLeaf"
+        android:background="@android:color/darker_gray"></LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessLeaf,UselessParent"
+        android:id="@+id/settings_header"
+        android:background="@color/cast_intro_overlay_button_background_color">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/header_title"
+            android:layout_weight="1"
+            tools:ignore="HardcodedText,InefficientWeight,RtlSymmetry"
+            android:paddingStart="15dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" />
+
+        <Button
+            android:layout_width="30dp"
+            android:id="@+id/btnExpand"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:background="@drawable/ic_expand_00015"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
+
+</merge>
