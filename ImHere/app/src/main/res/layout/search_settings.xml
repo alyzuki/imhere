@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:ems="10"
-                android:id="@+id/editText"
+                android:id="@+id/disText"
                 android:layout_weight="1"
                 tools:ignore="HardcodedText,LabelFor"
                 android:layout_width="15dp" />

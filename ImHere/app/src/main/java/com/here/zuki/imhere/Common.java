@@ -1,12 +1,19 @@
 package com.here.zuki.imhere;
 
+import android.app.Application;
+import android.util.Log;
+
 /**
  * Created by zuki on 2/16/17.
  */
 
 
 
-public class Common {
+public class Common extends Application{
+
+    private static Common instance= null;
+    private  static SearchOptElement searchInstance = null;
+
     public enum  BtnPosition
     {
         Left,
@@ -20,8 +27,16 @@ public class Common {
         private boolean opts_name;
         private boolean opts_phone;
         private boolean opts_id;
+        public static SearchOptElement instance = null;
 
-        public  SearchOptElement(){super();}
+        public  SearchOptElement(){
+            super();
+            this.notification = false;
+            this.distant = 0;
+            this.opts_name = false;
+            this.opts_id = false;
+            this.opts_phone = false;
+        }
         public void setNotification(boolean check)
         {
             this.notification = check;
@@ -57,5 +72,19 @@ public class Common {
         public void loadConfig(){}
     }
 
+    public  SearchOptElement getSearchOptsClass()
+    {
+        if(searchInstance == null)
+            searchInstance = new SearchOptElement();
+        return  searchInstance;
+    }
 
+    protected Common() {};
+
+    public static Common getInstance()
+    {
+        if(instance == null)
+            instance = new Common();
+        return  instance;
+    }
 }
