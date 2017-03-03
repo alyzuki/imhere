@@ -16,20 +16,17 @@
         android:orientation="vertical"
         android:id="@+id/SearchExpand">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:text="TextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/container">
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4" />
 
-            <CheckBox
-                android:text="CheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox2"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3" />
     </com.here.zuki.imhere.Expandable>
     <com.here.zuki.imhere.Expandable
         android:layout_width="match_parent"
@@ -41,19 +38,12 @@
         android:orientation="vertical"
         android:id="@+id/AddExpand">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <CheckBox
+            android:text="CheckBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/container1">
-
-            <CheckBox
-                android:text="CheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox3"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBox3"
+            tools:ignore="HardcodedText" />
 
     </com.here.zuki.imhere.Expandable>
 

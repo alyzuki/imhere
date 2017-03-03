@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 public class Expandable extends LinearLayout {
 
     private  boolean showContainer = false;
+    private  int parentWidth, parentHeight;
+
     public Expandable(Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.group_setting_elements, this);
@@ -50,6 +52,8 @@ public class Expandable extends LinearLayout {
                     header.headerToggle();
                     boolean visible = header.isShowContainer();
                     LinearLayout ll = (LinearLayout)findViewById(R.id.group_parent);
+                    Log.d("EXPAND CHILD", "w-h" + String.valueOf(parentWidth) + " "  + String.valueOf(parentHeight));
+/*
                     int count = ll.getChildCount();
                     for(int i = 0; i < count; i++)
                     {
@@ -57,7 +61,7 @@ public class Expandable extends LinearLayout {
                         if(instance instanceof HeaderGroup)
                             continue;
                         instance.setVisibility(visible ? VISIBLE : INVISIBLE);
-                    }
+                    }*/
                 }
             }
         );
@@ -89,6 +93,15 @@ public class Expandable extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+        parentHeight = MeasureSpec.getSize(heightMeasureSpec);
+        this.setMeasuredDimension(parentWidth, parentHeight);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
 }
