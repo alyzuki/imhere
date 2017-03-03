@@ -1,74 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
-    <LinearLayout
-        android:orientation="vertical"
+    >
+    <com.here.zuki.imhere.Expandable
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:header="Search"
+        app:headerBg="@color/cast_expanded_controller_ad_container_white_stripe_color"
+        app:headerfontsize="16"
+        app:paddingStart="30dp"
+        android:orientation="vertical"
+        android:id="@+id/SearchExpand">
 
-        <RelativeLayout
-            android:id="@+id/settings_container"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:ignore="UselessParent">
+            android:id="@+id/container">
 
-            <ScrollView
+            <CheckBox
+                android:text="CheckBox"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:ignore="UselessParent">
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox2"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+    </com.here.zuki.imhere.Expandable>
+    <com.here.zuki.imhere.Expandable
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:header="Search"
+        app:headerBg="@color/cast_expanded_controller_ad_container_white_stripe_color"
+        app:headerfontsize="16"
+        app:paddingStart="30dp"
+        android:orientation="vertical"
+        android:id="@+id/AddExpand">
 
-                    <com.here.zuki.imhere.SettingOptsView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:title="Settings"
-                        app:indicator="left"
-                        app:wbackground="@color/wallet_highlighted_text_holo_dark"
-                        android:id="@+id/settings"
-                        android:onClick="goBack" />
-                    <com.here.zuki.imhere.SettingOptsView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:title="Search"
-                        app:indicator="right"
-                        app:wbackground="#ffffff"
-                        android:id="@+id/itemSearch"
-                        android:onClick="goSearchOptions" />
-                    <com.here.zuki.imhere.SettingOptsView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:title="Add a place"
-                        app:indicator="right"
-                        app:wbackground="#ffffff"
-                        android:onClick="goAddOptions"
-                        android:id="@+id/itemAdd" />
-                    <com.here.zuki.imhere.SettingOptsView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:title="S.O.S"
-                        app:indicator="right"
-                        app:wbackground="#ffffff"
-                        android:id="@+id/itemSOS"
-                        android:onClick="goSOSOptions" />
-                    <com.here.zuki.imhere.SettingOptsView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:title="Tracking"
-                        app:indicator="right"
-                        app:wbackground="#ffffff"
-                        android:id="@+id/itemTracking"
-                        android:onClick="goTrackOptions" />
-                </LinearLayout>
-            </ScrollView>
-        </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/container1">
 
-    </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+            <CheckBox
+                android:text="CheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox3"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+    </com.here.zuki.imhere.Expandable>
+
+</LinearLayout>

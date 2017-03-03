@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,6 +41,15 @@ public class HeaderGroup extends LinearLayout {
                 R.styleable.HeaderGroup,
                 0, 0);
         LayoutInflater.from(context).inflate(R.layout.group_setting_elements, this);
+        Button btn = (Button)findViewById(R.id.btnExpand);
+        btn.setOnClickListener(
+            new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    headerToggle();
+                }
+            }
+        );
     }
 
     @Override
