@@ -14,8 +14,26 @@ public class SettingsActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
-    }
+        final Expandable searchExpand = (Expandable)findViewById(R.id.SearchExpand);
+        searchExpand.setOnClickListener(
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchExpand.toggle();
+                }
+            }
+        );
 
+        final Expandable addExpand = (Expandable)findViewById(R.id.AddExpand);
+        addExpand.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addExpand.toggle();
+                    }
+                }
+        );
+    }
 
     public void goBack(View view)
     {

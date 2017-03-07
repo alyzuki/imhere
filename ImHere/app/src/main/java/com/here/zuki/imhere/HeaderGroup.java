@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 public class HeaderGroup extends LinearLayout {
 
-    private  boolean showContainer = false;
+    private  boolean showContainer = true;
     public HeaderGroup(Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.group_setting_elements, this);
@@ -41,15 +41,6 @@ public class HeaderGroup extends LinearLayout {
                 R.styleable.HeaderGroup,
                 0, 0);
         LayoutInflater.from(context).inflate(R.layout.group_setting_elements, this);
-        Button btn = (Button)findViewById(R.id.btnExpand);
-        btn.setOnClickListener(
-            new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    headerToggle();
-                }
-            }
-        );
     }
 
     @Override
@@ -68,7 +59,7 @@ public class HeaderGroup extends LinearLayout {
 
     public void setBackground(int color)
     {
-        if(color < 0)
+        if(color == -1 )
             return;
         LinearLayout ll = (LinearLayout)findViewById(R.id.settings_header);
         ll.setBackgroundColor(color);
@@ -86,7 +77,7 @@ public class HeaderGroup extends LinearLayout {
     {
         Button btn = (Button)findViewById(R.id.btnExpand);
         showContainer = !showContainer;
-        btn.setBackground(ResourcesCompat.getDrawable(getResources(), showContainer ? R.drawable.ic_expand :R.drawable.ic_collapse ,null));
+        btn.setBackground(ResourcesCompat.getDrawable(getResources(), showContainer ? R.drawable.ic_collapse : R.drawable.ic_expand  ,null));
     }
 
     public boolean isShowContainer()

@@ -20,6 +20,7 @@
 
 <declare-styleable name="Expandable">
     <attr name="headerBg" format="color"/>
+    <attr name="containerBg" format="color" />
     <attr name="header" format="string"/>
     <attr name="headerfontsize" format="float" />
     <attr name="PaddingStart" format="integer"/>
