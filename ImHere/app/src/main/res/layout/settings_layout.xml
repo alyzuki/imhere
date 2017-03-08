@@ -15,65 +15,105 @@
         app:headerfontsize="16"
         app:paddingStart="30dp"
         android:orientation="vertical"
-        android:id="@+id/SearchExpand">
-
-        <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4"
-            tools:ignore="HardcodedText"
-            android:layout_marginStart="30dp"/>
-
-        <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            tools:ignore="HardcodedText"
-            android:layout_marginStart="30dp"/>
+        android:id="@+id/SearchExpand"
+        android:onClick="expandable_toggle">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/search_distance_container">
-
-            <Button
-                android:text="Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/button2"
-                tools:ignore="HardcodedText"
-                android:layout_weight="1" />
-
-            <TextView
-                android:text="TextView"
+            android:id="@+id/notification_container"
+            android:orientation="horizontal">
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView5"
-                android:layout_weight="1"
-                tools:ignore="HardcodedText,InefficientWeight" />
-        </LinearLayout>
+                android:layout_marginStart="30dp"
+                android:id="@+id/settings_notification_btn"
+                android:text="Notify when I am closed in "
+                tools:ignore="HardcodedText" />
 
+            <EditText
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/setting_distance"
+                android:layout_weight="1"
+                tools:ignore="InefficientWeight,LabelFor"
+                android:layout_width="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/setting_km"
+                android:text="kilometer"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="30dp"
+            android:id="@+id/setting_advance"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:text="Advanced Search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2"
+                tools:ignore="HardcodedText"
+                android:textStyle="normal|bold"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp">
+
+                <CheckBox
+                    android:text="Reporter's name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/opts_name"
+                    tools:ignore="HardcodedText" />
+
+                <CheckBox
+                    android:text="Reporter's phone number "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/opts_num_phone"
+                    tools:ignore="HardcodedText" />
+
+                <CheckBox
+                    android:text="Reporter's social ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/opts_social_id"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+        </LinearLayout>
     </com.here.zuki.imhere.Expandable>
 
     <com.here.zuki.imhere.Expandable
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:header="Add a new place "
-        app:headerBg="@color/cast_expanded_controller_ad_container_white_stripe_color"
+        app:headerBg="#cce6ff"
+        app:containerBg="#e6f3ff"
         app:headerfontsize="16"
         app:paddingStart="30dp"
         android:orientation="vertical"
-        android:id="@+id/AddExpand">
+        android:id="@+id/AddExpand"
+        android:onClick="expandable_toggle">
 
         <CheckBox
             android:text="CheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/checkBox3"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:layout_marginStart="30dp"/>
 
     </com.here.zuki.imhere.Expandable>
 
@@ -81,18 +121,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:header="Object Followable"
-        app:headerBg="@color/cast_expanded_controller_ad_container_white_stripe_color"
+        app:headerBg="#cce6ff"
+        app:containerBg="#e6f3ff"
         app:headerfontsize="16"
         app:paddingStart="30dp"
         android:orientation="vertical"
-        android:id="@+id/FollowExpand">
+        android:id="@+id/FollowExpand"
+        android:onClick="expandable_toggle">
 
         <CheckBox
             android:text="CheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/checkBox4"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:layout_marginStart="30dp"/>
 
     </com.here.zuki.imhere.Expandable>
 
@@ -100,14 +143,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:header="S.O.S "
-        app:headerBg="@color/cast_expanded_controller_ad_container_white_stripe_color"
+        app:headerBg="#cce6ff"
+        app:containerBg="#e6f3ff"
         app:headerfontsize="16"
         app:paddingStart="30dp"
         android:orientation="vertical"
-        android:id="@+id/SOSExpand">
+        android:id="@+id/SOSExpand"
+        android:onClick="expandable_toggle">
 
         <CheckBox
-            android:text="CheckBox"
+            android:text="Show S.O.S button on map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/checkBox5"

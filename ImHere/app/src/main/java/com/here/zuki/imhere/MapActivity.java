@@ -56,12 +56,14 @@ public class MapActivity extends AppCompatActivity implements
     private CharSequence searchOpts[];
     private ImageButton btnOpt;
     private GoogleApiClient client;
+    static Intent settingIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         //mMyLocationButtonCheckbox = (CheckBox) findViewById(R.id.mylocationbutton_toggle);
@@ -78,9 +80,13 @@ public class MapActivity extends AppCompatActivity implements
     public void SearchOptClick(View v) {
         showStylesDialog();
     }
-    public void SearchOptsClick(View v) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+    public void SettingsClick(View v) {
+        if(settingIntent == null) {
+            settingIntent = new Intent(this, SettingsActivity.class);
+            settingIntent.addCategory(Intent.CATEGORY_HOME);
+            settingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        startActivity(settingIntent);
     }
 
 

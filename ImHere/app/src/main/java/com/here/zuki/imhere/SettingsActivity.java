@@ -14,25 +14,31 @@ public class SettingsActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
-        final Expandable searchExpand = (Expandable)findViewById(R.id.SearchExpand);
-        searchExpand.setOnClickListener(
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    searchExpand.toggle();
-                }
-            }
-        );
+//        final Expandable searchExpand = (Expandable)findViewById(R.id.SearchExpand);
+//        searchExpand.setOnClickListener(
+//            new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    searchExpand.toggle();
+//                }
+//            }
+//        );
+//
+//        final Expandable addExpand = (Expandable)findViewById(R.id.AddExpand);
+//        addExpand.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        addExpand.toggle();
+//                    }
+//                }
+//        );
+    }
 
-        final Expandable addExpand = (Expandable)findViewById(R.id.AddExpand);
-        addExpand.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addExpand.toggle();
-                    }
-                }
-        );
+
+    void expandable_toggle(View view)
+    {
+        ((Expandable)view).toggle();
     }
 
     public void goBack(View view)
