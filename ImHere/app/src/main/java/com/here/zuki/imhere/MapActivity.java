@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.here.zuki.imhere.Utils.Config;
+import com.here.zuki.imhere.Utils.PrefConfig;
 
 /**
  * This shows how UI settings can be toggled.
@@ -58,7 +60,10 @@ public class MapActivity extends AppCompatActivity implements
     private ImageButton btnOpt;
     private GoogleApiClient client;
     static Intent settingIntent = null;
-    static Config config;
+    //static Config config;
+    static PrefConfig pref;
+    FloatingActionButton add = null;
+    FloatingActionButton sos = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +83,7 @@ public class MapActivity extends AppCompatActivity implements
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        config = new Config();
-        Log.d("TEST ==>", String.valueOf(true));
-        Log.d("TEST ==>", String.valueOf(Boolean.valueOf("true")));
-        config.setConfigFileName("Hieu", getDataDir());
+        pref = new PrefConfig("Hieu", this.getApplicationContext());
     }
 
     public void SearchOptClick(View v) {
@@ -358,5 +360,32 @@ public class MapActivity extends AppCompatActivity implements
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    @Override
+    public  void onResume(){
+        super.onResume();
+        if(add == null){
+            add = (FloatingActionButton)findViewById(R.id.fab_add_btn);
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+        if (sos == null)
+        {
+            sos = (FloatingActionButton)findViewById(R.id.fab_sos_btn);
+            sos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+
+        add.setVisibility(pref.configGetBoolean(SettingsActivity.ADDSHOW, false) ? View.VISIBLE : View.INVISIBLE);
+        sos.setVisibility(pref.configGetBoolean(SettingsActivity.SOSSHOW, false) ? View.VISIBLE : View.INVISIBLE);
     }
 };

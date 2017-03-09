@@ -109,10 +109,10 @@
         android:onClick="expandable_toggle">
 
         <CheckBox
-            android:text="CheckBox"
+            android:text="Show Add button on map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBox3"
+            android:id="@+id/setting_show_add"
             tools:ignore="HardcodedText"
             android:layout_marginStart="30dp"/>
 
@@ -156,7 +156,7 @@
             android:text="Show S.O.S button on map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBox5"
+            android:id="@+id/setting_show_SOS"
             tools:ignore="HardcodedText"
             android:layout_marginStart="30dp" />
 

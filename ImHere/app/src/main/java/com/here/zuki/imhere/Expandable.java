@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
@@ -59,6 +60,13 @@ public class Expandable extends LinearLayout {
         header.setFontSize(ta.getFloat(R.styleable.Expandable_headerfontsize, -1));
         setBackground(ta.getInt(R.styleable.Expandable_containerBg, -1));
         int PaddingStart = ta.getInt(R.styleable.Expandable_PaddingStart, 0);
+        View btn = header.findViewById(R.id.btnExpand);
+        btn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggle();
+            }
+        });
     }
 
     @Override
