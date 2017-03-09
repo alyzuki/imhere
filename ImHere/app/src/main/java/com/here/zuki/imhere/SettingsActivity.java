@@ -1,6 +1,5 @@
 package com.here.zuki.imhere;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -51,8 +50,8 @@ public class SettingsActivity extends AppCompatActivity {
     public void goSearchOptions(View view)
     {
 
-        Intent intent = new Intent(this, SearchOptions.class);
-        startActivity(intent);
+       // Intent intent = new Intent(this, SearchOptions.class);
+        //startActivity(intent);
     }
 
     public void goAddOptions(View view)

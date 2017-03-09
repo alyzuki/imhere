@@ -36,6 +36,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.here.zuki.imhere.Utils.Config;
 
 /**
  * This shows how UI settings can be toggled.
@@ -57,6 +58,7 @@ public class MapActivity extends AppCompatActivity implements
     private ImageButton btnOpt;
     private GoogleApiClient client;
     static Intent settingIntent = null;
+    static Config config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,11 @@ public class MapActivity extends AppCompatActivity implements
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        config = new Config();
+        Log.d("TEST ==>", String.valueOf(true));
+        Log.d("TEST ==>", String.valueOf(Boolean.valueOf("true")));
+        config.setConfigFileName("Hieu", getDataDir());
     }
 
     public void SearchOptClick(View v) {

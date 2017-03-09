@@ -6,6 +6,7 @@ package com.here.zuki.imhere;
 
 public class Options {
 
+    private  String username;
     //Search option
     public class Search{
         private  boolean    bNotification;
@@ -42,6 +43,26 @@ public class Options {
     //follow option
     public class Follow{
         private  boolean followable;
+    }
+
+    private Follow follow;
+    private SOS     sos;
+    private Add     add;
+    private Search  search;
+
+    protected Options(){
+        this.username = "";
+        this.search = new Search();
+        this.add = new Add();
+        this.sos = new SOS();
+        this.follow = new Follow();
+    };
+
+    public  void loadConfig(String username)
+    {
+
+
+
     }
 
 }
