@@ -25,13 +25,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/btn_add_discast"
                     android:layout_weight="1"
                     tools:ignore="HardcodedText,InefficientWeight"
                     android:background="@android:drawable/ic_menu_close_clear_cancel"
-                    style="@style/Widget.AppCompat.Button.Small" />
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:text="TextView"
+                        android:text="Name*"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView"
@@ -145,7 +145,7 @@
                     tools:ignore="UselessLeaf">
 
                     <TextView
-                        android:text="TextView"
+                        android:text="Catalogues*"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView4"
@@ -178,7 +178,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_action_house"
+                        app:srcCompat="@drawable/ic_action_check"
                         android:id="@+id/imageView4"
                         android:layout_weight="1"
                         tools:ignore="ContentDescription,InefficientWeight" />
@@ -193,12 +193,12 @@
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         tools:ignore="UselessParent">
 
                         <TextView
-                            android:text="TextView"
+                            android:text="Location preview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView5"
@@ -213,16 +213,25 @@
                             android:layout_weight="1">
 
                             <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:id="@+id/btn_get_curlocation"
                                 android:background="@android:drawable/ic_menu_mylocation"
-                                style="@style/Widget.AppCompat.Button.Small"
-                                android:layout_gravity="end" />
+                                style="@android:style/Widget.Button.Small"
+                                android:layout_gravity="end"
+                                android:layout_height="wrap_content"
+                                android:layout_width="30dp" />
+
                         </LinearLayout>
                     </LinearLayout>
 
+                    <fragment
+                        android:id="@+id/map"
+                        android:layout_width="match_parent"
+                        class="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_weight="1"
+                        android:layout_height="100dp" />
+
                 </LinearLayout>
+
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -244,7 +253,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_action_house"
+                            app:srcCompat="@drawable/ic_action_clock"
                             android:id="@+id/imageView4"
                             android:layout_weight="1"
                             tools:ignore="ContentDescription,DuplicateIds,InefficientWeight" />
@@ -259,7 +268,7 @@
                     tools:ignore="UselessLeaf">
 
                     <TextView
-                        android:text="TextView"
+                        android:text="Time*"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView6"
@@ -268,115 +277,225 @@
                         android:paddingTop="15dp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_height="match_parent"
-                    tools:ignore="UselessLeaf"
-                    android:layout_width="80dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_action_house"
-                        android:id="@+id/imageView6"
-                        android:layout_weight="1"
-                        tools:ignore="ContentDescription,InefficientWeight" />
-                </LinearLayout>
+                <TextView
+                    android:text="Advance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView11"
+                    android:layout_weight="1"
+                    android:textStyle="normal|bold|italic"
+                    android:paddingStart="30dp"
+                    android:paddingTop="10dp"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:ignore="UselessLeaf">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-                    <TextView
-                        android:text="TextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView7"
-                        tools:ignore="HardcodedText,InefficientWeight"
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/btn_add_advance"
                         android:layout_weight="1"
-                        android:paddingTop="15dp" />
-
+                        style="@style/Widget.AppCompat.Button.Small"
+                        android:background="@drawable/ic_expand"
+                        android:backgroundTint="@color/cardview_shadow_start_color"
+                        android:layout_gravity="end"
+                        tools:ignore="InefficientWeight,NestedWeights" />
                 </LinearLayout>
+
             </LinearLayout>
+
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:id="@+id/add_advance_container">
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_height="match_parent"
-                    tools:ignore="UselessLeaf"
-                    android:layout_width="80dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_action_house"
-                        android:id="@+id/imageView7"
-                        android:layout_weight="1"
-                        tools:ignore="ContentDescription,InefficientWeight" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:ignore="UselessLeaf">
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:text="TextView"
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent"
+                        tools:ignore="UselessLeaf"
+                        android:layout_width="80dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_action_user"
+                            android:id="@+id/imageView7"
+                            android:layout_weight="1"
+                            tools:ignore="ContentDescription,InefficientWeight" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView9"
-                        tools:ignore="HardcodedText,InefficientWeight"
-                        android:layout_weight="1"
-                        android:paddingTop="15dp" />
+                        android:layout_height="match_parent"
+                        tools:ignore="UselessLeaf">
+
+                        <TextView
+                            android:text="TextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView9"
+                            tools:ignore="HardcodedText,InefficientWeight"
+                            android:layout_weight="1"
+                            android:paddingTop="15dp" />
+
+                        <CheckBox
+                            android:text="CheckBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkBox"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Name"
+                            android:ems="10"
+                            android:id="@+id/editText3"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText,LabelFor" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_height="match_parent"
-                    tools:ignore="UselessLeaf"
-                    android:layout_width="80dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_action_house"
-                        android:id="@+id/imageView8"
-                        android:layout_weight="1"
-                        tools:ignore="ContentDescription,InefficientWeight" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent"
+                        tools:ignore="UselessLeaf"
+                        android:layout_width="80dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@android:drawable/ic_menu_call"
+                            android:id="@+id/imageView6"
+                            android:layout_weight="1"
+                            tools:ignore="ContentDescription,InefficientWeight" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:ignore="UselessLeaf">
+
+                        <TextView
+                            android:text="Phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView7"
+                            tools:ignore="HardcodedText,InefficientWeight"
+                            android:layout_weight="1"
+                            android:paddingTop="15dp" />
+
+                        <CheckBox
+                            android:text="CheckBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkBox2"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Name"
+                            android:ems="10"
+                            android:id="@+id/editText4"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText,LabelFor" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:ignore="UselessLeaf">
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:text="TextView"
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent"
+                        tools:ignore="UselessLeaf"
+                        android:layout_width="80dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_action_social"
+                            android:id="@+id/imageView8"
+                            android:layout_weight="1"
+                            tools:ignore="ContentDescription,InefficientWeight" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView10"
-                        tools:ignore="HardcodedText,InefficientWeight"
-                        android:layout_weight="1"
-                        android:paddingTop="15dp" />
+                        android:layout_height="match_parent"
+                        tools:ignore="UselessLeaf">
+
+                        <TextView
+                            android:text="TextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView10"
+                            tools:ignore="HardcodedText,InefficientWeight"
+                            android:layout_weight="1"
+                            android:paddingTop="15dp" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Name"
+                            android:ems="10"
+                            android:id="@+id/editText5"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText,LabelFor" />
+
+                        <CheckBox
+                            android:text="CheckBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkBox3"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText" />
+
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/License"
+                android:layout_weight="1"
+                tools:ignore="HardcodedText,InefficientWeight" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

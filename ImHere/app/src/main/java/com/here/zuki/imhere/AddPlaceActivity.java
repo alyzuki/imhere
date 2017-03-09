@@ -1,33 +1,14 @@
-/*
- * Copyright (C) 2012 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.here.zuki.imhere;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -37,43 +18,32 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.here.zuki.imhere.Utils.PrefConfig;
 
 /**
- * This shows how UI settings can be toggled.
+ * Created by zuki on 3/9/17.
  */
-public class MapActivity extends AppCompatActivity implements
+
+
+public class AddPlaceActivity extends AppCompatActivity implements
         OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private  int advanceHeigt = -1;
 
     private UiSettings mUiSettings;
     /**
      * Flag indicating whether a requested permission has been denied after returning in
      * {@link #onRequestPermissionsResult(int, String[], int[])}.
      */
-    private int mOptsCheck = 0;
-    private int mOptsLength = -1;
-    private boolean bOptsCheck[];
-    private CharSequence searchOpts[];
-    private ImageButton btnOpt;
     private GoogleApiClient client;
-    static Intent settingIntent = null;
-    //static Config config;
-    static PrefConfig pref;
-    FloatingActionButton add = null;
-    FloatingActionButton sos = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_add_place);
 
-        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        //mMyLocationButtonCheckbox = (CheckBox) findViewById(R.id.mylocationbutton_toggle);
-        //mMyLocationLayerCheckbox = (CheckBox) findViewById(R.id.mylocationlayer_toggle);
         Log.d("CREATE", "Init");
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -82,48 +52,40 @@ public class MapActivity extends AppCompatActivity implements
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        pref = new PrefConfig("Hieu", this.getApplicationContext());
-        if(add == null){
-            add = (FloatingActionButton)findViewById(R.id.fab_add_btn);
-            add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent addaplace = new Intent(MapActivity.this, AddPlaceActivity.class);
-                    startActivity(addaplace);
+        final Button btnAdvance = (Button)findViewById(R.id.btn_add_advance);
+        btnAdvance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnAdvance.setHeight(0);
+                LinearLayout advance_container = (LinearLayout)findViewById(R.id.add_advance_container);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)advance_container.getLayoutParams();
+                params.height = advanceHeigt;
+                advance_container.setLayoutParams(params);
+                advance_container.requestLayout();
+            }
+        });
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.add_advance_container);
+        ViewTreeObserver vto = layout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                if( advanceHeigt == -1) {
+                    advanceHeigt = layout.getHeight();
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)layout.getLayoutParams();
+                    params.height = 0;
+                    layout.setLayoutParams(params);
+                    layout.requestLayout();
                 }
-            });
-        }
-        if (sos == null)
-        {
-            sos = (FloatingActionButton)findViewById(R.id.fab_sos_btn);
-//            sos.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
-        }
-    }
 
-    public void SearchOptClick(View v) {
-        showStylesDialog();
-    }
-    public void SettingsClick(View v) {
-        if(settingIntent == null) {
-            settingIntent = new Intent(this, SettingsActivity.class);
-            settingIntent.addCategory(Intent.CATEGORY_HOME);
-            settingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        startActivity(settingIntent);
+            }
+        });
     }
 
 
     /**
      * Returns whether the checkbox with the given id is checked.
      */
-    private boolean isChecked(int id) {
-        return ((CheckBox) findViewById(id)).isChecked();
-    }
 
     @Override
     public void onMapReady(GoogleMap map) {
@@ -153,57 +115,6 @@ public class MapActivity extends AppCompatActivity implements
         }
         return true;
     }
-
-    /**
-     * Shows a dialog listing the styles to choose from, and applies the selected
-     * style when chosen.
-     */
-    private void showStylesDialog() {
-        if(mOptsLength == -1)
-        {
-            mOptsLength = 4;
-            bOptsCheck = new boolean[mOptsLength];
-            searchOpts = new CharSequence[]{
-                getResources().getString(R.string.name_opt),
-                getResources().getString(R.string.phone_opt),
-                getResources().getString(R.string.email_opt),
-                getResources().getString(R.string.social_opt)
-            };
-            for (int i = 0; i < mOptsLength; i++)
-            {
-                if(bOptsCheck[i]) {
-                    mOptsCheck = mOptsCheck | 1 << i;
-                }
-            }
-        }
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.choice_option));
-        builder.setMultiChoiceItems(searchOpts, bOptsCheck, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
-                if (isChecked) {
-                    bOptsCheck[indexSelected] = true;
-                    mOptsCheck = mOptsCheck | (1 << indexSelected);
-                } else {
-                    bOptsCheck[indexSelected] = false;
-                    mOptsCheck = mOptsCheck & ~(1 << indexSelected);
-                }
-            }
-        });
-//        builder.setItems(searchOpts.toArray(new CharSequence[searchOpts.size()]),
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        //mSelectedStyleId = mStyleIds[which];
-//                        //String msg = getString(R.string.style_set_to, getString(mSelectedStyleId));
-//                        //Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
-//                        //Log.d(TAG, msg);
-//                        //setSelectedStyle();
-//                    }
-//                });
-        builder.show();
 
 //    public void setZoomButtonsEnabled(View v) {
 //        if (!checkReady()) {
@@ -343,7 +254,6 @@ public class MapActivity extends AppCompatActivity implements
 //            mLocationPermissionDenied = false;
 //        }
         //}
-    }
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -382,17 +292,8 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     @Override
-    public  void onResume(){
-        super.onResume();
-        add.setVisibility(pref.configGetBoolean(SettingsActivity.ADDSHOW, false) ? View.VISIBLE : View.INVISIBLE);
-        sos.setVisibility(pref.configGetBoolean(SettingsActivity.SOSSHOW, false) ? View.VISIBLE : View.INVISIBLE);
-    }
-
-
-
-    public   void startAddPlace(View view)
+    public void onResume()
     {
-        Intent addaplace = new Intent(this, AddPlaceActivity.class);
-        startActivity(addaplace);
+        super.onResume();
     }
 };

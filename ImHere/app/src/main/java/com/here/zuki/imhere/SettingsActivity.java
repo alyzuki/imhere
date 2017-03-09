@@ -5,14 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.here.zuki.imhere.Utils.PrefConfig;
 
@@ -123,8 +120,8 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         CheckBox showAdd = (CheckBox)findViewById(R.id.setting_show_add);
-        showSOS.setChecked(pref.configGetBoolean(ADDSHOW, false));
-        showSOS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        showAdd.setChecked(pref.configGetBoolean(ADDSHOW, false));
+        showAdd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 pref.configSetValue(ADDSHOW, isChecked);
