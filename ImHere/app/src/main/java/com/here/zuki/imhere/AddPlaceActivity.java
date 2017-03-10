@@ -1,14 +1,27 @@
 package com.here.zuki.imhere;
 
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -18,6 +31,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.vision.text.Line;
+import com.here.zuki.imhere.Utils.Common;
+
+import java.util.ArrayList;
 
 /**
  * Created by zuki on 3/9/17.
@@ -29,6 +46,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
     private GoogleMap mMap;
     private  int advanceHeigt = -1;
+    private  final String strLicense = "<html><body><p align=\"justify\">Your place will be published on <b style=\"color:red;\">ImHere</b> where people or your friends could see. Your place is shared and limited time to see. You don't use this app for any purpose this is unlawful or prohibited, or any other purpose not reasonably intended by <b style=\"color:red;\">ImHere</b>. You must bear the full responsibility for your publication.</p></body></html>";
 
     private UiSettings mUiSettings;
     /**
@@ -37,6 +55,8 @@ public class AddPlaceActivity extends AppCompatActivity implements
      */
     private GoogleApiClient client;
 
+    ArrayList<Childitem> advanceChild = null;
+    private Common cmm = new Common();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +76,12 @@ public class AddPlaceActivity extends AppCompatActivity implements
         btnAdvance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnAdvance.setHeight(0);
-                LinearLayout advance_container = (LinearLayout)findViewById(R.id.add_advance_container);
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)advance_container.getLayoutParams();
-                params.height = advanceHeigt;
-                advance_container.setLayoutParams(params);
-                advance_container.requestLayout();
+                LinearLayout controler = (LinearLayout)findViewById(R.id.advance_controler);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)controler.getLayoutParams();
+                params.height = 0;
+                controler.setLayoutParams(params);
+                controler.requestLayout();
+                cmm.setHeightOfChild(findViewById(R.id.add_advance_container), advanceChild, 1);
             }
         });
         final LinearLayout layout = (LinearLayout) findViewById(R.id.add_advance_container);
@@ -70,16 +90,36 @@ public class AddPlaceActivity extends AppCompatActivity implements
             @Override
             public void onGlobalLayout() {
                 layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                if( advanceHeigt == -1) {
-                    advanceHeigt = layout.getHeight();
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)layout.getLayoutParams();
-                    params.height = 0;
-                    layout.setLayoutParams(params);
-                    layout.requestLayout();
+                if(advanceChild == null) {
+                    advanceChild = new ArrayList<Childitem>();
+                    cmm.setHeightOfChild(layout, advanceChild, -1);
                 }
-
+                ColorDrawable viewColor = (ColorDrawable)layout.getRootView().getBackground();
+                findViewById(R.id.webLicense).setBackgroundColor(viewColor.getColor());
             }
         });
+
+        WebView viewLicense = (WebView)findViewById(R.id.webLicense);
+        viewLicense.loadData(strLicense, "text/html", "utf-8");
+    }
+
+    public void addClose(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Discard the changes you made?");
+        builder.setPositiveButton("KEEP EDITING", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+        builder.setNegativeButton("DISCARD", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                onDestroy();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        builder.show();
     }
 
 
@@ -296,4 +336,6 @@ public class AddPlaceActivity extends AppCompatActivity implements
     {
         super.onResume();
     }
+
+
 };

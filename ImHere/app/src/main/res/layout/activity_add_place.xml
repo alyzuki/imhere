@@ -31,12 +31,15 @@
                     android:background="@android:drawable/ic_menu_close_clear_cancel"
                     style="@style/Widget.AppCompat.Button.Small"
                     android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_height="30dp"
+                    android:onClick="addClose (AddPlaceActivity)" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add a new place"
-                    tools:ignore="HardcodedText" />
+                    tools:ignore="HardcodedText,RtlSymmetry"
+                    android:paddingStart="30dp"
+                    android:textStyle="normal|bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,7 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
-                        android:text="Name"
+                        android:text="Place name"
                         android:ems="10"
                         android:id="@+id/editText2"
                         tools:ignore="HardcodedText,LabelFor"
@@ -157,7 +160,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
-                        android:text="Name"
+                        android:text="catalogues"
                         android:ems="10"
                         android:id="@+id/editText"
                         tools:ignore="HardcodedText,LabelFor"
@@ -275,13 +278,23 @@
                         tools:ignore="HardcodedText,InefficientWeight"
                         android:layout_weight="1"
                         android:paddingTop="15dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="time"
+                        android:ems="10"
+                        android:id="@+id/editText3"
+                        android:layout_weight="1"
+                        tools:ignore="LabelFor" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:id="@+id/advance_controler">
 
                 <TextView
                     android:text="Advance"
@@ -307,7 +320,7 @@
                         android:layout_weight="1"
                         style="@style/Widget.AppCompat.Button.Small"
                         android:background="@drawable/ic_expand"
-                        android:backgroundTint="@color/cardview_shadow_start_color"
+                        android:backgroundTint="?attr/actionModeSplitBackground"
                         android:layout_gravity="end"
                         tools:ignore="InefficientWeight,NestedWeights" />
                 </LinearLayout>
@@ -323,11 +336,12 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nameGroup">
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf"
                         android:layout_width="80dp">
 
@@ -343,11 +357,11 @@
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf">
 
                         <TextView
-                            android:text="TextView"
+                            android:text="Your name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView9"
@@ -356,10 +370,10 @@
                             android:paddingTop="15dp" />
 
                         <CheckBox
-                            android:text="CheckBox"
+                            android:text="Allow find by your name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/checkBox"
+                            android:id="@+id/cb_find_by_name"
                             android:layout_weight="1"
                             tools:ignore="HardcodedText" />
 
@@ -367,9 +381,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
-                            android:text="Name"
+                            android:text="Your name"
                             android:ems="10"
-                            android:id="@+id/editText3"
+                            android:id="@+id/edit_yr_name"
                             android:layout_weight="1"
                             tools:ignore="HardcodedText,LabelFor" />
                     </LinearLayout>
@@ -378,11 +392,12 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/phongGroup">
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf"
                         android:layout_width="80dp">
 
@@ -398,11 +413,11 @@
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf">
 
                         <TextView
-                            android:text="Phone"
+                            android:text="Your phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView7"
@@ -411,10 +426,10 @@
                             android:paddingTop="15dp" />
 
                         <CheckBox
-                            android:text="CheckBox"
+                            android:text="Allow find by your phone number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/checkBox2"
+                            android:id="@+id/cb_find_by_phone"
                             android:layout_weight="1"
                             tools:ignore="HardcodedText" />
 
@@ -422,11 +437,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
-                            android:text="Name"
+                            android:text="Your phone"
                             android:ems="10"
-                            android:id="@+id/editText4"
+                            android:id="@+id/edit_yr_phone"
                             android:layout_weight="1"
-                            tools:ignore="HardcodedText,LabelFor" />
+                            tools:ignore="HardcodedText,LabelFor,TextFields" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -434,11 +449,12 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:id="@+id/socialGroup">
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf"
                         android:layout_width="80dp">
 
@@ -454,11 +470,11 @@
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf">
 
                         <TextView
-                            android:text="TextView"
+                            android:text="Social ID"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView10"
@@ -466,35 +482,94 @@
                             android:layout_weight="1"
                             android:paddingTop="15dp" />
 
+                        <CheckBox
+                            android:text="Allow find by current social ID"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/cb_find_by_social"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText" />
+
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
-                            android:text="Name"
+                            android:text="Social ID"
                             android:ems="10"
-                            android:id="@+id/editText5"
+                            android:id="@+id/edit_yr_social"
                             android:layout_weight="1"
                             tools:ignore="HardcodedText,LabelFor" />
-
-                        <CheckBox
-                            android:text="CheckBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/checkBox3"
-                            android:layout_weight="1"
-                            tools:ignore="HardcodedText" />
 
                     </LinearLayout>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="DisableBaselineAlignment"
+                    android:id="@+id/movingGroup">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        tools:ignore="UselessLeaf,UselessParent"
+                        android:layout_width="80dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_action_running"
+                            android:id="@+id/imagerun"
+                            android:layout_weight="1"
+                            tools:ignore="ContentDescription,InefficientWeight" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="InefficientWeight,UselessLeaf"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:text="Update when I moving"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView12"
+                            tools:ignore="HardcodedText,InefficientWeight,NestedWeights"
+                            android:layout_weight="1"
+                            android:paddingTop="15dp" />
+
+                        <CheckBox
+                            android:text="Allow update"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/cb_update_moving"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/License"
-                android:layout_weight="1"
-                tools:ignore="HardcodedText,InefficientWeight" />
+                android:layout_height="match_parent"
+                android:paddingStart="20dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                tools:ignore="RtlHardcoded,RtlSymmetry">
+
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/webLicense" />
+            </LinearLayout>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

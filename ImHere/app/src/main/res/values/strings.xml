@@ -81,16 +81,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="lessthan">&lt;</string>
     <string name="greatthan">&gt;</string>
-    <string name="settingSearchTitle">SeachGroup</string>
-    <string name="settingSearchNotification">SearchNotification</string>
-    <string name="settingSearchDistance">SearchDistance</string>
-    <string name="settingSearchName">SearchName</string>
-    <string name="settingSearchPhone">SearchPhone</string>
-    <string name="settingSearchSocial">SearchSocial</string>
-    <string name="settingAddTitle">AddGroup</string>
-    <string name="settingAddShow">AddShow</string>
-    <string name="settingFollowTitle">FollowGroup</string>
-    <string name="settingFollowItem">FollowItem</string>
-    <string name="settingSOSTitle">SOSGroup</string>
-    <string name="settingSOSShow">SOSShow</string>
+
 </resources>
