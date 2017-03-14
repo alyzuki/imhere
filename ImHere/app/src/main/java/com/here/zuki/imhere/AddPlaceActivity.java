@@ -1,19 +1,11 @@
 package com.here.zuki.imhere;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -21,7 +13,6 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -31,7 +22,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.vision.text.Line;
 import com.here.zuki.imhere.Utils.Common;
 
 import java.util.ArrayList;
@@ -101,6 +91,14 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
         WebView viewLicense = (WebView)findViewById(R.id.webLicense);
         viewLicense.loadData(strLicense, "text/html", "utf-8");
+
+        Button btnDiscard = (Button)findViewById(R.id.btn_add_discast);
+        btnDiscard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addClose(v);
+            }
+        });
     }
 
     public void addClose(View view)
@@ -115,7 +113,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
         builder.setNegativeButton("DISCARD", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
-                onDestroy();
+                finish();
             }
         });
         AlertDialog dialog = builder.create();
