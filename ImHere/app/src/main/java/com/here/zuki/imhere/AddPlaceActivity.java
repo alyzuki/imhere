@@ -2,6 +2,7 @@ package com.here.zuki.imhere;
 
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -22,7 +23,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.here.zuki.imhere.Utils.Common;
+import com.here.zuki.imhere.Utils.GPSTracker;
 
 import java.util.ArrayList;
 
@@ -38,6 +44,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
     private  int advanceHeigt = -1;
     private  final String strLicense = "<html><body><p align=\"justify\">Your place will be published on <b style=\"color:red;\">ImHere</b> where people or your friends could see. Your place is shared and limited time to see. You don't use this app for any purpose this is unlawful or prohibited, or any other purpose not reasonably intended by <b style=\"color:red;\">ImHere</b>. You must bear the full responsibility for your publication.</p></body></html>";
 
+    GPSTracker gps = null;
     private UiSettings mUiSettings;
     /**
      * Flag indicating whether a requested permission has been denied after returning in
@@ -61,6 +68,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        gps = new GPSTracker(AddPlaceActivity.this);
 
         final Button btnAdvance = (Button)findViewById(R.id.btn_add_advance);
         btnAdvance.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +105,37 @@ public class AddPlaceActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 addClose(v);
+            }
+        });
+
+        Button getLocation = (Button)findViewById(R.id.btn_get_curlocation);
+        getLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(gps  != null)
+                {
+                    if(!gps.canGetLocation())
+                    {
+                        gps.showSettingsAlert();
+                    }else
+                    {
+                        Location loc = gps.getLocation();
+                        if (loc != null) {
+                            //place marker at current position
+                            //mGoogleMap.clear();
+                            LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(latLng);
+                            markerOptions.title("Current Position");
+                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                            Marker currLocationMarker = mMap.addMarker(markerOptions);
+                        }
+                    }
+                }
+                else
+                {
+                    Log.d("ADD PLACE", "GPS init fail.");
+                }
             }
         });
     }
@@ -154,144 +193,6 @@ public class AddPlaceActivity extends AppCompatActivity implements
         return true;
     }
 
-//    public void setZoomButtonsEnabled(View v) {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables the zoom controls (+/- buttons in the bottom-right of the map for LTR
-//        // locale or bottom-left for RTL locale).
-//        mUiSettings.setZoomControlsEnabled(((CheckBox) v).isChecked());
-//    }
-//
-//    public void setCompassEnabled(View v) {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables the compass (icon in the top-left for LTR locale or top-right for RTL
-//        // locale that indicates the orientation of the map).
-//        mUiSettings.setCompassEnabled(((CheckBox) v).isChecked());
-//    }
-//
-//    public void setMyLocationButtonEnabled(View v) {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables the my location button (this DOES NOT enable/disable the my location
-//        // dot/chevron on the map). The my location button will never appear if the my location
-//        // layer is not enabled.
-//        // First verify that the location permission has been granted.
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            mUiSettings.setMyLocationButtonEnabled(mMyLocationButtonCheckbox.isChecked());
-//        } else {
-//            // Uncheck the box and request missing location permission.
-//            mMyLocationButtonCheckbox.setChecked(false);
-//            requestLocationPermission(MY_LOCATION_PERMISSION_REQUEST_CODE);
-//        }
-//    }
-
-//    public void setMyLocationLayerEnabled(View v) {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables the my location layer (i.e., the dot/chevron on the map). If enabled, it
-//        // will also cause the my location button to show (if it is enabled); if disabled, the my
-//        // location button will never show.
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            mMap.setMyLocationEnabled(mMyLocationLayerCheckbox.isChecked());
-//        } else {
-//            // Uncheck the box and request missing location permission.
-//            mMyLocationLayerCheckbox.setChecked(false);
-//            PermissionUtils.requestPermission(this, LOCATION_LAYER_PERMISSION_REQUEST_CODE,
-//                    Manifest.permission.ACCESS_FINE_LOCATION, false);
-//        }
-//    }
-
-//    public void setScrollGesturesEnabled(View v) {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables scroll gestures (i.e. panning the map).
-//        mUiSettings.setScrollGesturesEnabled(((CheckBox) v).isChecked());
-//    }
-
-//    public void setZoomGesturesEnabled(View v) {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables zoom gestures (i.e., double tap, pinch & stretch).
-//        mUiSettings.setZoomGesturesEnabled(((CheckBox) v).isChecked());
-//    }
-
-//    public void setTiltGesturesEnabled(View v) {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables tilt gestures.
-//        mUiSettings.setTiltGesturesEnabled(((CheckBox) v).isChecked());
-//    }
-
-//    public void setRotateGesturesEnabled(View v) {
-//        if (!checkReady()) {
-//            return;
-//        }
-//        // Enables/disables rotate gestures.
-//        mUiSettings.setRotateGesturesEnabled(((CheckBox) v).isChecked());
-//    }
-
-        /**
-         * Requests the fine location permission. If a rationale with an additional explanation should
-         * be shown to the user, displays a dialog that triggers the request.
-         */
-//    public void requestLocationPermission(int requestCode) {
-//        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION)) {
-//            // Display a dialog with rationale.
-//            PermissionUtils.RationaleDialog
-//                    .newInstance(requestCode, false).show(
-//                    getSupportFragmentManager(), "dialog");
-//        } else {
-//            // Location permission has not been granted yet, request it.
-//            PermissionUtils.requestPermission(this, requestCode,
-//                    Manifest.permission.ACCESS_FINE_LOCATION, false);
-//        }
-//    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-//            @NonNull int[] grantResults) {
-//        if (requestCode == MY_LOCATION_PERMISSION_REQUEST_CODE) {
-//            // Enable the My Location button if the permission has been granted.
-//            if (PermissionUtils.isPermissionGranted(permissions, grantResults,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-//                mUiSettings.setMyLocationButtonEnabled(true);
-//                mMyLocationButtonCheckbox.setChecked(true);
-//            } else {
-//                mLocationPermissionDenied = true;
-//            }
-//
-//        } else if (requestCode == LOCATION_LAYER_PERMISSION_REQUEST_CODE) {
-//            // Enable the My Location layer if the permission has been granted.
-//            if (PermissionUtils.isPermissionGranted(permissions, grantResults,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-//                mMap.setMyLocationEnabled(true);
-//                mMyLocationLayerCheckbox.setChecked(true);
-//            } else {
-//                mLocationPermissionDenied = true;
-//            }
-//        }
-//    }
-
-        //   @Override
-        // protected void onResumeFragments() {
-//        super.onResumeFragments();
-//        if (mLocationPermissionDenied) {
-//            PermissionUtils.PermissionDeniedDialog
-//                    .newInstance(false).show(getSupportFragmentManager(), "dialog");
-//            mLocationPermissionDenied = false;
-//        }
-        //}
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -327,6 +228,8 @@ public class AddPlaceActivity extends AppCompatActivity implements
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+        if(gps  != null)
+            gps.stopUsingGPS();
     }
 
     @Override

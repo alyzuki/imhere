@@ -100,8 +100,8 @@ public class GPSTracker extends Service implements LocationListener {
                 }
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SecurityException SEX) {
+            SEX.printStackTrace();
         }
 
         return location;
@@ -113,7 +113,14 @@ public class GPSTracker extends Service implements LocationListener {
      * */
     public void stopUsingGPS(){
         if(locationManager != null){
-            locationManager.removeUpdates(GPSTracker.this);
+            try
+            {
+                locationManager.removeUpdates(GPSTracker.this);
+            }catch (SecurityException Sex)
+            {
+                Log.d("GPS TRACKER", Sex.toString());
+            }
+
         }
     }
 
