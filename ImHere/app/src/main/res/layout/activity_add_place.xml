@@ -374,7 +374,8 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_name"
                             android:layout_weight="1"
-                            tools:ignore="HardcodedText" />
+                            tools:ignore="HardcodedText"
+                            android:onClick="checkboxActivate" />
 
                         <EditText
                             android:layout_width="match_parent"
@@ -430,7 +431,8 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_phone"
                             android:layout_weight="1"
-                            tools:ignore="HardcodedText" />
+                            tools:ignore="HardcodedText"
+                            android:onClick="checkboxActivate" />
 
                         <EditText
                             android:layout_width="match_parent"
@@ -487,7 +489,8 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_social"
                             android:layout_weight="1"
-                            tools:ignore="HardcodedText" />
+                            tools:ignore="HardcodedText"
+                            android:onClick="checkboxActivate" />
 
                         <EditText
                             android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,12 +14,15 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -29,8 +33,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.GPSTracker;
+import com.here.zuki.imhere.Utils.PrefConfig;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by zuki on 3/9/17.
@@ -40,12 +47,17 @@ import java.util.ArrayList;
 public class AddPlaceActivity extends AppCompatActivity implements
         OnMapReadyCallback {
 
+    private  final  float SECONDELAY = 3;
+    private  static LatLng lastLL = new LatLng(0, 0);
+    private  final Lock lock = new ReentrantLock();
     private GoogleMap mMap;
     private  int advanceHeigt = -1;
     private  final String strLicense = "<html><body><p align=\"justify\">Your place will be published on <b style=\"color:red;\">ImHere</b> where people or your friends could see. Your place is shared and limited time to see. You don't use this app for any purpose this is unlawful or prohibited, or any other purpose not reasonably intended by <b style=\"color:red;\">ImHere</b>. You must bear the full responsibility for your publication.</p></body></html>";
 
     GPSTracker gps = null;
     private UiSettings mUiSettings;
+    private Handler UpdateLoc = new Handler();
+    PrefConfig pref = null;
     /**
      * Flag indicating whether a requested permission has been denied after returning in
      * {@link #onRequestPermissionsResult(int, String[], int[])}.
@@ -112,33 +124,80 @@ public class AddPlaceActivity extends AppCompatActivity implements
         getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(gps  != null)
-                {
-                    if(!gps.canGetLocation())
-                    {
-                        gps.showSettingsAlert();
-                    }else
-                    {
-                        Location loc = gps.getLocation();
-                        if (loc != null) {
-                            //place marker at current position
-                            //mGoogleMap.clear();
-                            LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
+                UpdateLocation();
+            }
+        });
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                UpdateLocation();
+            }
+        };
+        UpdateLoc.postDelayed(runnable, (int)(SECONDELAY * 1000));
+        pref = PrefConfig.getInstance();
+        checkboxActivate(findViewById(R.id.cb_find_by_name));
+        checkboxActivate(findViewById(R.id.cb_find_by_phone));
+        checkboxActivate(findViewById(R.id.cb_find_by_social));
+    }
+
+
+    public  void checkboxActivate(View view)
+    {
+        CheckBox checkBox = (CheckBox)view;
+        boolean checked = checkBox.isChecked();
+        switch (view.getId())
+        {
+            case R.id.cb_find_by_name:
+                findViewById(R.id.edit_yr_name).setEnabled(checked);
+                break;
+            case R.id.cb_find_by_phone:
+                findViewById(R.id.edit_yr_phone).setEnabled(checked);
+                break;
+            case R.id.cb_find_by_social:
+                findViewById(R.id.edit_yr_social).setEnabled(checked);
+                break;
+        }
+
+    }
+
+    private  void UpdateLocation()
+    {
+        lock.lock();
+        try {
+            if (gps != null) {
+                if (!gps.canGetLocation()) {
+                    gps.showSettingsAlert();
+                } else {
+                    Location loc = gps.getLocation();
+                    if (loc != null) {
+                        //place marker at current position
+                        //mGoogleMap.clear();
+                        LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
+                        if(!latLng.equals(lastLL)){
+                            mMap.clear();
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(latLng);
                             markerOptions.title("Current Position");
                             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
                             Marker currLocationMarker = mMap.addMarker(markerOptions);
+                            CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+                            mMap.animateCamera(cam);
+                            lastLL = latLng;
                         }
+
                     }
                 }
-                else
-                {
-                    Log.d("ADD PLACE", "GPS init fail.");
-                }
+            } else {
+                Log.d("ADD PLACE", "GPS init fail.");
             }
-        });
+        }catch (Exception IEx)
+        {
+            IEx.printStackTrace();;
+        }finally {
+            lock.unlock();
+        }
     }
+
 
     public void addClose(View view)
     {
@@ -167,7 +226,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
+        mMap.getUiSettings().setMapToolbarEnabled(false);
         /*mUiSettings = mMap.getUiSettings();
 
         // Keep the UI Settings state in sync with the checkboxes.
