@@ -25,4 +25,15 @@
     <attr name="headerfontsize" format="float" />
     <attr name="PaddingStart" format="integer"/>
 </declare-styleable>
+    
+<declare-styleable name="ListItem">
+    <attr name="iconSrc" format="string"/>
+    <attr name="title" format="string"/>
+    <attr name="inputVisible" format="boolean"/>
+    <attr name="containerBg" format="color"/>
+    <attr name="type" format="enum">
+        <enum name="searchItem" value="0"/>
+        <enum name="eventItem" value="1"/>
+    </attr>
+</declare-styleable>
 </resources>
