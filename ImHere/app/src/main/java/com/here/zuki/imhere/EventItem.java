@@ -44,9 +44,9 @@ public class EventItem  extends LinearLayout{
         );
         LayoutInflater.from(context).inflate(R.layout.event_item, this);
 
-        this.setBackground(ta.getInt(R.styleable.ListItem_containerBg, -1));
+        this.setBackground(ta.getInt(R.styleable.ListItem_itemBg, -1));
 
-        this.setTitle(ta.getString(R.styleable.ListItem_title));
+        this.setTitle(ta.getString(R.styleable.ListItem_titleItem));
 
         this.setIconSrc(ta.getString(R.styleable.ListItem_iconSrc));
 

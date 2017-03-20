@@ -129,6 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         Log.d("SETTING", "user" + pref.getUser());
+
     }
 
 
@@ -137,12 +138,20 @@ public class SettingsActivity extends AppCompatActivity {
         ((Expandable)view).toggle();
     }
 
+    @Override
+    public void finish()
+    {
+        super.finish();
+        overridePendingTransition(R.animator.slide_from_left, R.animator.slide_to_right);
+    }
+
     public void goBack(View view)
     {
         Log.d("SETTINGS", "go back ...");
         finish();
         //super.onBackPressed();
     }
+
 
     public void goSearchOptions(View view)
     {

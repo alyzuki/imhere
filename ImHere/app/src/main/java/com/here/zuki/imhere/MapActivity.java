@@ -103,6 +103,14 @@ public class MapActivity extends AppCompatActivity implements
 //                }
 //            });
         }
+
+        findViewById(R.id.search_string).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void SearchOptClick(View v) {
@@ -115,6 +123,7 @@ public class MapActivity extends AppCompatActivity implements
             settingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         startActivity(settingIntent);
+        overridePendingTransition(R.animator.slide_from_right, R.animator.slide_to_left);
     }
 
 

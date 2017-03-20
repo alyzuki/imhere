@@ -41,51 +41,26 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
                 android:paddingTop="10dp">
-                <Button
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/appMenu"
-                    android:layout_weight="1"
-                    tools:ignore="ButtonStyle,HardcodedText,InefficientWeight,NestedWeights"
-                    style="@style/Widget.AppCompat.Button.Small"
-                    android:background="@drawable/ic_action_menu_trigle"
-                    android:gravity="start"
-                    android:paddingBottom="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="10dp"
-                    android:onClick="SettingsClick"/>
+                    android:id="@+id/searchObjName"
+                    android:text="Test"
+                    android:paddingStart="30dp"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/appIcon"
-                    android:layout_weight="1"
-                    tools:ignore="ButtonStyle,HardcodedText,InefficientWeight,NestedWeights"
-                    style="@style/Widget.AppCompat.Button.Small"
-                    android:background="@mipmap/imhere"
-                    android:gravity="center_vertical|center_horizontal|start"
-                    android:paddingBottom="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="10dp" />
+                </Spinner>
 
             </LinearLayout>
-
-
-
         </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
             android:id="@+id/map_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <fragment
-                android:id="@+id/map"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                class="com.google.android.gms.maps.SupportMapFragment" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -96,7 +71,8 @@
                 android:paddingEnd="20dp"
                 android:fillViewport="false"
                 android:layout_marginTop="30dp"
-                tools:ignore="RtlHardcoded">
+                tools:ignore="RtlHardcoded"
+                android:id="@+id/searcbScroll">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -108,7 +84,8 @@
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:ignore="UselessParent">
+                        tools:ignore="UselessParent"
+                        android:background="@drawable/drop_shadow">
 
                         <LinearLayout
                             android:orientation="horizontal"
@@ -121,9 +98,9 @@
                             <Button
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/btnSearchOpt"
+                                android:id="@+id/btnSearchBack"
                                 android:layout_weight="1"
-                                android:background="@android:drawable/ic_menu_sort_by_size"
+                                android:background="@drawable/ic_action_back"
                                 android:onClick="SearchOptClick"
                                 tools:ignore="InefficientWeight,NestedWeights" />
 
@@ -140,33 +117,28 @@
                             tools:ignore="HardcodedText,LabelFor"
                             android:layout_weight="1" />
                     </LinearLayout>
-
                 </LinearLayout>
             </ScrollView>
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
+            <ScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                app:fabSize="mini"
-                app:srcCompat="@android:drawable/ic_menu_myplaces"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="19dp"
-                android:id="@+id/fab_add_btn"
-                app:backgroundTint="@color/wallet_highlighted_text_holo_light" />
+                android:layout_marginTop="88dp"
+                android:id="@+id/searchResultSroll"
+                android:layout_alignParentStart="true"
+                android:background="@android:color/white">
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/sos_dark"
-                android:layout_alignBottom="@+id/fab_add_btn"
-                android:layout_toStartOf="@+id/fab_add_btn"
-                android:layout_marginEnd="10dp"
-                android:id="@+id/fab_sos_btn"
-                app:backgroundTint="@color/wallet_highlighted_text_holo_light" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <com.here.zuki.imhere.EventItem
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:iconSrc=""
+                        app:titleItem="Test"/>
+                </LinearLayout>
+            </ScrollView>
 
         </RelativeLayout>
 
