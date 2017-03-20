@@ -3,9 +3,11 @@ package com.here.zuki.imhere;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,6 +55,8 @@ public class EventItem  extends LinearLayout{
         this.setInputVisible(ta.getBoolean(R.styleable.ListItem_inputVisible, false));
 
         this.setType(ta.getInteger(R.styleable.ListItem_type, 0));
+
+        this.setInputHint(ta.getString(R.styleable.ListItem_inputHint));
 
         int count = this.getChildCount();
         for(int i = 0; i < count; i++)
@@ -106,6 +110,13 @@ public class EventItem  extends LinearLayout{
     public void setInputVisible(boolean isVisible)
     {
         findViewById(R.id.itemInput).setVisibility( isVisible ? VISIBLE : INVISIBLE);
+    }
+
+    public void setInputHint(String hint)
+    {
+        if(hint == null || TextUtils.isEmpty(hint))
+            return;
+        ((EditText)findViewById(R.id.itemInput)).setHint(hint);
     }
 
 }

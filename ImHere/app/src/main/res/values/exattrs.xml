@@ -30,6 +30,7 @@
     <attr name="iconSrc" format="string"/>
     <attr name="titleItem" format="string"/>
     <attr name="inputVisible" format="boolean"/>
+    <attr name="inputHint" format="string"/>
     <attr name="itemBg" format="color"/>
     <attr name="type" format="enum">
         <enum name="searchItem" value="0"/>
