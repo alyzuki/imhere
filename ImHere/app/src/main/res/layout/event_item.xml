@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
-            android:id="@+id/iconShow"
+            android:id="@+id/placeIcon"
             android:layout_weight="1"
             tools:ignore="ContentDescription,ObsoleteLayoutParam"
             android:background="@android:color/transparent"
@@ -30,11 +30,11 @@
             android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tvName"
+            android:id="@+id/tvPlaceName"
             android:layout_weight="1"
             tools:ignore="HardcodedText,ObsoleteLayoutParam"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/iconShow"
+            android:layout_toEndOf="@+id/placeIcon"
             android:layout_marginTop="25dp" />
 
         <EditText
@@ -43,9 +43,9 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/itemInput"
-            android:layout_below="@+id/tvName"
+            android:layout_below="@+id/tvPlaceName"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/iconShow"
+            android:layout_toEndOf="@+id/placeIcon"
             tools:ignore="HardcodedText,LabelFor" />
     </RelativeLayout>
 

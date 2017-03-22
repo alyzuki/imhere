@@ -11,11 +11,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.UnknownServiceException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zuki on 3/22/17.
@@ -105,6 +103,13 @@ public class PlaceObject {
         if( newTimeLapse <= 0)
             return 0;
         return (int)(newTimeLapse / Common.SECOND_RATE);
+    }
+
+    public int getAttrs()   { return  this.attrsFind; }
+
+    public  void setAttrs(int attrs)
+    {
+        this.attrsFind = this.attrsFind & attrs;
     }
 
     private PlaceObject getPlaceFromJSONObj(JSONObject jsObj)

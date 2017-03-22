@@ -79,7 +79,7 @@ public class EventItem  extends LinearLayout{
     {
         if(title == null)
             title = "Item Name";
-        ((TextView)findViewById(R.id.tvName)).setText(title);
+        ((TextView)findViewById(R.id.tvPlaceName)).setText(title);
     }
 
     public void setBackground(int color)
@@ -104,7 +104,7 @@ public class EventItem  extends LinearLayout{
     {
         if(src == null)
             src = "@drawable/common_google_signin_btn_icon_dark";
-        ((ImageButton)findViewById(R.id.iconShow)).setBackground(Drawable.createFromPath(src));
+        ((ImageButton)findViewById(R.id.placeIcon)).setBackground(Drawable.createFromPath(src));
     }
 
     public void setInputVisible(boolean isVisible)
