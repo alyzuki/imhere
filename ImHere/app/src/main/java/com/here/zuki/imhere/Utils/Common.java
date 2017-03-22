@@ -20,6 +20,8 @@ import java.util.ArrayList;
 public class Common extends AppCompatActivity{
 
 
+    public final static int SECOND_RATE = 1000;
+    public final static String TAG_SUCCESS = "success";
 
     public void setHeightOfChild(View parent, ArrayList<Childitem> childitems, int height)
     {
