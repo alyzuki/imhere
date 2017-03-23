@@ -34,6 +34,7 @@ public class PlaceObject {
     private String      ReporterName;
     private String      ReporterPhone;
     private String      ReporterSocial;
+    private String      ReporterMail;
 
 
     public static final String TAG_PLACE            = "Name";
@@ -111,6 +112,20 @@ public class PlaceObject {
     {
         this.attrsFind = this.attrsFind & attrs;
     }
+
+    public void setEvID(int id) { this.EvID = id; };
+
+    public int getEvID()    { return this.EvID; }
+
+    public void  setUserId(int id)  { this.userId = id; }
+
+    public String getReporterName()     { return this.ReporterName; }
+
+    public String getReporterSocial()   { return this.ReporterSocial; }
+
+    public String getReporterPhone()    { return  this.ReporterPhone; }
+
+    public String getReporterMail()     { return this.ReporterMail;}
 
     private PlaceObject getPlaceFromJSONObj(JSONObject jsObj)
     {

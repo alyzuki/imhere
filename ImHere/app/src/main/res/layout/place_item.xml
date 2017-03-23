@@ -118,6 +118,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.22"
+                android:id="@+id/PlaceMailInfo"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:text="E-mail"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView8"
+                    tools:ignore="DuplicateIds,HardcodedText"
+                    android:layout_width="100dp" />
+
+                <TextView
+                    android:text="Report's mail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvReMail"
+                    tools:ignore="DuplicateIds,HardcodedText,NestedWeights"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.22"
                 android:id="@+id/PlaceSocialInfo"
                 android:paddingTop="10dp">
 

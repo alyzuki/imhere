@@ -23,6 +23,16 @@ public class Common extends AppCompatActivity{
     public final static int SECOND_RATE = 1000;
     public final static String TAG_SUCCESS = "success";
 
+    public final static int ATTRS_NAME = 1;
+    public final static int ATTRS_PHONE = 2;
+    public final static int ATTRS_MAIL = 4;
+    public final static int ATTRS_SOCIAL = 8;
+
+    public final static int EVTYPE_SEARCH = 1;
+    public final static int EVTYPE_CATALOGUE_STANDARD = 2;
+    public final static int EVTYPE_CATALOGUE_SEARCH = 4;
+
+
     public void setHeightOfChild(View parent, ArrayList<Childitem> childitems, int height)
     {
         if(childitems == null)

@@ -1,6 +1,8 @@
 package com.here.zuki.imhere.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.AnimatorRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.here.zuki.imhere.R;
+import com.here.zuki.imhere.Utils.BitmapUrlUtils;
+import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.PlaceObject;
 
 import java.util.ArrayList;
@@ -24,17 +28,18 @@ public class PlaceAdapter extends ArrayAdapter<PlaceObject> implements View.OnCl
 
     private  ArrayList<PlaceObject> dataSet;
     private Context context;
-
+    private int type;
+    private BitmapUrlUtils buu;
 
     private static class PlaceHolder
     {
         TextView        tvName;
         TextView        tvEvName;
-        LinearLayout    placeInfo;
         ImageButton     icon;
         TextView        tvReName;
         TextView        tvRePhone;
-        TextView        tvReSocail;
+        TextView        tvReSocial;
+        TextView        tvReMail;
     }
 
     public PlaceAdapter(ArrayList<PlaceObject> data, Context context)
@@ -42,7 +47,9 @@ public class PlaceAdapter extends ArrayAdapter<PlaceObject> implements View.OnCl
         super(context, R.layout.event_item, data);
         this.dataSet = data;
         this.context = context;
+        buu = BitmapUrlUtils.getInstance();
     }
+
 
     @Override
     public void onClick(View v) {
@@ -50,6 +57,7 @@ public class PlaceAdapter extends ArrayAdapter<PlaceObject> implements View.OnCl
     }
 
     private int lastPos = -1;
+    @SuppressWarnings("ResourceType")
     @Override
     public  View getView(int pos, View convertView, ViewGroup parent)
     {
@@ -65,11 +73,11 @@ public class PlaceAdapter extends ArrayAdapter<PlaceObject> implements View.OnCl
             convertView = inflater.inflate(R.layout.place_item, parent, false);
             holder.tvName       = (TextView) convertView.findViewById(R.id.tvPlaceName);
             holder.tvEvName     = (TextView) convertView.findViewById(R.id.tvEvName);
-            holder.placeInfo    = (LinearLayout) convertView.findViewById(R.id.placeInfomation);
             holder.icon         = (ImageButton) convertView.findViewById(R.id.placeIcon);
             holder.tvReName     = (TextView) convertView.findViewById(R.id.tvReName);
             holder.tvRePhone    = (TextView) convertView.findViewById(R.id.tvRePhone);
             holder.tvRePhone    = (TextView) convertView.findViewById(R.id.tvRePhone);
+            holder.tvReMail     = (TextView) convertView.findViewById(R.id.tvReMail);
             result=convertView;
             convertView.setTag(holder);
         } else {
@@ -84,17 +92,37 @@ public class PlaceAdapter extends ArrayAdapter<PlaceObject> implements View.OnCl
 
         holder.tvName.setText(placeObj.getPlaceName());
         holder.tvEvName.setText(placeObj.getEventName());
-        if(placeObj.getAttrs() == 0)
-            holder.placeInfo.setVisibility(View.INVISIBLE);
-        holder.tvRePhone.setText(placeObj.getPlaceName());
-        holder.tvName.setText(placeObj.getPlaceName());
-//
-//        viewHolder.txtName.setText(dataModel.getName());
-//        viewHolder.txtType.setText(dataModel.getType());
-//        viewHolder.txtVersion.setText(dataModel.getVersion_number());
-//        viewHolder.info.setOnClickListener(this);
-//        viewHolder.info.setTag(position);
-        // Return the completed view to render on screen
+
+//        buu.setFileName("logo.png");
+//        buu.execute();
+//        holder.icon.setImageBitmap(buu.getBitmap());
+
+        LinearLayout viewContainer = (LinearLayout)result.findViewById(R.id.placeInfomation);
+        if(viewContainer != null)
+        {
+            while (true)
+            {
+                int attrs = placeObj.getAttrs();
+                if (attrs == 0 || (attrs | Common.ATTRS_NAME) == 0) {
+                    viewContainer.removeAllViews();
+                    break;
+                }else
+                    holder.tvReName.setText(placeObj.getReporterName());
+                if ((attrs | Common.ATTRS_PHONE) == 0)
+                    viewContainer.removeView(result.findViewById(R.id.PlacePhoneInfo));
+                else
+                    holder.tvRePhone.setText(placeObj.getReporterPhone());
+                if ((attrs | Common.ATTRS_SOCIAL) == 0)
+                    viewContainer.removeView(result.findViewById(R.id.PlaceSocialInfo));
+                else
+                    holder.tvReMail.setText(placeObj.getReporterMail());
+                if ((attrs | Common.ATTRS_MAIL) == 0)
+                    viewContainer.removeView(result.findViewById(R.id.PlaceMailInfo));
+                else
+                    holder.tvReSocial.setText(placeObj.getReporterSocial());
+                break;
+            }
+        }
         return convertView;
     }
 }

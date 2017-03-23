@@ -18,7 +18,9 @@ package com.here.zuki.imhere;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +30,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -37,6 +40,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.here.zuki.imhere.Utils.BitmapUrlUtils;
+import com.here.zuki.imhere.Utils.LoadBitmap;
 import com.here.zuki.imhere.Utils.PrefConfig;
 
 /**
@@ -102,6 +107,7 @@ public class MapActivity extends AppCompatActivity implements
 //
 //                }
 //            });
+            new LoadBitmap(sos, "sos.png").execute();
         }
 
         findViewById(R.id.search_string).setOnClickListener(new View.OnClickListener() {
@@ -404,4 +410,5 @@ public class MapActivity extends AppCompatActivity implements
         Intent addaplace = new Intent(this, AddPlaceActivity.class);
         startActivity(addaplace);
     }
+
 };
