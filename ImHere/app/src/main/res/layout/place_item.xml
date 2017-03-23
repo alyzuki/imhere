@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:ignore="InefficientWeight,UselessParent"
+        android:id="@+id/placecontainer"
+        android:layout_gravity="top">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
+            android:id="@+id/placeIcon"
+            android:layout_weight="1"
+            tools:ignore="ContentDescription,ObsoleteLayoutParam"
+            android:background="@android:color/transparent"
+            style="@android:style/Widget.Holo.ImageButton"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:text="Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvPlaceName"
+            android:layout_weight="1"
+            tools:ignore="HardcodedText,ObsoleteLayoutParam"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/placeIcon"
+            android:layout_marginTop="25dp"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessLeaf"
+            android:id="@+id/placeInfomation"
+            android:layout_below="@+id/tvEvName"
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/tvEvName"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_weight="0.22"
+                android:id="@+id/PlaceNameInfo"
+                android:longClickable="false"
+                android:layout_gravity="start"
+                android:layout_height="30dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    tools:ignore="NestedWeights">
+
+                    <TextView
+                        android:text="Reported by"
+                        android:layout_height="match_parent"
+                        android:id="@+id/textViewreport"
+                        tools:ignore="HardcodedText"
+                        android:layout_width="100dp"
+                        android:layout_gravity="start" />
+                </LinearLayout>
+
+                <TextView
+                    android:text="Report's name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvReName"
+                    tools:ignore="HardcodedText,NestedWeights"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:gravity="bottom"
+                    android:textStyle="normal|bold|italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.22"
+                android:id="@+id/PlacePhoneInfo"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:text="Phone"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView8"
+                    tools:ignore="DuplicateIds,HardcodedText"
+                    android:layout_width="100dp" />
+
+                <TextView
+                    android:text="Report's phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvRePhone"
+                    tools:ignore="DuplicateIds,HardcodedText,NestedWeights"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.22"
+                android:id="@+id/PlaceSocialInfo"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:text="Social ID"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView8"
+                    tools:ignore="DuplicateIds,HardcodedText"
+                    android:layout_width="100dp" />
+
+                <TextView
+                    android:text="Report's social"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvReSocial"
+                    tools:ignore="DuplicateIds,HardcodedText,NestedWeights"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:text="Event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvEvName"
+            tools:ignore="HardcodedText"
+            android:textSize="12sp"
+            android:layout_below="@+id/tvPlaceName"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/placeIcon" />
+
+    </RelativeLayout>
+</LinearLayout>
