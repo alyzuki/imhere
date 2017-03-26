@@ -1,8 +1,6 @@
 package com.here.zuki.imhere.Adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.AnimatorRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,9 +69,9 @@ public class PlaceAdapter extends ArrayAdapter<PlaceObject> implements View.OnCl
             holder = new PlaceHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.place_item, parent, false);
-            holder.tvName       = (TextView) convertView.findViewById(R.id.tvPlaceName);
+            holder.tvName       = (TextView) convertView.findViewById(R.id.tvEventItemName);
             holder.tvEvName     = (TextView) convertView.findViewById(R.id.tvEvName);
-            holder.icon         = (ImageButton) convertView.findViewById(R.id.placeIcon);
+            holder.icon         = (ImageButton) convertView.findViewById(R.id.eventIcon);
             holder.tvReName     = (TextView) convertView.findViewById(R.id.tvReName);
             holder.tvRePhone    = (TextView) convertView.findViewById(R.id.tvRePhone);
             holder.tvRePhone    = (TextView) convertView.findViewById(R.id.tvRePhone);

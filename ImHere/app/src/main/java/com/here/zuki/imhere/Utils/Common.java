@@ -1,14 +1,11 @@
 package com.here.zuki.imhere.Utils;
 
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.plus.model.people.Person;
 import com.here.zuki.imhere.Childitem;
 
 import java.util.ArrayList;
@@ -31,6 +28,10 @@ public class Common extends AppCompatActivity{
     public final static int EVTYPE_SEARCH = 1;
     public final static int EVTYPE_CATALOGUE_STANDARD = 2;
     public final static int EVTYPE_CATALOGUE_SEARCH = 4;
+
+    public final static int EVENT_TYPE_OTHER = 0;
+    public final static int EVENT_ADAPTER_ADD = 0;
+    public final static int EVENT_ADAPTER_GET = 1;
 
 
     public void setHeightOfChild(View parent, ArrayList<Childitem> childitems, int height)

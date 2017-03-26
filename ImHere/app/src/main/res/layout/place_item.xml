@@ -4,7 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:clickable="false"
+    android:descendantFocusability="blocksDescendants" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
-            android:id="@+id/placeIcon"
+            android:id="@+id/eventIcon"
             android:layout_weight="1"
             tools:ignore="ContentDescription,ObsoleteLayoutParam"
             android:background="@android:color/transparent"
@@ -26,17 +30,20 @@
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp"
-            android:paddingTop="10dp" />
+            android:paddingTop="10dp"
+            android:focusable="false"
+            android:clickable="false"
+            android:focusableInTouchMode="false" />
 
         <TextView
             android:text="Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tvPlaceName"
+            android:id="@+id/tvEventItemName"
             android:layout_weight="1"
             tools:ignore="HardcodedText,ObsoleteLayoutParam"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/placeIcon"
+            android:layout_toEndOf="@+id/eventIcon"
             android:layout_marginTop="25dp"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -170,9 +177,9 @@
             android:id="@+id/tvEvName"
             tools:ignore="HardcodedText"
             android:textSize="12sp"
-            android:layout_below="@+id/tvPlaceName"
+            android:layout_below="@+id/tvEventItemName"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/placeIcon" />
+            android:layout_toEndOf="@+id/eventIcon" />
 
     </RelativeLayout>
 </LinearLayout>
