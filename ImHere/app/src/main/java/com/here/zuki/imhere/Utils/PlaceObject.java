@@ -189,6 +189,23 @@ public class PlaceObject {
     }
 
 
+    public final ArrayList<PlaceObject> getPlaceTest(Context context, List<NameValuePair> params)
+    {
+        ArrayList<PlaceObject> placeList = new ArrayList< PlaceObject>();
+
+        for (int i = 0; i < 100; i++)
+        {
+            PlaceObject obj = new PlaceObject(
+                    "placeName " + String.valueOf(i),
+                    "EventName " + String.valueOf(i),
+                    102.10000, 10.0000,360, 1, 0);
+            placeList.add(obj);
+        }
+
+        return placeList;
+    }
+
+
     class LoadPlaces extends AsyncTask<String, String, String>
     {
 
