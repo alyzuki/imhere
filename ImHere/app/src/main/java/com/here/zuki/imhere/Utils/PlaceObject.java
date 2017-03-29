@@ -198,7 +198,7 @@ public class PlaceObject {
             PlaceObject obj = new PlaceObject(
                     "placeName " + String.valueOf(i),
                     "EventName " + String.valueOf(i),
-                    102.10000, 10.0000,360, 1, 0);
+                    10.8232932 + i / 1000 , 106.7236943 + i / 1000,360, 1, 0);
             placeList.add(obj);
         }
 

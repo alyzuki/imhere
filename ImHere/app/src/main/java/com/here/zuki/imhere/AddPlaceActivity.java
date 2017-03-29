@@ -184,7 +184,6 @@ public class AddPlaceActivity extends AppCompatActivity implements
                             mMap.animateCamera(cam);
                             lastLL = latLng;
                         }
-
                     }
                 }
             } else {

@@ -18,9 +18,7 @@ package com.here.zuki.imhere;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -30,19 +28,25 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.here.zuki.imhere.Utils.BitmapUrlUtils;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.here.zuki.imhere.Utils.LoadBitmap;
+import com.here.zuki.imhere.Utils.PlaceObject;
 import com.here.zuki.imhere.Utils.PrefConfig;
+import com.here.zuki.imhere.Utils.SharedObject;
 
 /**
  * This shows how UI settings can be toggled.
@@ -53,6 +57,9 @@ public class MapActivity extends AppCompatActivity implements
     private GoogleMap mMap;
 
     private UiSettings mUiSettings;
+
+    private SharedObject sharedObject = SharedObject.getInstance();
+
     /**
      * Flag indicating whether a requested permission has been denied after returning in
      * {@link #onRequestPermissionsResult(int, String[], int[])}.
@@ -399,8 +406,28 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public  void onResume(){
         super.onResume();
-        add.setVisibility(pref.configGetBoolean(SettingsActivity.ADDSHOW, false) ? View.VISIBLE : View.INVISIBLE);
-        sos.setVisibility(pref.configGetBoolean(SettingsActivity.SOSSHOW, false) ? View.VISIBLE : View.INVISIBLE);
+        if(sharedObject.getCurIntent() == null)
+            return;
+        String previousClass = sharedObject.getCurIntent().getComponent().getClassName();
+        if(previousClass.equals(SettingsActivity.class.getCanonicalName())) {
+            add.setVisibility(pref.configGetBoolean(SettingsActivity.ADDSHOW, false) ? View.VISIBLE : View.INVISIBLE);
+            sos.setVisibility(pref.configGetBoolean(SettingsActivity.SOSSHOW, false) ? View.VISIBLE : View.INVISIBLE);
+        }else  if(previousClass.equals(SearchActivity.class.getCanonicalName()))
+        {
+            PlaceObject place = sharedObject.getFoundPlace();
+            if(place != null)
+            {
+                mMap.clear();
+                LatLng latLng = new LatLng(place.getLat(), place.getLon());
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                Marker currLocationMarker = mMap.addMarker(markerOptions);
+                CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+                mMap.animateCamera(cam);
+            }
+        }
     }
 
 

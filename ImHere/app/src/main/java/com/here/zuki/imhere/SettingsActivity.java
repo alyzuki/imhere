@@ -1,5 +1,6 @@
 package com.here.zuki.imhere;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.here.zuki.imhere.Utils.PrefConfig;
+import com.here.zuki.imhere.Utils.SharedObject;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -27,12 +29,15 @@ public class SettingsActivity extends AppCompatActivity {
     //private  static final String NOTIFY = "closeNotify";
     //private  static final String NOTIFY = "closeNotify";
 
-    PrefConfig pref;
+    private PrefConfig pref;
+    private SharedObject sharedObject = SharedObject.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
+        sharedObject.setCurIntent(getIntent());
+
         pref = PrefConfig.getInstance();
 
         final EditText distance = (EditText)findViewById(R.id.setting_distance);
@@ -152,27 +157,18 @@ public class SettingsActivity extends AppCompatActivity {
         //super.onBackPressed();
     }
 
-
-    public void goSearchOptions(View view)
-    {
-
-       // Intent intent = new Intent(this, SearchOptions.class);
-        //startActivity(intent);
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        sharedObject.setCurIntent(intent);
+        overridePendingTransition(R.animator.slide_to_up, R.animator.slide_to_down);
     }
 
-    public void goAddOptions(View view)
+    @Override
+    public void onNewIntent(Intent intent)
     {
-        onBackPressed();
-    }
-
-    public void goSOSOptions(View view)
-    {
-        onBackPressed();
-    }
-
-    public void goTrackOptions(View view)
-    {
-        onBackPressed();
+        sharedObject.setCurIntent(intent);
+        super.onNewIntent(intent);
     }
 
 

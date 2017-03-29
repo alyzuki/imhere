@@ -1,7 +1,6 @@
 package com.here.zuki.imhere.Utils;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 /**
  * Created by zuki on 3/26/17.
@@ -40,5 +39,16 @@ public class EventItem {
             list.add(item);
         }
         return  list;
+    }
+
+
+    public final void changeList(ArrayList<EventItem> list)
+    {
+        list.clear();
+        for(int i = 0; i < 10; i++)
+        {
+            EventItem item = new EventItem("Event change " + String.valueOf(i), i % Common.EVENT_TYPE_COUNT);
+            list.add(item);
+        }
     }
 }
