@@ -8,8 +8,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.here.zuki.imhere.Adapter.EventAdapter;
 import com.here.zuki.imhere.Adapter.PlaceAdapter;
+import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.PlaceObject;
 
 import java.util.ArrayList;
@@ -40,6 +44,10 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d("SEARCH", object.toString());
             }
         });
+
+
+        //final TextView searchObj = (TextView)findViewById(R.id.searchObjName);
+        setEventList();
     }
 
     @Override
@@ -54,5 +62,27 @@ public class SearchActivity extends AppCompatActivity {
     {
         super.finish();
         //overridePendingTransition(R.animator.slide_to_down, R.animator.slide_to_up);
+    }
+
+    private  void setEventList()
+    {
+        ArrayList<EventItem> listEvent = new EventItem().getListTest();
+        EventAdapter eventAdapter = new EventAdapter(listEvent, this);
+
+        final Spinner spinner = (Spinner)findViewById(R.id.spinner_event_list);
+        spinner.setAdapter(eventAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                EventItem item = (EventItem)spinner.getItemAtPosition(position);
+                //searchObj.setText(item.getEventNane());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //searchObj.setText("Tất cả");
+            }
+        });
     }
 }

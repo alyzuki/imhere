@@ -30,6 +30,8 @@ public class Common extends AppCompatActivity{
     public final static int EVTYPE_CATALOGUE_SEARCH = 4;
 
     public final static int EVENT_TYPE_OTHER = 0;
+    public final static int EVENT_TYPE_COUNT = 4;
+
     public final static int EVENT_ADAPTER_ADD = 0;
     public final static int EVENT_ADAPTER_GET = 1;
 
