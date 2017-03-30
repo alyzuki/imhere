@@ -6,12 +6,104 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.here.zuki.imhere.EventItem
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="ExtraText"
-        apps:titleItem="Other"
-        apps:inputVisible="true"
-        apps:inputHint="Other">
-    </com.here.zuki.imhere.EventItem>
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar2"
+        android:layout_gravity="top|center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        tools:ignore="InefficientWeight">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_weight="1"
+                tools:ignore="HardcodedText,InefficientWeight"
+                style="@android:style/Widget.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/btn_catalogue_cancel" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose catalogue"
+                tools:ignore="HardcodedText,RtlSymmetry"
+                android:paddingStart="30dp"
+                android:textStyle="normal|bold"
+                android:id="@+id/tv_catalogue_name" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_catalogue_apply"
+                android:layout_weight="1"
+                tools:ignore="HardcodedText,InefficientWeight"
+                style="@android:style/Widget.Button"
+                android:layout_gravity="end"
+                android:text="Apply" />
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:ignore="InefficientWeight,UselessLeaf">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            tools:ignore="UselessParent"
+            android:background="@drawable/drop_shadow"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/edit_catalogue_selected"
+                tools:ignore="Deprecated,HardcodedText,LabelFor"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:editable="false"
+                android:enabled="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:background="@drawable/drop_shadow"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lv_catalogueItem" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

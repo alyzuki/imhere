@@ -2,6 +2,10 @@ package com.here.zuki.imhere.Utils;
 
 import android.content.Intent;
 
+import com.here.zuki.imhere.CatalogueActivity;
+
+import java.util.ArrayList;
+
 /**
  * Created by zuki on 3/29/17.
  */
@@ -16,14 +20,20 @@ public class SharedObject {
 
     private EventItem foundSpecialEvent;
 
-    private Intent curIntent;
+    private ArrayList<Intent> curIntentList;
+
+    private EventItem catalogueItem;
+
+    private int catalogueType;
 
     protected SharedObject()
     {
         this.foundGroupEvent = null;
         this.foundPlace = null;
         this.foundSpecialEvent = null;
-        this.curIntent = null;
+        this.curIntentList = new ArrayList<Intent>();
+        this.catalogueType = Common.CATALOGUE_TIME;
+        this.catalogueItem = null;
     }
 
     public static synchronized SharedObject getInstance(){
@@ -44,7 +54,21 @@ public class SharedObject {
 
     public EventItem getFoundSpecialEvent() { return this.foundSpecialEvent; }
 
-    public void setCurIntent(Intent intent) { this.curIntent = intent; }
+    public void setCurIntent(Intent intent) {
+        this.curIntentList.add(0, intent);
+    }
 
-    public Intent getCurIntent() { return  this.curIntent; }
+    public Intent getCurIntent() {
+        if(this.curIntentList.isEmpty())
+            return null;
+        return  this.curIntentList.remove(0);
+    }
+
+    public void setCatalogueType(int catalogueType) { this.catalogueType = catalogueType; }
+
+    public int getCatalogueType() { return this.catalogueType; }
+
+    public void setCatalogueItem(EventItem item) { this.catalogueItem = item;}
+
+    public EventItem getCatalogueItem() { return this.catalogueItem; }
 }

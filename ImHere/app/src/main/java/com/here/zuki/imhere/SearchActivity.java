@@ -15,6 +15,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.here.zuki.imhere.Adapter.EventAdapter;
 import com.here.zuki.imhere.Adapter.PlaceAdapter;
+import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.PlaceObject;
 import com.here.zuki.imhere.Utils.SharedObject;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 public class SearchActivity extends AppCompatActivity {
 
     private SharedObject sharedObject = SharedObject.getInstance();
-    private EventItem specItem = new EventItem("Tất cả", -1);
+    private EventItem specItem = new EventItem("Tất cả", Common.EVENT_TYPE_ALL);
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.

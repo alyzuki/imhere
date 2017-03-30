@@ -111,11 +111,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
-                        android:text="Place name"
                         android:ems="10"
-                        android:id="@+id/editText2"
+                        android:id="@+id/edPlaceName"
                         tools:ignore="HardcodedText,LabelFor"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:hint="Place Name" />
 
                 </LinearLayout>
 
@@ -159,11 +159,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
-                        android:text="catalogues"
                         android:ems="10"
-                        android:id="@+id/editText"
+                        android:id="@+id/ed_add_place_catalogue"
                         tools:ignore="HardcodedText,LabelFor"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:hint="Choose catalogue" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -281,11 +281,14 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="time"
+                        android:inputType="text"
                         android:ems="10"
-                        android:id="@+id/editText3"
+                        android:id="@+id/ed_add_place_timelapse"
                         android:layout_weight="1"
-                        tools:ignore="LabelFor" />
+                        tools:ignore="HardcodedText,LabelFor"
+                        android:hint="Choose time"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false" />
                 </LinearLayout>
             </LinearLayout>
 

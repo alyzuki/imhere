@@ -28,8 +28,6 @@ public class EventAdapter extends ArrayAdapter<EventItem> implements View.OnClic
     private class EventHolder {
         ImageButton icon;
         TextView tvEventName;
-        RadioButton rdbSelected;
-        EditText edEventName;
     }
 
     private Context context;
@@ -78,13 +76,12 @@ public class EventAdapter extends ArrayAdapter<EventItem> implements View.OnClic
         final View result;
 
         if (convertView == null) {
+
             holder = new EventHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.event_item, parent, false);
             holder.tvEventName  = (TextView) convertView.findViewById(R.id.tvEventItemName);
-            holder.edEventName  = (EditText) convertView.findViewById(R.id.editEventInput);
             holder.icon         = (ImageButton) convertView.findViewById(R.id.eventIcon);
-            holder.rdbSelected  = (RadioButton) convertView.findViewById(R.id.rdbEventSelected);
             result=convertView;
             convertView.setTag(holder);
         } else {
@@ -103,11 +100,6 @@ public class EventAdapter extends ArrayAdapter<EventItem> implements View.OnClic
 
         holder.tvEventName.setText(event.getEventNane());
 
-
-        if( this.type == Common.EVENT_ADAPTER_GET ||  event.getType() != Common.EVENT_TYPE_OTHER) {
-            holder.edEventName.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
-            holder.edEventName.requestLayout();
-        }
         return convertView;
     }
 

@@ -53,7 +53,6 @@ public class PlaceObject {
 
     public static final String load_place_url       = "http://bdssmart.net/databaseconnector/getPlace.php";
 
-
     enum PLACE_OPERATOR
     {
         PLACE_ADD,
@@ -63,7 +62,16 @@ public class PlaceObject {
     };
 
 
-    public PlaceObject(){}
+    public PlaceObject(){
+        this.placeName = null;
+        this.eventName = null;
+        this.lat = 0;
+        this.lon = 0;
+        this.timeLapse = 0;
+        this.userId = 0;
+        this.attrsFind = 0;
+        this.EvID = 0;
+    }
 
     public PlaceObject(String placeName, String eventName, double lat, double lon, int timeLapse, int userId, int attrsFind)
     {
@@ -104,6 +112,11 @@ public class PlaceObject {
         if( newTimeLapse <= 0)
             return 0;
         return (int)(newTimeLapse / Common.SECOND_RATE);
+    }
+
+    public void setTimeLapse(int timeLapse)
+    {
+        this.timeLapse = timeLapse;
     }
 
     public int getAttrs()   { return  this.attrsFind; }

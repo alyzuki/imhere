@@ -29,11 +29,17 @@ public class Common extends AppCompatActivity{
     public final static int EVTYPE_CATALOGUE_STANDARD = 2;
     public final static int EVTYPE_CATALOGUE_SEARCH = 4;
 
+    public final static int EVENT_TYPE_ALL = -1;
     public final static int EVENT_TYPE_OTHER = 0;
     public final static int EVENT_TYPE_COUNT = 4;
 
     public final static int EVENT_ADAPTER_ADD = 0;
     public final static int EVENT_ADAPTER_GET = 1;
+
+    public final static int CATALOGUE_EVENT = 0;
+    public final static int CATALOGUE_TIME = 1;
+
+
 
 
     public void setHeightOfChild(View parent, ArrayList<Childitem> childitems, int height)

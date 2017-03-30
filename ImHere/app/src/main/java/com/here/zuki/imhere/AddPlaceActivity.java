@@ -1,6 +1,7 @@
 package com.here.zuki.imhere;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
@@ -15,7 +16,11 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -31,9 +36,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.here.zuki.imhere.Adapter.EventAdapter;
 import com.here.zuki.imhere.Utils.Common;
+import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
+import com.here.zuki.imhere.Utils.PlaceObject;
 import com.here.zuki.imhere.Utils.PrefConfig;
+import com.here.zuki.imhere.Utils.SharedObject;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
@@ -58,11 +67,16 @@ public class AddPlaceActivity extends AppCompatActivity implements
     private UiSettings mUiSettings;
     private Handler UpdateLoc = new Handler();
     PrefConfig pref = null;
+
+    private boolean isPaused = false;
+
     /**
      * Flag indicating whether a requested permission has been denied after returning in
      * {@link #onRequestPermissionsResult(int, String[], int[])}.
      */
     private GoogleApiClient client;
+    private SharedObject sharedObject = SharedObject.getInstance();
+    private PlaceObject place;
 
     ArrayList<Childitem> advanceChild = null;
     private Common cmm = new Common();
@@ -72,6 +86,9 @@ public class AddPlaceActivity extends AppCompatActivity implements
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_place);
+
+        sharedObject.setCurIntent(getIntent());
+        place = new PlaceObject();
 
         Log.d("CREATE", "Init");
         SupportMapFragment mapFragment =
@@ -117,6 +134,36 @@ public class AddPlaceActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 addClose(v);
+            }
+        });
+
+        Button btnAddPlace = (Button)findViewById(R.id.btn_add_apply);
+
+        btnAddPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPlace(v);
+            }
+        });
+
+
+        TextView tvCatalogue = (TextView)findViewById(R.id.ed_add_place_catalogue);
+        tvCatalogue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedObject.setCatalogueType(Common.CATALOGUE_EVENT);
+                Intent intent = new Intent(AddPlaceActivity.this,  CatalogueActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        TextView tvTime = (TextView)findViewById(R.id.ed_add_place_timelapse);
+        tvTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedObject.setCatalogueType(Common.CATALOGUE_TIME);
+                Intent intent = new Intent(AddPlaceActivity.this,  CatalogueActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -197,8 +244,12 @@ public class AddPlaceActivity extends AppCompatActivity implements
         }
     }
 
+    private void addPlace(View view)
+    {
 
-    public void addClose(View view)
+    }
+
+    private void addClose(View view)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Discard the changes you made?");
@@ -216,7 +267,6 @@ public class AddPlaceActivity extends AppCompatActivity implements
         AlertDialog dialog = builder.create();
         builder.show();
     }
-
 
     /**
      * Returns whether the checkbox with the given id is checked.
@@ -283,6 +333,36 @@ public class AddPlaceActivity extends AppCompatActivity implements
     public void onResume()
     {
         super.onResume();
+        if(!isPaused)
+            return;
+        isPaused = false;
+        Intent intent = sharedObject.getCurIntent();
+        if(intent == null) return;
+
+        String previousClass = intent.getComponent().getClassName();
+        if(previousClass.equals(CatalogueActivity.class.getCanonicalName())) {
+            EventItem item = sharedObject.getCatalogueItem();
+            if (item != null) {
+                Toast.makeText(AddPlaceActivity.this, item.getEventNane(), Toast.LENGTH_LONG).show();
+                if(sharedObject.getCatalogueType() == Common.CATALOGUE_TIME)
+                {
+                    place.setTimeLapse(item.getType());
+                    ((EditText)findViewById(R.id.ed_add_place_timelapse)).setText(item.getEventNane());
+                }else
+                {
+                    ((EditText)findViewById(R.id.ed_add_place_catalogue)).setText(item.getEventNane());
+                    place.setEventName(item.getEventNane());
+                    place.setTimeLapse(item.getType());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        isPaused = true;
     }
 
 

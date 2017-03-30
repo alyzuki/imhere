@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
@@ -19,7 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            tools:ignore="NestedWeights">
+            tools:ignore="NestedWeights"
+            android:id="@+id/ll_icon_container">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -41,12 +42,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
-            tools:ignore="RtlHardcoded,RtlSymmetry">
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:layout_gravity="center_vertical">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/eventIcon"
                 tools:ignore="ObsoleteLayoutParam"
                 android:layout_gravity="center_vertical|center_horizontal|end"
@@ -62,31 +64,13 @@
                     android:layout_alignParentTop="true"
                     android:layout_toEndOf="@+id/eventIcon"
                     android:gravity="center_vertical"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp" />
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rdbEventSelected"
-                    android:layout_weight="1"
-                    tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry"
-                    android:gravity="center_vertical|center_horizontal|center"
-                    android:paddingStart="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:checked="false" />
             </LinearLayout>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/editEventInput"
-                tools:ignore="HardcodedText,LabelFor,NotSibling,ObsoleteLayoutParam"
-                android:layout_below="@+id/eventIcon"
-                android:layout_toEndOf="@+id/eventIcon" />
 
         </LinearLayout>
     </LinearLayout>
