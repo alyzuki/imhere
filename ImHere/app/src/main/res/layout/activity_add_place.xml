@@ -362,17 +362,8 @@
                         android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf">
 
-                        <TextView
-                            android:text="Your name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/textView9"
-                            tools:ignore="HardcodedText,InefficientWeight"
-                            android:layout_weight="1"
-                            android:paddingTop="15dp" />
-
                         <CheckBox
-                            android:text="Allow find by your name"
+                            android:text="Show your name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_name"
@@ -384,11 +375,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
-                            android:text="Your name"
                             android:ems="10"
                             android:id="@+id/edit_yr_name"
                             android:layout_weight="1"
-                            tools:ignore="HardcodedText,LabelFor" />
+                            tools:ignore="HardcodedText,LabelFor"
+                            android:hint="Your name" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -419,17 +410,8 @@
                         android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf">
 
-                        <TextView
-                            android:text="Your phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/textView7"
-                            tools:ignore="HardcodedText,InefficientWeight"
-                            android:layout_weight="1"
-                            android:paddingTop="15dp" />
-
                         <CheckBox
-                            android:text="Allow find by your phone number"
+                            android:text="Show your phone number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_phone"
@@ -441,11 +423,60 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
-                            android:text="Your phone"
                             android:ems="10"
                             android:id="@+id/edit_yr_phone"
                             android:layout_weight="1"
-                            tools:ignore="HardcodedText,LabelFor,TextFields" />
+                            tools:ignore="HardcodedText,LabelFor,TextFields"
+                            android:hint="Your phone" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/mailGroup">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        tools:ignore="UselessLeaf"
+                        android:layout_width="80dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_action_social"
+                            android:id="@+id/imageViewmail"
+                            android:layout_weight="1"
+                            tools:ignore="ContentDescription,InefficientWeight" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="UselessLeaf">
+
+                        <CheckBox
+                            android:text="Show your e-mail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/cb_find_by_mail"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText"
+                            android:onClick="checkboxActivate" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:ems="10"
+                            android:id="@+id/edit_yr_email"
+                            android:layout_weight="1"
+                            tools:ignore="HardcodedText,LabelFor,TextFields"
+                            android:hint="Your Email" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -477,33 +508,21 @@
                         android:layout_height="wrap_content"
                         tools:ignore="UselessLeaf">
 
-                        <TextView
-                            android:text="Social ID"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/textView10"
-                            tools:ignore="HardcodedText,InefficientWeight"
-                            android:layout_weight="1"
-                            android:paddingTop="15dp" />
-
                         <CheckBox
-                            android:text="Allow find by current social ID"
+                            android:text="Show your login account"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_social"
                             android:layout_weight="1"
-                            tools:ignore="HardcodedText"
+                            tools:ignore="DuplicateIds,HardcodedText,InefficientWeight"
                             android:onClick="checkboxActivate" />
 
-                        <EditText
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:text="Social ID"
-                            android:ems="10"
-                            android:id="@+id/edit_yr_social"
+                            android:id="@+id/tv_login_account"
                             android:layout_weight="1"
-                            tools:ignore="HardcodedText,LabelFor" />
+                            tools:ignore="HardcodedText" />
 
                     </LinearLayout>
                 </LinearLayout>

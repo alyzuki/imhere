@@ -20,8 +20,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.here.zuki.imhere.Adapter.PlaceAdapter;
+import com.here.zuki.imhere.Utils.BitmapUrlUtils;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
+import com.here.zuki.imhere.Utils.LoadBitmap;
 import com.here.zuki.imhere.Utils.PlaceObject;
 import com.here.zuki.imhere.Utils.SharedObject;
 
@@ -195,10 +197,12 @@ public class CatalogueActivity extends AppCompatActivity {
             }else {
                 holder.btnIcon.setFocusable(false);
                 holder.btnIcon.setClickable(false);
+                new LoadBitmap(holder.btnIcon, item.getIconSrc()).execute();
                 //set icon src
             }
 
             holder.tvName.setText(item.getEventNane());
+
             return convertView;
         }
     }

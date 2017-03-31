@@ -32,6 +32,7 @@ public class EventItem {
     private String iconSrc;
 
     public static final String load_catalogue_event = "http://bdssmart.net/databaseconnector/getEventCatalogue.php";
+    public static final String test_catalogue_event = "http://bdssmart.net/databaseconnector/display.php";
     private static String TAG_EVENTS    =   "Events";
     private static String TAG_ID        =   "EventID";
     private static String TAG_TYPE      =   "EventType";
