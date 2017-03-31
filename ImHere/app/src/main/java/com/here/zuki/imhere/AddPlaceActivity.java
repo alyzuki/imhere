@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
@@ -185,6 +188,8 @@ public class AddPlaceActivity extends AppCompatActivity implements
         checkboxActivate(findViewById(R.id.cb_find_by_name));
         checkboxActivate(findViewById(R.id.cb_find_by_phone));
         checkboxActivate(findViewById(R.id.cb_find_by_social));
+
+        //EditText
     }
 
 
@@ -200,8 +205,8 @@ public class AddPlaceActivity extends AppCompatActivity implements
             case R.id.cb_find_by_phone:
                 findViewById(R.id.edit_yr_phone).setEnabled(checked);
                 break;
-            case R.id.cb_find_by_social:
-                findViewById(R.id.edit_yr_social).setEnabled(checked);
+            case R.id.cb_find_by_mail:
+                findViewById(R.id.edit_yr_email).setEnabled(checked);
                 break;
         }
 
@@ -365,7 +370,44 @@ public class AddPlaceActivity extends AppCompatActivity implements
         isPaused = true;
     }
 
+    void editTextSetEvent(EditText editText)
+    {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
 
+            }
+        });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return false;
+            }
+        });
+    }
+
+    private void updateUserInformation(View object)
+    {
+
+    }
 
 
 
