@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="appName">ImHere</string>
+    <string name="AddNewPlaceTile">Thêm địa điểm mới</string>
+    <string name="anp_name">Địa điểm*</string>
+    <string name="anp_name_hint">Tên địa điểm</string>
+    <string name="anp_catalogue">Sự kiện*</string>
+    <string name="anp_catalogue_hint">Chọn sự kiện</string>
+    <string name="anp_preview">Vị trí</string>
+    <string name="anp_time">Thời gian*</string>
+    <string name="anp_time_hint">Chọn thời gian</string>
+    <string name="anp_advance">Nâng cao</string>
+    <string name="anp_show_name">Hiển thị tên</string>
+    <string name="anp_show_name_hint">Tên</string>
+    <string name="anp_show_phone">Hiển thị sđt</string>
+    <string name="anp_show_phone_hint">Điện thoại</string>
+    <string name="anp_show_email">Hiển thị email</string>
+    <string name="anp_show_email_hint">Email</string>
+    <string name="anp_show_social">Hiển thị tên đăng nhập</string>
+    <string name="anp_update_moving">Cập nhật vị trí khi di chuyển</string>
+    <string name="anp_allow_update">Cho phép cập nhật</string>
+    <string name="anp_msg_discard">Hủy thêm một địa điểm mới</string>
+    <string name="anp_msg_discard_ok">Hủy</string>
+    <string name="anp_msg_discard_cancel">Tiếp tục</string>
+    <string name="anp_msg_name_place_missing">Bạn chưa điền tên địa điểm</string>
+    <string name="anp_msg_cataloge_missing">Bạn chưa chọn sự kiện</string>
+    <string name="anp_msg_time_missing">Bạn chưa chọn thời gian</string>
+    <string name="anp_msg_yr_name_missing">Bạn chưa điền tên</string>
+    <string name="anp_msg_yr_phone_missing">Bạn chưa điền số điện thoại</string>
+    <string name="anp_msg_yr_email_missing">Bạn chưa điền email</string>
+
+</resources>
