@@ -1,10 +1,14 @@
 package com.here.zuki.imhere.Utils;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -24,10 +28,17 @@ public class BitmapUrlUtils {
 
     private HashMap<String, Bitmap> hash;
 
+    private static ContextWrapper cw;
+    private static File ownDir;
+
     public BitmapUrlUtils(){
         super();
         hash = new HashMap<String, Bitmap>();
         instance = this;
+        cw = new ContextWrapper(ApplicationContextProvider.getContext());
+        ownDir = cw.getDir("profile", Context.MODE_PRIVATE);
+        if(!ownDir.exists())
+            ownDir.mkdir();
     }
 
     //override constructor
@@ -48,10 +59,19 @@ public class BitmapUrlUtils {
             return (Bitmap) hash.get(picName);
 
         Bitmap pic = null;
-        InputStream stream = null;
+
+        File fullPath = new File(ownDir, picName);
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inSampleSize = 1;
+        bmOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        if(fullPath.exists())
+        {
+            pic = BitmapFactory.decodeFile(fullPath.getPath(), bmOptions);
+            hash.put(picName, pic);
+            return pic;
+        }
 
+        InputStream stream = null;
         try {
             stream = getHttpConnection(Url + picName);
             pic = BitmapFactory.
@@ -60,8 +80,31 @@ public class BitmapUrlUtils {
         } catch (IOException ioEx) {
             Log.e("Error", ioEx.getMessage());
             ioEx.printStackTrace();
-        }finally {
-            hash.put(picName, pic);
+            pic = null;
+        }catch (Exception Ex)
+        {
+            Log.e("Error", Ex.getMessage());
+            Ex.printStackTrace();
+            pic = null;
+        }
+        finally {
+            if(pic != null)
+            {
+                hash.put(picName, pic);
+                try {
+                    fullPath.mkdir();
+                    FileOutputStream fos = new FileOutputStream(fullPath);
+                    pic.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                    fos.close();
+                }catch (FileNotFoundException fnfEx)
+                {
+                    Log.d(":::::BUU", "File not found " + fnfEx.toString());
+                }catch (IOException ioEx)
+                {
+                    Log.d(":::::BUU", "Error access file " + ioEx.toString());
+                }
+            }
+
             return pic;
         }
     }

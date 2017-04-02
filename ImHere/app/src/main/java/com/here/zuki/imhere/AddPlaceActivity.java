@@ -9,10 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
@@ -21,7 +18,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +35,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.here.zuki.imhere.Adapter.EventAdapter;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
@@ -190,6 +185,8 @@ public class AddPlaceActivity extends AppCompatActivity implements
         checkboxActivate(findViewById(R.id.cb_find_by_social));
 
         //EditText
+        //editTextSetEvent((EditText)findViewById(R.id.edit_yr_name));
+
     }
 
 
@@ -251,7 +248,43 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
     private void addPlace(View view)
     {
+        if(!checkEditText((EditText)findViewById(R.id.edPlaceName), "Please enter your place name"))
+            return;
+        if(!checkEditText((EditText)findViewById(R.id.ed_add_place_catalogue), "Please enter your place name"))
+            return;
+        if(!checkEditText((EditText)findViewById(R.id.ed_add_place_timelapse), "Please enter your place name"))
+            return;
+        if(((CheckBox)findViewById(R.id.cb_find_by_name)).isChecked() &&
+                !checkEditText((EditText)findViewById(R.id.edit_yr_name), "Please enter your place name"))
+            return;
+        if( ((CheckBox)findViewById(R.id.cb_find_by_phone)).isChecked() &&
+            !checkEditText((EditText)findViewById(R.id.edit_yr_phone), "Please enter your place name"))
+            return;
+        if( ((CheckBox)findViewById(R.id.cb_find_by_mail)).isChecked() &&
+                !checkEditText((EditText)findViewById(R.id.edit_yr_email), "Please enter your place name"))
+            return;
 
+    }
+
+    private boolean checkEditText(EditText editText, String msg)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddPlaceActivity.this);
+        AlertDialog dialog = builder.create();
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }
+        );
+        String str = editText.getText().toString();
+        if(str == null || str.isEmpty())
+        {
+            builder.setMessage(msg);
+            builder.show();
+            return  false;
+        }
+        return true;
     }
 
     private void addClose(View view)
@@ -370,39 +403,45 @@ public class AddPlaceActivity extends AppCompatActivity implements
         isPaused = true;
     }
 
-    void editTextSetEvent(EditText editText)
-    {
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
-            }
-        });
-
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        editText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                return false;
-            }
-        });
-    }
+//    void editTextSetEvent(EditText editText)
+//    {
+//        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//
+//            }
+//        });
+//
+//        editText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                Log.d("====>ADD PLACE", "onTextChanged");
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                Log.d("====>ADD PLACE", "onTextChanged");
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                Log.d("====>ADD PLACE", "====afterTextChanged");
+//            }
+//        });
+//
+//        editText.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                switch (keyCode)
+//                {
+//                    default:
+//                        Log.d("====>ADD PLACE",String.valueOf(keyCode));
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+//    }
 
     private void updateUserInformation(View object)
     {

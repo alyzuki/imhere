@@ -35,7 +35,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add a new place"
+                    android:text="@string/AddNewPlaceTile"
                     tools:ignore="HardcodedText,RtlSymmetry"
                     android:paddingStart="30dp"
                     android:textStyle="normal|bold" />
@@ -99,7 +99,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:text="Name*"
+                        android:text="@string/anp_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView"
@@ -115,7 +115,7 @@
                         android:id="@+id/edPlaceName"
                         tools:ignore="HardcodedText,LabelFor"
                         android:layout_weight="1"
-                        android:hint="Place Name" />
+                        android:hint="@string/anp_name_hint" />
 
                 </LinearLayout>
 
@@ -147,7 +147,7 @@
                     tools:ignore="UselessLeaf">
 
                     <TextView
-                        android:text="Catalogues*"
+                        android:text="@string/anp_catalogue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView4"
@@ -163,7 +163,7 @@
                         android:id="@+id/ed_add_place_catalogue"
                         tools:ignore="HardcodedText,LabelFor"
                         android:layout_weight="1"
-                        android:hint="Choose catalogue" />
+                        android:hint="@string/anp_catalogue_hint" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -200,7 +200,7 @@
                         tools:ignore="UselessParent">
 
                         <TextView
-                            android:text="Location preview"
+                            android:text="@string/anp_preview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView5"
@@ -270,7 +270,7 @@
                     tools:ignore="UselessLeaf">
 
                     <TextView
-                        android:text="Time*"
+                        android:text="@string/anp_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView6"
@@ -286,7 +286,7 @@
                         android:id="@+id/ed_add_place_timelapse"
                         android:layout_weight="1"
                         tools:ignore="HardcodedText,LabelFor"
-                        android:hint="Choose time"
+                        android:hint="@string/anp_time_hint"
                         android:focusableInTouchMode="false"
                         android:focusable="false" />
                 </LinearLayout>
@@ -299,7 +299,7 @@
                 android:id="@+id/advance_controler">
 
                 <TextView
-                    android:text="Advance"
+                    android:text="@string/anp_advance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView11"
@@ -363,7 +363,7 @@
                         tools:ignore="UselessLeaf">
 
                         <CheckBox
-                            android:text="Show your name"
+                            android:text="@string/anp_show_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_name"
@@ -379,7 +379,7 @@
                             android:id="@+id/edit_yr_name"
                             android:layout_weight="1"
                             tools:ignore="HardcodedText,LabelFor"
-                            android:hint="Your name" />
+                            android:hint="@string/anp_show_name_hint" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -411,7 +411,7 @@
                         tools:ignore="UselessLeaf">
 
                         <CheckBox
-                            android:text="Show your phone number"
+                            android:text="@string/anp_show_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_phone"
@@ -427,7 +427,7 @@
                             android:id="@+id/edit_yr_phone"
                             android:layout_weight="1"
                             tools:ignore="HardcodedText,LabelFor,TextFields"
-                            android:hint="Your phone" />
+                            android:hint="@string/anp_show_phone_hint" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -460,7 +460,7 @@
                         tools:ignore="UselessLeaf">
 
                         <CheckBox
-                            android:text="Show your e-mail"
+                            android:text="@string/anp_show_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_mail"
@@ -476,7 +476,7 @@
                             android:id="@+id/edit_yr_email"
                             android:layout_weight="1"
                             tools:ignore="HardcodedText,LabelFor,TextFields"
-                            android:hint="Your Email" />
+                            android:hint="@string/anp_show_email_hint" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -509,7 +509,7 @@
                         tools:ignore="UselessLeaf">
 
                         <CheckBox
-                            android:text="Show your login account"
+                            android:text="@string/anp_show_social"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_find_by_social"
@@ -558,7 +558,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:text="Update when I moving"
+                            android:text="@string/anp_update_moving"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView12"
@@ -567,7 +567,7 @@
                             android:paddingTop="15dp" />
 
                         <CheckBox
-                            android:text="Allow update"
+                            android:text="@string/anp_allow_update"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/cb_update_moving"

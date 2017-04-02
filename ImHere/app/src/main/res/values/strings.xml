@@ -1,5 +1,35 @@
 <resources>
     <string name="app_name">ImHere</string>
+    <string name="AddNewPlaceTile">Add a new place</string>
+    <string name="anp_name">Place name*</string>
+    <string name="anp_name_hint">Place name</string>
+    <string name="anp_catalogue">Catalogues*</string>
+    <string name="anp_catalogue_hint">Choose catalogue</string>
+    <string name="anp_preview">Location preview</string>
+    <string name="anp_time">Time*</string>
+    <string name="anp_time_hint">Choose Time</string>
+    <string name="anp_advance">Advance</string>
+    <string name="anp_show_name">Show your name</string>
+    <string name="anp_show_name_hint">Name</string>
+    <string name="anp_show_phone">Show your phone\'s number</string>
+    <string name="anp_show_phone_hint">Phone</string>
+    <string name="anp_show_email">Show your email</string>
+    <string name="anp_show_email_hint">Email</string>
+    <string name="anp_show_social">Show your login account</string>
+    <string name="anp_update_moving">Update when I\'m moving</string>
+    <string name="anp_allow_update">Allow</string>
+    <string name="anp_msg_discard">Discard the changes you made</string>
+    <string name="anp_msg_discard_ok">Discard</string>
+    <string name="anp_msg_discard_cancel">Keep Editing</string>
+    <string name="anp_msg_name_place_missing">Please enter your place name</string>
+    <string name="anp_msg_cataloge_missing">Please choose event</string>
+    <string name="anp_msg_time_missing">Please set time that your place will be display on</string>
+    <string name="anp_msg_yr_name_missing">Please enter your name</string>
+    <string name="anp_msg_yr_phone_missing">Please enter your phone\'s number</string>
+    <string name="anp_msg_yr_email_missing">Please enter your email</string>
+
+
+
     <string name="title_activity_maps">Map</string>
     <string name="choice_option">Select search options</string>
     <string name="phone_opt">Phone numbers</string>
