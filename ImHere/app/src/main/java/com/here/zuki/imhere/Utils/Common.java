@@ -18,7 +18,9 @@ public class Common extends AppCompatActivity{
 
 
     public final static int SECOND_RATE = 1000;
+    public final static int TIMEOUT_SECOND = 10;
     public final static String TAG_SUCCESS = "success";
+    public final static String PREF_LANG = "lang";
 
     public final static int ATTRS_NAME = 1;
     public final static int ATTRS_PHONE = 2;

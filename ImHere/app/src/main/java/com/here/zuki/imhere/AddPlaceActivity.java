@@ -1,10 +1,15 @@
 package com.here.zuki.imhere;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +40,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.here.zuki.imhere.Utils.ApplicationContextProvider;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
@@ -43,8 +49,11 @@ import com.here.zuki.imhere.Utils.PrefConfig;
 import com.here.zuki.imhere.Utils.SharedObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import static com.here.zuki.imhere.Utils.Common.PREF_LANG;
 
 /**
  * Created by zuki on 3/9/17.
@@ -85,8 +94,10 @@ public class AddPlaceActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_place);
 
+
         sharedObject.setCurIntent(getIntent());
         place = new PlaceObject();
+        pref = PrefConfig.getInstance();
 
         Log.d("CREATE", "Init");
         SupportMapFragment mapFragment =
@@ -179,7 +190,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
             }
         };
         UpdateLoc.postDelayed(runnable, (int)(SECONDELAY * 1000));
-        pref = PrefConfig.getInstance();
+
         checkboxActivate(findViewById(R.id.cb_find_by_name));
         checkboxActivate(findViewById(R.id.cb_find_by_phone));
         checkboxActivate(findViewById(R.id.cb_find_by_social));
@@ -187,6 +198,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
         //EditText
         //editTextSetEvent((EditText)findViewById(R.id.edit_yr_name));
 
+        pref.configSetValue(PREF_LANG, "vi");
     }
 
 
@@ -248,20 +260,20 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
     private void addPlace(View view)
     {
-        if(!checkEditText((EditText)findViewById(R.id.edPlaceName), "Please enter your place name"))
+        if(!checkEditText((EditText)findViewById(R.id.edPlaceName), getText(R.string.anp_msg_name_place_missing).toString()))
             return;
-        if(!checkEditText((EditText)findViewById(R.id.ed_add_place_catalogue), "Please enter your place name"))
+        if(!checkEditText((EditText)findViewById(R.id.ed_add_place_catalogue), getText(R.string.anp_msg_cataloge_missing).toString()))
             return;
-        if(!checkEditText((EditText)findViewById(R.id.ed_add_place_timelapse), "Please enter your place name"))
+        if(!checkEditText((EditText)findViewById(R.id.ed_add_place_timelapse), getText(R.string.anp_msg_time_missing).toString()))
             return;
         if(((CheckBox)findViewById(R.id.cb_find_by_name)).isChecked() &&
-                !checkEditText((EditText)findViewById(R.id.edit_yr_name), "Please enter your place name"))
+                !checkEditText((EditText)findViewById(R.id.edit_yr_name), getText(R.string.anp_msg_yr_name_missing).toString()))
             return;
         if( ((CheckBox)findViewById(R.id.cb_find_by_phone)).isChecked() &&
-            !checkEditText((EditText)findViewById(R.id.edit_yr_phone), "Please enter your place name"))
+            !checkEditText((EditText)findViewById(R.id.edit_yr_phone), getText(R.string.anp_msg_yr_phone_missing).toString()))
             return;
         if( ((CheckBox)findViewById(R.id.cb_find_by_mail)).isChecked() &&
-                !checkEditText((EditText)findViewById(R.id.edit_yr_email), "Please enter your place name"))
+                !checkEditText((EditText)findViewById(R.id.edit_yr_email), getText(R.string.anp_msg_yr_email_missing).toString()))
             return;
 
     }
@@ -290,13 +302,13 @@ public class AddPlaceActivity extends AppCompatActivity implements
     private void addClose(View view)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Discard the changes you made?");
-        builder.setPositiveButton("KEEP EDITING", new DialogInterface.OnClickListener() {
+        builder.setMessage(getText(R.string.anp_msg_discard).toString());
+        builder.setPositiveButton(getText(R.string.anp_msg_discard_ok).toString(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }
         });
-        builder.setNegativeButton("DISCARD", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getText(R.string.anp_msg_discard_ok).toString(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
                 finish();
@@ -403,49 +415,14 @@ public class AddPlaceActivity extends AppCompatActivity implements
         isPaused = true;
     }
 
-//    void editTextSetEvent(EditText editText)
-//    {
-//        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//
-//            }
-//        });
-//
-//        editText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                Log.d("====>ADD PLACE", "onTextChanged");
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                Log.d("====>ADD PLACE", "onTextChanged");
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                Log.d("====>ADD PLACE", "====afterTextChanged");
-//            }
-//        });
-//
-//        editText.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                switch (keyCode)
-//                {
-//                    default:
-//                        Log.d("====>ADD PLACE",String.valueOf(keyCode));
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
-//    }
-
     private void updateUserInformation(View object)
     {
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(ApplicationContextProvider.setLocale());
     }
 
 

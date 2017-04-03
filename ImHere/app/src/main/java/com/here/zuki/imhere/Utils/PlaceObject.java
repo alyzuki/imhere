@@ -262,7 +262,7 @@ public class PlaceObject {
                 case PLACE_ADD:
                     break;
                 case PLACE_LOAD:
-                    json = jsonParser.makeHttpRequest(load_place_url, "GET", this.params);
+                    //json = jsonParser.makeHttpRequest(load_place_url, "GET", this.params);
                     break;
                 case PLACE_DELETE:
                     break;

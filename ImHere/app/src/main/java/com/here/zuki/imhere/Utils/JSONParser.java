@@ -3,23 +3,37 @@ package com.here.zuki.imhere.Utils;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
+
 
 /**
  * Created by zuki on 3/22/17.
@@ -35,45 +49,38 @@ public class JSONParser {
 
     // function get json from url
     // by making HTTP POST or GET mehtod
-    public JSONObject makeHttpRequest(String url, String method,
-                                      List<NameValuePair> params) {
-
-        // Making HTTP request
+    public JSONObject makeHttpRequest(String urlString, String method,
+                                      List<NameValuePair> params)
+        throws JSONParserException{
+        String fullUrl= urlString;
         try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpResponse httpResponse = null;
-            // check for request method
-            if(method == "POST"){
-                // request method is POST
-                // defaultHttpClient
-                HttpPost httpPost = new HttpPost(url);
-                httpPost.setEntity(new UrlEncodedFormEntity(params));
+            InputStream is = null;
+            //append parameters
+            if(params != null && ! params.isEmpty()) {
+                StringBuilder builder = new StringBuilder(urlString);
+                for (NameValuePair nvp : params) {
+                    String name = nvp.getName();
+                    String value = nvp.getValue();
+                    if (urlString.equals(builder.toString())) {
+                        builder.append('?');
+                    } else
+                        builder.append('&');
+                    builder.append(name + "=" + value);
+                }
+                fullUrl = builder.toString();
+            }
+            URL url = new URL(fullUrl);
+            URLConnection connection = url.openConnection();
+            HttpURLConnection httpConnection = (HttpURLConnection) connection;
+            httpConnection.setRequestMethod(method);
+            httpConnection.setConnectTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
+            httpConnection.setReadTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
+            httpConnection.connect();
 
-                httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                is = httpEntity.getContent();
-
-            }else if(method == "GET"){
-                // request method is GET
-
-                String paramString = URLEncodedUtils.format(params, "utf-8");
-                url += "?" + paramString;
-                HttpGet httpGet = new HttpGet(url);
-                httpResponse = httpClient.execute(httpGet);
+            if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                is = httpConnection.getInputStream();
             }
 
-            HttpEntity httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             StringBuilder sb = new StringBuilder();
             String line = null;
@@ -82,15 +89,25 @@ public class JSONParser {
             }
             is.close();
             json = sb.toString();
-        } catch (Exception e) {
-            Log.e("Buffer Error", "Error converting result " + e.toString());
-        }
-
-        // try parse the string to a JSON object
-        try {
+            // try parse the string to a JSON object
             jObj = new JSONObject(json);
-        } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
+
+        }
+        //httpConnection.getOutputStream()
+        catch (SocketTimeoutException stoEx)
+        {
+            throw  new  JSONParserException( "JSONPARSER TIMEOUT:\nUrl:" +fullUrl+ "\n" + stoEx.toString());
+        }
+        catch (IOException ioEx)
+        {
+            throw  new  JSONParserException( "JSONPARSER IO:\nUrl:" +fullUrl+ "\n"  + ioEx.toString());
+        }
+        catch (JSONException jsEx) {
+            throw  new  JSONParserException( "JSONPARSER JSON:\nUrl:" +fullUrl+ "\n"  + jsEx.toString());
+        }
+        catch (Exception Ex)
+        {
+            throw  new  JSONParserException( "JSONPARSER:\nUrl:" +fullUrl+ "\n"  + Ex.toString());
         }
 
         // return JSON String
@@ -98,5 +115,15 @@ public class JSONParser {
 
     }
 
+    public final class JSONParserException extends Exception
+    {
+        public JSONParserException(String message) {
+            super(message);
+        }
+
+        public JSONParserException(String message, Throwable throwable) {
+            super(message, throwable);
+        }
+    }
 
 }

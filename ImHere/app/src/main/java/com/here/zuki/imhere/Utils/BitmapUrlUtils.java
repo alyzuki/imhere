@@ -12,9 +12,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by zuki on 3/23/17.
@@ -77,7 +79,13 @@ public class BitmapUrlUtils {
             pic = BitmapFactory.
                     decodeStream(stream, null, bmOptions);
             stream.close();
-        } catch (IOException ioEx) {
+        }catch (SocketTimeoutException stoEx)
+        {
+            Log.e("Error TIMEOUT", stoEx.getMessage());
+            stoEx.printStackTrace();
+            pic = null;
+        }
+        catch (IOException ioEx) {
             Log.e("Error", ioEx.getMessage());
             ioEx.printStackTrace();
             pic = null;
@@ -118,13 +126,22 @@ public class BitmapUrlUtils {
         try {
             HttpURLConnection httpConnection = (HttpURLConnection) connection;
             httpConnection.setRequestMethod("GET");
+            httpConnection.setConnectTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
+            httpConnection.setReadTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
             httpConnection.connect();
 
             if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 stream = httpConnection.getInputStream();
             }
-        } catch (Exception ex) {
+        }
+        catch (SocketTimeoutException stoEx)
+        {
+            stoEx.printStackTrace();
+            throw  stoEx;
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
+            throw ex;
         }
         return stream;
     }

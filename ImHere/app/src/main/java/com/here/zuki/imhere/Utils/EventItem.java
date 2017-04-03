@@ -20,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import static com.here.zuki.imhere.Utils.JSONParser.json;
+
 /**
  * Created by zuki on 3/26/17.
  */
@@ -170,13 +172,14 @@ public class EventItem {
         protected String doInBackground(String... vargs) {
 
 
-            // getting JSON string from URL
-            JSONObject json = jsonParser.makeHttpRequest(load_catalogue_event, "GET", this.params);
 
+            JSONObject json = null;
             // Check your log cat for JSON reponse
-            Log.d("==>All Event: ", json.toString());
+//            Log.d("==>All Event: ", json.toString());
 
             try {
+                // getting JSON string from URL
+                json = jsonParser.makeHttpRequest(load_catalogue_event, "GET", this.params);
                 // Checking for SUCCESS TAG
                 int success = json.getInt(Common.TAG_SUCCESS);
 
@@ -198,7 +201,12 @@ public class EventItem {
 //                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    startActivity(i);
                 }
-            } catch (JSONException e) {
+            }
+            catch (JSONParser.JSONParserException jspEx)
+            {
+                jspEx.printStackTrace();
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
 

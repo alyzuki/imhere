@@ -105,6 +105,10 @@ public class PrefConfig {
     }
 
     public static synchronized PrefConfig getInstance(){
+        if(instance == null)
+        {
+            instance = new PrefConfig("Hieu", ApplicationContextProvider.getContext());
+        }
         return instance;
     }
 
