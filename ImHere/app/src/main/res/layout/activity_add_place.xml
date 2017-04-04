@@ -161,9 +161,12 @@
                         android:inputType="textPersonName"
                         android:ems="10"
                         android:id="@+id/ed_add_place_catalogue"
-                        tools:ignore="HardcodedText,LabelFor"
+                        tools:ignore="Deprecated,HardcodedText,LabelFor"
                         android:layout_weight="1"
-                        android:hint="@string/anp_catalogue_hint" />
+                        android:hint="@string/anp_catalogue_hint"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -447,7 +450,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_action_social"
+                            app:srcCompat="@drawable/ic_action_email"
                             android:id="@+id/imageViewmail"
                             android:layout_weight="1"
                             tools:ignore="ContentDescription,InefficientWeight" />

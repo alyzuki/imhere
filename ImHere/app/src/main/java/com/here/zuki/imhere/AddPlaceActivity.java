@@ -40,7 +40,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 import com.here.zuki.imhere.Utils.ApplicationContextProvider;
+import com.here.zuki.imhere.Utils.BitmapUrlUtils;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
@@ -63,12 +65,18 @@ import static com.here.zuki.imhere.Utils.Common.PREF_LANG;
 public class AddPlaceActivity extends AppCompatActivity implements
         OnMapReadyCallback {
 
+    private final static String LOG         = "ADDPLACE";
+    private final static String TAG_NAME    = "yrName";
+    private final static String TAG_PHONE   = "yrPhone";
+    private final static String TAG_MAIL    = "yrName";
+
+
     private  final  float SECONDELAY = 3;
     private  static LatLng lastLL = new LatLng(0, 0);
     private  final Lock lock = new ReentrantLock();
-    private GoogleMap mMap;
+    private  GoogleMap mMap;
     private  int advanceHeigt = -1;
-    private  final String strLicense = "<html><body><p align=\"justify\">Your place will be published on <b style=\"color:red;\">ImHere</b> where people or your friends could see. Your place is shared and limited time to see. You don't use this app for any purpose this is unlawful or prohibited, or any other purpose not reasonably intended by <b style=\"color:red;\">ImHere</b>. You must bear the full responsibility for your publication.</p></body></html>";
+    private  String strUrl = "http://bdssmart.net/%sLicense.html";
 
     GPSTracker gps = null;
     private UiSettings mUiSettings;
@@ -136,7 +144,8 @@ public class AddPlaceActivity extends AppCompatActivity implements
         });
 
         WebView viewLicense = (WebView)findViewById(R.id.webLicense);
-        viewLicense.loadData(strLicense, "text/html", "utf-8");
+        viewLicense.getSettings().setJavaScriptEnabled(true);
+        viewLicense.loadUrl(String.format(strUrl, pref.configGetString(Common.PREF_LANG, "en") ));
 
         Button btnDiscard = (Button)findViewById(R.id.btn_add_discast);
         btnDiscard.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +165,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
         });
 
 
-        TextView tvCatalogue = (TextView)findViewById(R.id.ed_add_place_catalogue);
+        EditText tvCatalogue = (EditText)findViewById(R.id.ed_add_place_catalogue);
         tvCatalogue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +175,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
             }
         });
 
-        TextView tvTime = (TextView)findViewById(R.id.ed_add_place_timelapse);
+        EditText tvTime = (EditText)findViewById(R.id.ed_add_place_timelapse);
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,7 +198,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
                 UpdateLocation();
             }
         };
-        UpdateLoc.postDelayed(runnable, (int)(SECONDELAY * 1000));
+        UpdateLoc.postDelayed(runnable, (int)(SECONDELAY * Common.SECOND_RATE));
 
         checkboxActivate(findViewById(R.id.cb_find_by_name));
         checkboxActivate(findViewById(R.id.cb_find_by_phone));
@@ -199,6 +208,17 @@ public class AddPlaceActivity extends AppCompatActivity implements
         //editTextSetEvent((EditText)findViewById(R.id.edit_yr_name));
 
         pref.configSetValue(PREF_LANG, "vi");
+        TextView tvloginAccount = (TextView)findViewById(R.id.tv_login_account);
+        tvloginAccount.setText(pref.getUser());
+
+        EditText edit = (EditText)findViewById(R.id.edit_yr_name);
+        edit.setText(pref.configGetString(TAG_NAME, ""));
+        edit = (EditText)findViewById(R.id.edit_yr_phone);
+        edit.setText(pref.configGetString(TAG_PHONE, ""));
+        edit = (EditText)findViewById(R.id.edit_yr_email);
+        edit.setText(pref.configGetString(TAG_MAIL, ""));
+        pref.configGetBoolean("AddShow", false);
+        //new BitmapUrlUtils().removeFile();
     }
 
 
@@ -260,6 +280,10 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
     private void addPlace(View view)
     {
+        pref.configSetValue(TAG_NAME, ((EditText)findViewById(R.id.edit_yr_name)).getText().toString());
+        pref.configSetValue(TAG_PHONE, ((EditText)findViewById(R.id.edit_yr_phone)).getText().toString());
+        pref.configSetValue(TAG_MAIL, ((EditText)findViewById(R.id.edit_yr_email)).getText().toString());
+
         if(!checkEditText((EditText)findViewById(R.id.edPlaceName), getText(R.string.anp_msg_name_place_missing).toString()))
             return;
         if(!checkEditText((EditText)findViewById(R.id.ed_add_place_catalogue), getText(R.string.anp_msg_cataloge_missing).toString()))

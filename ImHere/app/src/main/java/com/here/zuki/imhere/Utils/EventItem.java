@@ -6,6 +6,10 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.here.zuki.imhere.Adapter.EventAdapter;
+import com.here.zuki.imhere.CatalogueActivity;
+import com.here.zuki.imhere.R;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -100,11 +104,11 @@ public class EventItem {
 
 
 
-    public final void getCatalogueList(ArrayList<EventItem> list, Context context)
+    public final void getCatalogueList(ArrayList<EventItem> list, Context context, CatalogueActivity.AdapterCatalogue adapter)
     {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("All", "false"));
-        LoadCatalogue load = new LoadCatalogue(context, params, list);
+        LoadCatalogue load = new LoadCatalogue(context, params, list, adapter);
         load.execute();
     }
 
@@ -143,13 +147,16 @@ public class EventItem {
         private ProgressDialog pDialog;
         private Context parentContext;
         private ArrayList<EventItem> eventList;
+        private CatalogueActivity.AdapterCatalogue adapter;
         List<NameValuePair> params;
         JSONParser jsonParser;
 
-        public LoadCatalogue(Context context, List<NameValuePair> params, ArrayList<EventItem> list) {
+
+        public LoadCatalogue(Context context, List<NameValuePair> params, ArrayList<EventItem> list, CatalogueActivity.AdapterCatalogue adapter) {
             this.parentContext = context;
             this.eventList = list;
             this.params = params;
+            this.adapter = adapter;
             jsonParser = new JSONParser();
         }
 
@@ -160,7 +167,7 @@ public class EventItem {
             super.onPreExecute();
             eventList.clear();
             pDialog = new ProgressDialog(this.parentContext);
-            pDialog.setMessage("Loading catalogue. Please wait...");
+            pDialog.setMessage(this.parentContext.getText(R.string.catalog_dialog));
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -216,6 +223,7 @@ public class EventItem {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
+            adapter.notifyDataSetChanged();
             // updating UI from Background Thread
 //            runOnUiThread(new Runnable() {
 //                public void run() {

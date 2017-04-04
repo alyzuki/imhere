@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="appName">ImHere</string>
+
+    <!-- Common string-->
+    <string name="hour">giờ</string>
+    <string name="minute">phút</string>
+    <string name="second">giây</string>
+    <string name="Hour">Giờ</string>
+    <string name="Minute">Phút</string>
+    <string name="Second">Giây</string>
+    <string name="hours">giờ</string>
+    <string name="minutes">phút</string>
+    <string name="seconds">giây</string>
+    <string name="Hours">Giờ</string>
+    <string name="Minutes">Phút</string>
+    <string name="Seconds">Giây</string>
+
+    <!-- add new place dialogue-->
     <string name="AddNewPlaceTile">Thêm địa điểm mới</string>
     <string name="anp_name">Địa điểm*</string>
     <string name="anp_name_hint">Tên địa điểm</string>
@@ -28,5 +44,12 @@
     <string name="anp_msg_yr_name_missing">Bạn chưa điền tên</string>
     <string name="anp_msg_yr_phone_missing">Bạn chưa điền số điện thoại</string>
     <string name="anp_msg_yr_email_missing">Bạn chưa điền email</string>
+
+    <!-- catalogue dialogue-->
+    <string name="catalog_choose_time">Chọn thời gian</string>
+    <string name="catalog_choose_time_hint">Thời gian</string>
+    <string name="catalog_choose_event">Chọn sự kiện</string>
+    <string name="catalog_choose_event_hint">Sự kiện</string>
+    <string name="catalog_dialog">Đang tải. Vui lòng chờ ...</string>
 
 </resources>

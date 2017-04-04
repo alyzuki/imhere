@@ -12,31 +12,33 @@ import android.support.v7.app.AppCompatActivity;
 public class PrefConfig {
 
     private  static PrefConfig instance;
-    private String username;
     private Context context;
     private static SharedPreferences pref = null;
     private SharedPreferences.Editor editor = null;
+    private Login login;
 
     public PrefConfig()
     {
+        super();
+        this.instance = this;
+        this.context = ApplicationContextProvider.getContext();
+        constructor();
     }
 
     public PrefConfig(String username, Context context)
     {
-        this.username = username;
+        super();
         this.context = context;
-        pref = this.context.getSharedPreferences(username, context.MODE_PRIVATE);
-        editor = pref.edit();
-        instance = this;
+        constructor();
     }
 
-    public void setUserName(String user)
+
+    private void constructor()
     {
-        if(this.context == null)
-            return;
-        this.username = username;
-        pref = this.context.getSharedPreferences(username, this.context.MODE_PRIVATE);
+        login = Login.getInstance();
+        pref = this.context.getSharedPreferences(login.getUserName(), context.MODE_PRIVATE);
         editor = pref.edit();
+        instance = this;
     }
 
     public  void configSetValue(String key, int value)
@@ -101,13 +103,13 @@ public class PrefConfig {
 
     public String getUser()
     {
-        return this.username;
+        return this.login.getUserName();
     }
 
     public static synchronized PrefConfig getInstance(){
         if(instance == null)
         {
-            instance = new PrefConfig("Hieu", ApplicationContextProvider.getContext());
+            instance = new PrefConfig("", ApplicationContextProvider.getContext());
         }
         return instance;
     }

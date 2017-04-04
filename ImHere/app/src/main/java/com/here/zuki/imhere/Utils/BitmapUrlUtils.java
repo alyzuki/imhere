@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeoutException;
 public class BitmapUrlUtils {
 
     private static BitmapUrlUtils instance = null;
+    private static String LOG   = ":::::BUU";
 
     private static String Url = "http://bdssmart.net/.image/";
 
@@ -65,11 +67,19 @@ public class BitmapUrlUtils {
         File fullPath = new File(ownDir, picName);
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inSampleSize = 1;
-        bmOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//        bmOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
         if(fullPath.exists())
         {
-            pic = BitmapFactory.decodeFile(fullPath.getPath(), bmOptions);
-            hash.put(picName, pic);
+            try {
+                FileInputStream fis = new FileInputStream(fullPath);
+                pic = BitmapFactory.decodeStream(fis);
+                fis.close();
+                hash.put(picName, pic);
+            }catch (IOException ioEx)
+            {
+                Log.d(LOG, "Error get file " + ioEx.toString());
+                pic = null;
+            }
             return pic;
         }
 
@@ -100,16 +110,17 @@ public class BitmapUrlUtils {
             {
                 hash.put(picName, pic);
                 try {
-                    fullPath.mkdir();
+                    //fullPath.mkdir();
                     FileOutputStream fos = new FileOutputStream(fullPath);
                     pic.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                    fos.flush();
                     fos.close();
                 }catch (FileNotFoundException fnfEx)
                 {
-                    Log.d(":::::BUU", "File not found " + fnfEx.toString());
+                    Log.d(LOG, "File not found " + fnfEx.toString());
                 }catch (IOException ioEx)
                 {
-                    Log.d(":::::BUU", "Error access file " + ioEx.toString());
+                    Log.d(LOG, "Error access file " + ioEx.toString());
                 }
             }
 
@@ -144,5 +155,17 @@ public class BitmapUrlUtils {
             throw ex;
         }
         return stream;
+    }
+
+    public void removeFile()
+    {
+        File file = new File("/data/data/com.here.zuki.imhere/app_profile/placeholder.png");
+        file.delete();
+        file = new File("/data/data/com.here.zuki.imhere/app_profile/wedding.png");
+        file.delete();
+        file = new File("/data/data/com.here.zuki.imhere/app_profile/party.png");
+        file.delete();
+        file = new File("/data/data/com.here.zuki.imhere/app_profile/beer.png");
+        file.delete();
     }
 }

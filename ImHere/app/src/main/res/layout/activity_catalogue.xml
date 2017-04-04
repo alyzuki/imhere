@@ -24,33 +24,48 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                apps:srcCompat="@drawable/ic_close_light"
+                apps:srcCompat="@drawable/ic_close_dark"
                 android:id="@+id/btn_catalogue_cancel"
                 android:layout_weight="1"
-                android:backgroundTint="@android:color/transparent" />
+                android:backgroundTint="@android:color/transparent"
+                tools:ignore="ContentDescription"
+                style="@android:style/Widget.Holo.ImageButton" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Choose catalogue"
                 tools:ignore="HardcodedText,RtlSymmetry"
                 android:paddingStart="30dp"
                 android:textStyle="normal|bold"
-                android:id="@+id/tv_catalogue_name" />
+                android:id="@+id/tv_catalogue_name"
+                android:gravity="center_vertical" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="end">
 
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                apps:srcCompat="@android:drawable/ic_menu_send"
-                android:id="@+id/imageButton2"
-                android:backgroundTint="@android:color/transparent" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="end"
+                android:layout_gravity="end"
+                tools:ignore="UselessParent">
+
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    apps:srcCompat="@android:drawable/ic_menu_send"
+                    android:id="@+id/btn_catalogue_apply"
+                    android:backgroundTint="@android:color/transparent"
+                    tools:ignore="ContentDescription"
+                    style="@android:style/Widget.ImageButton" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>

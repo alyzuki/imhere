@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.here.zuki.imhere.Adapter.PlaceAdapter;
+import com.here.zuki.imhere.Utils.ApplicationContextProvider;
 import com.here.zuki.imhere.Utils.BitmapUrlUtils;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
@@ -74,7 +75,7 @@ public class CatalogueActivity extends AppCompatActivity {
             }
         });
 
-        Button btnCancel = (Button)findViewById(R.id.btn_catalogue_cancel);
+        ImageButton btnCancel = (ImageButton)findViewById(R.id.btn_catalogue_cancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +84,7 @@ public class CatalogueActivity extends AppCompatActivity {
             }
         });
 
-        Button btnApply = (Button)findViewById(R.id.btn_catalogue_apply);
+        ImageButton btnApply = (ImageButton)findViewById(R.id.btn_catalogue_apply);
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,26 +95,26 @@ public class CatalogueActivity extends AppCompatActivity {
 
     private void createEventCatalogue()
     {
-        ((EditText)findViewById(R.id.edit_catalogue_selected)).setHint("Event");
-        ((TextView)findViewById(R.id.tv_catalogue_name)).setText("Choose Catalogue");
-        new EventItem().getCatalogueList(this.list, this);
+        ((EditText)findViewById(R.id.edit_catalogue_selected)).setHint(R.string.catalog_choose_event_hint);
+        ((TextView)findViewById(R.id.tv_catalogue_name)).setText(R.string.catalog_choose_event);
+        new EventItem().getCatalogueList(this.list, this, adapter);
     }
 
     private void createTimeCatalogue()
     {
-        ((EditText)findViewById(R.id.edit_catalogue_selected)).setHint("Time");
-        ((TextView)findViewById(R.id.tv_catalogue_name)).setText("Choose Time");
+        ((EditText)findViewById(R.id.edit_catalogue_selected)).setHint(R.string.catalog_choose_time_hint);
+        ((TextView)findViewById(R.id.tv_catalogue_name)).setText(R.string.catalog_choose_time);
 
-        this.list.add(new EventItem("5 minutes",        5));
-        this.list.add(new EventItem("10 minutes",       10));
-        this.list.add(new EventItem("15 minutes",       15));
-        this.list.add(new EventItem("30 minutes",       20));
-        this.list.add(new EventItem("45 minutes",       45));
-        this.list.add(new EventItem("1 hour",           60));
-        this.list.add(new EventItem("1 hour 30 minute", 90));
-        this.list.add(new EventItem("2 hours",          120));
-        this.list.add(new EventItem("3 hours",          180));
-        this.list.add(new EventItem("4 hours",          240));
+        this.list.add(new EventItem("5 " + getText(R.string.minutes),        5));
+        this.list.add(new EventItem("10 " + getText(R.string.minutes),       10));
+        this.list.add(new EventItem("15 " + getText(R.string.minutes),       15));
+        this.list.add(new EventItem("30 " + getText(R.string.minutes),       20));
+        this.list.add(new EventItem("45 " + getText(R.string.minutes),       45));
+        this.list.add(new EventItem("1 " + getText(R.string.hour),           60));
+        this.list.add(new EventItem("1 " + getText(R.string.hour) + " 30 " + getText(R.string.minutes), 90));
+        this.list.add(new EventItem("2 " + getText(R.string.hours),          120));
+        this.list.add(new EventItem("3 " + getText(R.string.hours),          180));
+        this.list.add(new EventItem("4 " + getText(R.string.hours),          240));
     }
 
     public final class CatalogueItem
@@ -143,7 +144,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
     }
 
-    private class AdapterCatalogue extends ArrayAdapter<EventItem> implements View.OnClickListener
+    public class AdapterCatalogue extends ArrayAdapter<EventItem> implements View.OnClickListener
     {
 
         ArrayList<EventItem> dataSet;
@@ -206,4 +207,10 @@ public class CatalogueActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(ApplicationContextProvider.setLocale());
+    }
+
 }
