@@ -35,6 +35,7 @@ public class PlaceObject {
     private String      ReporterPhone;
     private String      ReporterSocial;
     private String      ReporterMail;
+    private boolean     allowUpdate;
 
 
     public static final String TAG_PLACE            = "Name";
@@ -49,6 +50,7 @@ public class PlaceObject {
     public static final String TAG_ID               = "ID";
     public static final String TAG_EVID             = "EvID";
     public static final String TAG_PLACES           = "Places";
+    public static final String TAG_UPDATE           = "AllowUpdate";
 
 
     public static final String load_place_url       = "http://bdssmart.net/databaseconnector/getPlace.php";
@@ -83,6 +85,7 @@ public class PlaceObject {
         this.timeLapse = timeLapse;
         this.userId = userId;
         this.attrsFind = attrsFind;
+
     }
 
 

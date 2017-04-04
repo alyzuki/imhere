@@ -1,15 +1,11 @@
 package com.here.zuki.imhere;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -40,9 +36,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 import com.here.zuki.imhere.Utils.ApplicationContextProvider;
-import com.here.zuki.imhere.Utils.BitmapUrlUtils;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
@@ -51,7 +45,6 @@ import com.here.zuki.imhere.Utils.PrefConfig;
 import com.here.zuki.imhere.Utils.SharedObject;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -68,7 +61,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
     private final static String LOG         = "ADDPLACE";
     private final static String TAG_NAME    = "yrName";
     private final static String TAG_PHONE   = "yrPhone";
-    private final static String TAG_MAIL    = "yrName";
+    private final static String TAG_MAIL    = "yrMail";
 
 
     private  final  float SECONDELAY = 3;
@@ -212,7 +205,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
         tvloginAccount.setText(pref.getUser());
 
         EditText edit = (EditText)findViewById(R.id.edit_yr_name);
-        edit.setText(pref.configGetString(TAG_NAME, ""));
+        edit.setText(pref.configGetString(this.TAG_NAME, ""));
         edit = (EditText)findViewById(R.id.edit_yr_phone);
         edit.setText(pref.configGetString(TAG_PHONE, ""));
         edit = (EditText)findViewById(R.id.edit_yr_email);
@@ -280,26 +273,63 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
     private void addPlace(View view)
     {
-        pref.configSetValue(TAG_NAME, ((EditText)findViewById(R.id.edit_yr_name)).getText().toString());
-        pref.configSetValue(TAG_PHONE, ((EditText)findViewById(R.id.edit_yr_phone)).getText().toString());
-        pref.configSetValue(TAG_MAIL, ((EditText)findViewById(R.id.edit_yr_email)).getText().toString());
+        EditText placeName = (EditText)findViewById(R.id.edPlaceName);
+        EditText eventName = (EditText)findViewById(R.id.ed_add_place_catalogue);
+        EditText timeLapse = (EditText)findViewById(R.id.ed_add_place_timelapse);
+        EditText yrName    = (EditText)findViewById(R.id.edit_yr_name);
+        EditText yrPhone   = (EditText)findViewById(R.id.edit_yr_phone);
+        EditText yrMail    = (EditText)findViewById(R.id.edit_yr_email);
+        CheckBox cyrName   = (CheckBox)findViewById(R.id.cb_find_by_name);
+        CheckBox cyrPhone  = (CheckBox)findViewById(R.id.cb_find_by_phone);
+        CheckBox cyrMail   = (CheckBox)findViewById(R.id.cb_find_by_mail);
+        CheckBox cyrSocial = (CheckBox)findViewById(R.id.cb_find_by_social);
+        CheckBox callowUp  = (CheckBox)findViewById(R.id.cb_update_moving);
+        TextView socName   = (TextView)findViewById(R.id.tvReSocial);
 
-        if(!checkEditText((EditText)findViewById(R.id.edPlaceName), getText(R.string.anp_msg_name_place_missing).toString()))
-            return;
-        if(!checkEditText((EditText)findViewById(R.id.ed_add_place_catalogue), getText(R.string.anp_msg_cataloge_missing).toString()))
-            return;
-        if(!checkEditText((EditText)findViewById(R.id.ed_add_place_timelapse), getText(R.string.anp_msg_time_missing).toString()))
-            return;
-        if(((CheckBox)findViewById(R.id.cb_find_by_name)).isChecked() &&
-                !checkEditText((EditText)findViewById(R.id.edit_yr_name), getText(R.string.anp_msg_yr_name_missing).toString()))
-            return;
-        if( ((CheckBox)findViewById(R.id.cb_find_by_phone)).isChecked() &&
-            !checkEditText((EditText)findViewById(R.id.edit_yr_phone), getText(R.string.anp_msg_yr_phone_missing).toString()))
-            return;
-        if( ((CheckBox)findViewById(R.id.cb_find_by_mail)).isChecked() &&
-                !checkEditText((EditText)findViewById(R.id.edit_yr_email), getText(R.string.anp_msg_yr_email_missing).toString()))
-            return;
+        pref.configSetValue(this.TAG_NAME, yrName.getText().toString());
+        pref.configSetValue(TAG_PHONE, yrPhone.getText().toString());
+        pref.configSetValue(TAG_MAIL, yrMail.getText().toString());
 
+        if(!checkEditText(placeName, getText(R.string.anp_msg_name_place_missing).toString()))
+            return;
+        if(!checkEditText(eventName, getText(R.string.anp_msg_cataloge_missing).toString()))
+            return;
+        if(!checkEditText(timeLapse, getText(R.string.anp_msg_time_missing).toString()))
+            return;
+        if(cyrName.isChecked() &&
+            !checkEditText(yrName, getText(R.string.anp_msg_yr_name_missing).toString()))
+            return;
+        if(cyrPhone.isChecked() &&
+            !checkEditText(yrPhone, getText(R.string.anp_msg_yr_phone_missing).toString()))
+            return;
+        if(cyrMail.isChecked() &&
+                !checkEditText(yrMail, getText(R.string.anp_msg_yr_email_missing).toString()))
+            return;
+        try {
+            place.setPlaceName(placeName.getText().toString());
+            if(cyrName.isChecked())
+                place.setReporterName(yrName.getText());
+            if(cyrPhone.isChecked())
+                place.setReporterPhone(yrPhone.getText());
+            if(cyrMail.isChecked())
+                place.setReporterMail(yrMail.getText());
+            if(cyrSocial.isChecked())
+                place.setReporterAccount(socName.getText());
+            //add this place to database using method post
+            if(callowUp.isChecked())
+            {
+                //create a new service to update your place
+            }
+            if(!lastLL.equals(null))
+            {
+                place.setLat(lastLL.latitude);
+                place.setLon(lastLL.longitude);
+            }
+        }catch (Exception ex)
+        {
+            Log.d(LOG, "Add new place processing fail: " + ex.toString());
+            ex.printStackTrace();
+        }
     }
 
     private boolean checkEditText(EditText editText, String msg)
@@ -332,7 +362,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
                 // User clicked OK button
             }
         });
-        builder.setNegativeButton(getText(R.string.anp_msg_discard_ok).toString(), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getText(R.string.anp_msg_discard_cancel).toString(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
                 finish();
