@@ -15,6 +15,7 @@
     <string name="Hours">Giờ</string>
     <string name="Minutes">Phút</string>
     <string name="Seconds">Giây</string>
+    <string name="NetworkProblem">Kiểm tra kết nối mạng</string>
 
     <!-- add new place dialogue-->
     <string name="AddNewPlaceTile">Thêm địa điểm mới</string>
@@ -44,6 +45,7 @@
     <string name="anp_msg_yr_name_missing">Bạn chưa điền tên</string>
     <string name="anp_msg_yr_phone_missing">Bạn chưa điền số điện thoại</string>
     <string name="anp_msg_yr_email_missing">Bạn chưa điền email</string>
+    <string name="anp_msg_add_processing">Đang thực hiện, vui lòng chờ...</string>
 
     <!-- catalogue dialogue-->
     <string name="catalog_choose_time">Chọn thời gian</string>

@@ -406,9 +406,10 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public  void onResume(){
         super.onResume();
-        if(sharedObject.getCurIntent() == null)
+        Intent previousIntent = sharedObject.getCurIntent();
+        if(previousIntent == null)
             return;
-        String previousClass = sharedObject.getCurIntent().getComponent().getClassName();
+        String previousClass = previousIntent.getComponent().getClassName();
         if(previousClass.equals(SettingsActivity.class.getCanonicalName())) {
             add.setVisibility(pref.configGetBoolean(SettingsActivity.ADDSHOW, false) ? View.VISIBLE : View.INVISIBLE);
             sos.setVisibility(pref.configGetBoolean(SettingsActivity.SOSSHOW, false) ? View.VISIBLE : View.INVISIBLE);

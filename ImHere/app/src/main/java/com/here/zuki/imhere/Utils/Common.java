@@ -1,12 +1,18 @@
 package com.here.zuki.imhere.Utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.here.zuki.imhere.Childitem;
+import com.here.zuki.imhere.R;
 
 import java.util.ArrayList;
 
@@ -40,6 +46,8 @@ public class Common extends AppCompatActivity{
 
     public final static int CATALOGUE_EVENT = 0;
     public final static int CATALOGUE_TIME = 1;
+
+    public static final String datatbaseUrl = "http://bdssmart.net/databaseconnector/";
 
 
 
@@ -87,4 +95,17 @@ public class Common extends AppCompatActivity{
         }
         parent.requestLayout();
     }
+
+   public boolean networkIsConnected(Activity activity){
+       ConnectivityManager connMgr = (ConnectivityManager) getSystemService(activity.CONNECTIVITY_SERVICE);
+       NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+       if (networkInfo != null && networkInfo.isConnected())
+           return true;
+       else
+       {
+           Toast.makeText(ApplicationContextProvider.getContext(), getText(R.string.NetworkProblem), Toast.LENGTH_LONG).show();
+           return false;
+       }
+
+   }
 }

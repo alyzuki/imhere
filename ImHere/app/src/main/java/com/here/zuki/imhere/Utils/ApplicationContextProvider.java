@@ -5,9 +5,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
+import android.widget.Toast;
 
 import java.util.Locale;
+
+import com.here.zuki.imhere.R;
 import com.here.zuki.imhere.Utils.Common;
 
 import static com.here.zuki.imhere.Utils.Common.PREF_LANG;
@@ -71,6 +76,7 @@ public class ApplicationContextProvider extends Application{
 
         return context;
     }
-}
+
+  }
 
 

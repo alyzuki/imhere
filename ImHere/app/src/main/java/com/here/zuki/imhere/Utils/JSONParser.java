@@ -91,7 +91,7 @@ public class JSONParser {
             json = sb.toString();
             // try parse the string to a JSON object
             jObj = new JSONObject(json);
-
+            httpConnection.disconnect();
         }
         //httpConnection.getOutputStream()
         catch (SocketTimeoutException stoEx)

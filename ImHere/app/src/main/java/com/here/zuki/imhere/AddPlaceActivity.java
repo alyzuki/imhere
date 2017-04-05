@@ -1,10 +1,13 @@
 package com.here.zuki.imhere;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +43,7 @@ import com.here.zuki.imhere.Utils.ApplicationContextProvider;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
+import com.here.zuki.imhere.Utils.Network;
 import com.here.zuki.imhere.Utils.PlaceObject;
 import com.here.zuki.imhere.Utils.PrefConfig;
 import com.here.zuki.imhere.Utils.SharedObject;
@@ -100,6 +104,14 @@ public class AddPlaceActivity extends AppCompatActivity implements
         place = new PlaceObject();
         pref = PrefConfig.getInstance();
 
+
+        if(!Network.getConnectivityStatusString(this))
+        {
+            sharedObject.getCurIntent();
+            sharedObject.setCurIntent(null);
+            finish();
+            return;
+        }
         Log.d("CREATE", "Init");
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -273,6 +285,10 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
     private void addPlace(View view)
     {
+        if(!Network.getConnectivityStatusString(this))
+        {
+            return;
+        }
         EditText placeName = (EditText)findViewById(R.id.edPlaceName);
         EditText eventName = (EditText)findViewById(R.id.ed_add_place_catalogue);
         EditText timeLapse = (EditText)findViewById(R.id.ed_add_place_timelapse);
@@ -286,7 +302,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
         CheckBox callowUp  = (CheckBox)findViewById(R.id.cb_update_moving);
         TextView socName   = (TextView)findViewById(R.id.tvReSocial);
 
-        pref.configSetValue(this.TAG_NAME, yrName.getText().toString());
+        pref.configSetValue(TAG_NAME, yrName.getText().toString());
         pref.configSetValue(TAG_PHONE, yrPhone.getText().toString());
         pref.configSetValue(TAG_MAIL, yrMail.getText().toString());
 
@@ -308,13 +324,13 @@ public class AddPlaceActivity extends AppCompatActivity implements
         try {
             place.setPlaceName(placeName.getText().toString());
             if(cyrName.isChecked())
-                place.setReporterName(yrName.getText());
+                place.setReporterName(yrName.getText().toString());
             if(cyrPhone.isChecked())
-                place.setReporterPhone(yrPhone.getText());
+                place.setReporterPhone(yrPhone.getText().toString());
             if(cyrMail.isChecked())
-                place.setReporterMail(yrMail.getText());
+                place.setReporterMail(yrMail.getText().toString());
             if(cyrSocial.isChecked())
-                place.setReporterAccount(socName.getText());
+                place.setReporterAccount(socName.getText().toString());
             //add this place to database using method post
             if(callowUp.isChecked())
             {
@@ -325,6 +341,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
                 place.setLat(lastLL.latitude);
                 place.setLon(lastLL.longitude);
             }
+            place.addPlace(this);
         }catch (Exception ex)
         {
             Log.d(LOG, "Add new place processing fail: " + ex.toString());
@@ -439,6 +456,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
         super.onResume();
         if(!isPaused)
             return;
+
         isPaused = false;
         Intent intent = sharedObject.getCurIntent();
         if(intent == null) return;
@@ -467,6 +485,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
     {
         super.onPause();
         isPaused = true;
+
     }
 
     private void updateUserInformation(View object)
@@ -478,7 +497,5 @@ public class AddPlaceActivity extends AppCompatActivity implements
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(ApplicationContextProvider.setLocale());
     }
-
-
 
 };

@@ -14,6 +14,7 @@
     <string name="Hours">Hours</string>
     <string name="Minutes">Minutes</string>
     <string name="Seconds">Seconds</string>
+    <string name="NetworkProblem">Network problem</string>
 
     <!-- add new place dialogue-->
     <string name="AddNewPlaceTile">Add a new place</string>
@@ -43,7 +44,7 @@
     <string name="anp_msg_yr_name_missing">Please enter your name</string>
     <string name="anp_msg_yr_phone_missing">Please enter your phone\'s number</string>
     <string name="anp_msg_yr_email_missing">Please enter your email</string>
-
+    <string name="anp_msg_add_processing">Processing. Please wait...</string>
 
     <!-- catalogue dialogue-->
     <string name="catalog_choose_time">Choose time</string>

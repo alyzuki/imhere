@@ -5,15 +5,33 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.here.zuki.imhere.R;
+
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownServiceException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.cache.Resource;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 
 /**
  * Created by zuki on 3/22/17.
@@ -47,13 +65,17 @@ public class PlaceObject {
     public static final String TAG_REPORTERNAME     = "ReName";
     public static final String TAG_REPORTERPHONE    = "RePhone";
     public static final String TAG_REPORTERSOCIAL   = "ReSocial";
+    public static final String TAG_REPORTERMAIL     = "ReMail";
     public static final String TAG_ID               = "ID";
     public static final String TAG_EVID             = "EvID";
+    public static final String TAG_USERID           = "UserID";
     public static final String TAG_PLACES           = "Places";
     public static final String TAG_UPDATE           = "AllowUpdate";
 
 
-    public static final String load_place_url       = "http://bdssmart.net/databaseconnector/getPlace.php";
+    public static final String load_place_url       = "getPlace.php";
+    public static final String add_place_url        = "addPlace.php";
+
 
     enum PLACE_OPERATOR
     {
@@ -143,6 +165,18 @@ public class PlaceObject {
 
     public String getReporterMail()     { return this.ReporterMail;}
 
+    public void setReporterName(String reporterName) { this.ReporterName = reporterName; }
+
+    public void setReporterPhone(String reporterPhone) { this.ReporterPhone = reporterPhone; }
+
+    public void setReporterMail(String reporterMail) { this.ReporterMail = reporterMail; }
+
+    public void setReporterAccount(String reporterSocial) { this.ReporterSocial = reporterSocial; }
+
+    public void setAllowUpdate(boolean allow) { this.allowUpdate = allow; }
+
+    public boolean getAllowUpdate() { return  this.allowUpdate; }
+
     private PlaceObject getPlaceFromJSONObj(JSONObject jsObj)
     {
         if(jsObj == null)
@@ -194,6 +228,11 @@ public class PlaceObject {
     public void updatePlace()
     {
 
+    }
+
+    public void addPlace(Context context)
+    {
+        new AddPlace(context, this, Common.datatbaseUrl + add_place_url).execute();
     }
 
 
@@ -303,37 +342,7 @@ public class PlaceObject {
                         case PLACE_UPDATE:
                             break;
                     }
-
-//                    // products found
-//                    // Getting Array of Products
-//                    products = json.getJSONArray(TAG_PRODUCTS);
-//
-//                    // looping through All Products
-//                    for (int i = 0; i < products.length(); i++) {
-//                        JSONObject c = products.getJSONObject(i);
-//
-//                        // Storing each json item in variable
-//                        String id = c.getString(TAG_PID);
-//                        String name = c.getString(TAG_NAME);
-//
-//                        // creating new HashMap
-//                        HashMap<String, String> map = new HashMap<String, String>();
-//
-//                        // adding each child node to HashMap key => value
-//                        map.put(TAG_PID, id);
-//                        map.put(TAG_NAME, name);
-//
-//                        // adding HashList to ArrayList
-//                        productsList.add(map);
-//                    }
                 } else {
-                    // no products found
-                    // Launch Add New product Activity
-//                    Intent i = new Intent(getApplicationContext(),
-//                            NewProductActivity.class);
-//                    // Closing all previous activities
-//                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(i);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -345,23 +354,100 @@ public class PlaceObject {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
-            // updating UI from Background Thread
-//            runOnUiThread(new Runnable() {
-//                public void run() {
-//                    /**
-//                     * Updating parsed JSON data into ListView
-//                     * */
-//                    ListAdapter adapter = new SimpleAdapter(
-//                            AllProductsActivity.this, productsList,
-//                            R.layout.list_item, new String[] { TAG_PID,
-//                            TAG_NAME},
-//                            new int[] { R.id.pid, R.id.name });
-//                    // updating listview
-//                    setListAdapter(adapter);
-//                }
-//            });
         }
     }
 
+    class AddPlace extends AsyncTask<Boolean, String, String>
+    {
+        private ProgressDialog progressDialog;
+        private PlaceObject placeObject;
+        private Context pContext;
+        private String url;
 
+        public AddPlace(Context context, PlaceObject place, String url)
+        {
+            this.pContext = context;
+            this.placeObject = place;
+            this.url  = url;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(this.pContext);
+            progressDialog.setMessage(pContext.getResources().getText(R.string.anp_msg_add_processing));
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Boolean... params) {
+            try
+            {
+                String json = "";
+                JSONObject jsonObject = new JSONObject();
+                InputStream     is;
+                OutputStream    os;
+
+                // 1. build jsonObject
+                jsonObject.put(TAG_PLACE,            placeObject.getPlaceName());
+                jsonObject.put(TAG_EVID,             placeObject.getEvID());
+                jsonObject.put(TAG_USERID,           1);
+                jsonObject.put(TAG_LAT,              placeObject.getLat());
+                jsonObject.put(TAG_LON,              placeObject.getLon());
+                jsonObject.put(TAG_TIMELAPSE,        placeObject.getTimeLapse());
+                jsonObject.put(TAG_REPORTERNAME,     placeObject.getReporterName());
+                jsonObject.put(TAG_REPORTERPHONE,    placeObject.getReporterPhone());
+                jsonObject.put(TAG_REPORTERSOCIAL,   placeObject.getReporterSocial());
+                jsonObject.put(TAG_REPORTERMAIL,     placeObject.getReporterMail());
+                jsonObject.put(TAG_UPDATE,           placeObject.getAllowUpdate());
+
+                // 2. convert JSONObject to JSON to String
+                json = jsonObject.toString();
+
+                // 3.create connection
+
+                URL url = new URL(this.url);
+                URLConnection connection = url.openConnection();
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("POST");
+                httpConnection.setConnectTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
+                httpConnection.setReadTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
+                httpConnection.setRequestProperty("Content-Type", "application/json");
+                httpConnection.setRequestProperty("Accept", "application/json");
+                httpConnection.connect();
+
+
+                os = httpConnection.getOutputStream();
+                OutputStreamWriter osw = new OutputStreamWriter(os);
+                os.write(json.getBytes());
+                os.flush();
+                os.close();
+
+
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    is = httpConnection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                    StringBuilder sb = new StringBuilder();
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    is.close();
+                    return  sb.toString();
+                }
+                return null;
+            }catch (Exception ex)
+            {
+                ex.printStackTrace();
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String file_url) {
+            progressDialog.dismiss();
+        }
+    }
 }
