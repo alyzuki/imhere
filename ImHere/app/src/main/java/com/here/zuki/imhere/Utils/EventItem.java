@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.UnknownServiceException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,8 +24,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import static com.here.zuki.imhere.Utils.JSONParser.json;
 
 /**
  * Created by zuki on 3/26/17.
@@ -149,7 +148,6 @@ public class EventItem {
         private ArrayList<EventItem> eventList;
         private CatalogueActivity.AdapterCatalogue adapter;
         List<NameValuePair> params;
-        JSONParser jsonParser;
 
 
         public LoadCatalogue(Context context, List<NameValuePair> params, ArrayList<EventItem> list, CatalogueActivity.AdapterCatalogue adapter) {
@@ -157,7 +155,6 @@ public class EventItem {
             this.eventList = list;
             this.params = params;
             this.adapter = adapter;
-            jsonParser = new JSONParser();
         }
 
         //before load
@@ -186,7 +183,8 @@ public class EventItem {
 
             try {
                 // getting JSON string from URL
-                json = jsonParser.makeHttpRequest(load_catalogue_event, "GET", this.params);
+                json = Network.makeHttpResponseToJSONObject(Network.getHttpConnection(load_catalogue_event, "GET", this.params));
+
                 // Checking for SUCCESS TAG
                 int success = json.getInt(Common.TAG_SUCCESS);
 
@@ -209,12 +207,15 @@ public class EventItem {
 //                    startActivity(i);
                 }
             }
-            catch (JSONParser.JSONParserException jspEx)
+            catch (IOException ioEx)
             {
-                jspEx.printStackTrace();
+                ioEx.printStackTrace();
             }
-            catch (JSONException e) {
-                e.printStackTrace();
+            catch (JSONException jsonEx) {
+                jsonEx.printStackTrace();
+            }catch (Exception ex)
+            {
+                ex.printStackTrace();
             }
 
             return null;

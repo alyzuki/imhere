@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.here.zuki.imhere.Utils.ApplicationContextProvider;
+import com.here.zuki.imhere.Utils.BitmapUrlUtils;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
@@ -332,16 +333,17 @@ public class AddPlaceActivity extends AppCompatActivity implements
             if(cyrSocial.isChecked())
                 place.setReporterAccount(socName.getText().toString());
             //add this place to database using method post
-            if(callowUp.isChecked())
-            {
-                //create a new service to update your place
-            }
+
             if(!lastLL.equals(null))
             {
                 place.setLat(lastLL.latitude);
                 place.setLon(lastLL.longitude);
             }
             place.addPlace(this);
+            if(callowUp.isChecked())
+            {
+                //create a new service to update your place
+            }
         }catch (Exception ex)
         {
             Log.d(LOG, "Add new place processing fail: " + ex.toString());
@@ -474,7 +476,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
                 {
                     ((EditText)findViewById(R.id.ed_add_place_catalogue)).setText(item.getEventNane());
                     place.setEventName(item.getEventNane());
-                    place.setTimeLapse(item.getType());
+                    place.setEvID(item.getType());
                 }
             }
         }

@@ -260,7 +260,27 @@ public class PlaceObject {
         return placeList;
     }
 
+    protected void setCurTime()
+    {
+        this.curTime = System.currentTimeMillis();;
+    }
 
+    public long getAddTime()
+    {
+        return this.curTime;
+    }
+
+    public boolean isValidPlace()
+    {
+        if(this.timeLapse != 0)
+        {
+            long now = System.currentTimeMillis();
+            long newTimeLapse = now - (this.curTime + this.timeLapse * Common.SECOND_RATE);
+            if( newTimeLapse <= 0)
+                return  false;
+        }
+        return true;
+    }
     class LoadPlaces extends AsyncTask<String, String, String>
     {
 
@@ -269,14 +289,12 @@ public class PlaceObject {
         private ArrayList<HashMap<String,PlaceObject>> placeList;
         private PLACE_OPERATOR op;
         List<NameValuePair> params;
-        JSONParser jsonParser;
         public  LoadPlaces(Context context, PLACE_OPERATOR op, List<NameValuePair> params, ArrayList<HashMap<String,PlaceObject>> list)
         {
             this.parentContext = context;
             this.placeList = list;
             this.op = op;
             this.params = params;
-             jsonParser = new JSONParser();
         }
 
         //before load
@@ -385,50 +403,27 @@ public class PlaceObject {
         protected String doInBackground(Boolean... params) {
             try
             {
-                String json = "";
                 JSONObject jsonObject = new JSONObject();
                 InputStream     is;
-                OutputStream    os;
+                placeObject.setCurTime();
 
                 // 1. build jsonObject
-                jsonObject.put(TAG_PLACE,            placeObject.getPlaceName());
-                jsonObject.put(TAG_EVID,             placeObject.getEvID());
+                jsonObject.put(TAG_PLACE,            placeObject.placeName);
+                jsonObject.put(TAG_EVID,             placeObject.EvID);
                 jsonObject.put(TAG_USERID,           1);
-                jsonObject.put(TAG_LAT,              placeObject.getLat());
-                jsonObject.put(TAG_LON,              placeObject.getLon());
-                jsonObject.put(TAG_TIMELAPSE,        placeObject.getTimeLapse());
-                jsonObject.put(TAG_REPORTERNAME,     placeObject.getReporterName());
-                jsonObject.put(TAG_REPORTERPHONE,    placeObject.getReporterPhone());
-                jsonObject.put(TAG_REPORTERSOCIAL,   placeObject.getReporterSocial());
-                jsonObject.put(TAG_REPORTERMAIL,     placeObject.getReporterMail());
-                jsonObject.put(TAG_UPDATE,           placeObject.getAllowUpdate());
+                jsonObject.put(TAG_LAT,              placeObject.lat);
+                jsonObject.put(TAG_LON,              placeObject.lon);
+                jsonObject.put(TAG_TIMELAPSE,        placeObject.timeLapse);
+                jsonObject.put(TAG_TIME,             placeObject.curTime);
+                jsonObject.put(TAG_REPORTERNAME,     placeObject.ReporterName);
+                jsonObject.put(TAG_REPORTERPHONE,    placeObject.ReporterPhone);
+                jsonObject.put(TAG_REPORTERSOCIAL,   placeObject.ReporterSocial);
+                jsonObject.put(TAG_REPORTERMAIL,     placeObject.ReporterMail);
+                jsonObject.put(TAG_UPDATE,           placeObject.allowUpdate);
 
-                // 2. convert JSONObject to JSON to String
-                json = jsonObject.toString();
-
-                // 3.create connection
-
-                URL url = new URL(this.url);
-                URLConnection connection = url.openConnection();
-                HttpURLConnection httpConnection = (HttpURLConnection) connection;
-                httpConnection.setRequestMethod("POST");
-                httpConnection.setConnectTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
-                httpConnection.setReadTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
-                httpConnection.setRequestProperty("Content-Type", "application/json");
-                httpConnection.setRequestProperty("Accept", "application/json");
-                httpConnection.connect();
-
-
-                os = httpConnection.getOutputStream();
-                OutputStreamWriter osw = new OutputStreamWriter(os);
-                os.write(json.getBytes());
-                os.flush();
-                os.close();
-
-
-
-                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    is = httpConnection.getInputStream();
+                is = Network.getHttpConnection(this.url, jsonObject);
+                if(is != null)
+                {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                     StringBuilder sb = new StringBuilder();
                     String line = null;
@@ -436,7 +431,7 @@ public class PlaceObject {
                         sb.append(line + "\n");
                     }
                     is.close();
-                    return  sb.toString();
+                    reader.close();
                 }
                 return null;
             }catch (Exception ex)

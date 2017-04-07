@@ -85,20 +85,10 @@ public class BitmapUrlUtils {
 
         InputStream stream = null;
         try {
-            stream = getHttpConnection(Url + picName);
+            stream = Network.getHttpConnection(Url + picName, "GET");
             pic = BitmapFactory.
                     decodeStream(stream, null, bmOptions);
             stream.close();
-        }catch (SocketTimeoutException stoEx)
-        {
-            Log.e("Error TIMEOUT", stoEx.getMessage());
-            stoEx.printStackTrace();
-            pic = null;
-        }
-        catch (IOException ioEx) {
-            Log.e("Error", ioEx.getMessage());
-            ioEx.printStackTrace();
-            pic = null;
         }catch (Exception Ex)
         {
             Log.e("Error", Ex.getMessage());
@@ -126,35 +116,6 @@ public class BitmapUrlUtils {
 
             return pic;
         }
-    }
-
-    private InputStream getHttpConnection(String urlString)
-            throws IOException {
-        InputStream stream = null;
-        URL url = new URL(urlString);
-        URLConnection connection = url.openConnection();
-
-        try {
-            HttpURLConnection httpConnection = (HttpURLConnection) connection;
-            httpConnection.setRequestMethod("GET");
-            httpConnection.setConnectTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
-            httpConnection.setReadTimeout(Common.TIMEOUT_SECOND * Common.SECOND_RATE);
-            httpConnection.connect();
-
-            if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                stream = httpConnection.getInputStream();
-            }
-        }
-        catch (SocketTimeoutException stoEx)
-        {
-            stoEx.printStackTrace();
-            throw  stoEx;
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
-        return stream;
     }
 
     public void removeFile()
