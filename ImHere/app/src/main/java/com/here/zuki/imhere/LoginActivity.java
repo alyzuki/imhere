@@ -39,6 +39,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.appindexing.Action;
@@ -136,11 +137,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         facebook.setReadPermissions("email", "public_profile");
 
         facebook.registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
+            private ProfileTracker mProfileTracker;
             @Override
             public void onSuccess(LoginResult loginResult) {
+                if(Profile.getCurrentProfile() == null) {
+                    mProfileTracker = new ProfileTracker() {
+                        @Override
+                        protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                            // profile2 is the new profile
+                            Log.d(TAG, profile2.getFirstName());
+                            mProfileTracker.stopTracking();
+                        }
+                    };
+                    // no need to call startTracking() on mProfileTracker
+                    // because it is called by its constructor, internally.
+                }
+                else {
+                    Profile profile = Profile.getCurrentProfile();
+                    Log.d(TAG,  profile.getFirstName());
+                }
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                Profile profile =  Profile.getCurrentProfile();
-                profile.toString();
+
                 facebookLoginAuth.handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
