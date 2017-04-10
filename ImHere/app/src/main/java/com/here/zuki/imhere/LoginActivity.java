@@ -146,6 +146,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
                             // profile2 is the new profile
                             Log.d(TAG, profile2.getFirstName());
+                            Log.d(TAG, profile2.getId());
                             mProfileTracker.stopTracking();
                         }
                     };
