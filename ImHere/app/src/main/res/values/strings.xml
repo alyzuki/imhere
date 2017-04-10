@@ -45,7 +45,7 @@
     <string name="anp_msg_yr_name_missing">Please enter your name</string>
     <string name="anp_msg_yr_phone_missing">Please enter your phone\'s number</string>
     <string name="anp_msg_yr_email_missing">Please enter your email</string>
-    <string name="anp_msg_add_processing">Processing. Please wait...</string>
+    <string name="anp_msg_add_processing">Processing. Please wait&#8230;</string>
 
     <!-- catalogue dialogue-->
     <string name="catalog_choose_time">Choose time</string>
@@ -61,7 +61,18 @@
     <string name="email_opt">Hosts email</string>
     <string name="social_opt">Hosts social ID</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="catalog_dialog">Loading catalogue. Please wait...</string>
+    <string name="catalog_dialog">Loading catalogue. Please wait &#8230;</string>
+
+
+    <!-- login -->
+    <string name="userloginstring">Username</string>
+    <string name="username_hint">Username</string>
+    <string name="passloginstring">Password</string>
+    <string name="password_hint">Password</string>
+    <string name="btn_login_text">Login</string>
+    <string name="btn_login_register">Register</string>
+    <string name="textview_login_register">Do you have an account?</string>
+    <string name="textview_login_by_social">Login with</string>
 
     <!-- Strings related to Settings -->
 

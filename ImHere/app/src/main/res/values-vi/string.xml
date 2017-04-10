@@ -46,13 +46,24 @@
     <string name="anp_msg_yr_name_missing">Bạn chưa điền tên</string>
     <string name="anp_msg_yr_phone_missing">Bạn chưa điền số điện thoại</string>
     <string name="anp_msg_yr_email_missing">Bạn chưa điền email</string>
-    <string name="anp_msg_add_processing">Đang thực hiện, vui lòng chờ...</string>
+    <string name="anp_msg_add_processing">Đang thực hiện, vui lòng chờ &#8230;</string>
 
     <!-- catalogue dialogue-->
     <string name="catalog_choose_time">Chọn thời gian</string>
     <string name="catalog_choose_time_hint">Thời gian</string>
     <string name="catalog_choose_event">Chọn sự kiện</string>
     <string name="catalog_choose_event_hint">Sự kiện</string>
-    <string name="catalog_dialog">Đang tải. Vui lòng chờ ...</string>
+    <string name="catalog_dialog">Đang tải. Vui lòng chờ &#8230;</string>
+
+
+    <!-- login -->
+    <string name="userloginstring">Tên Đăng Nhập</string>
+    <string name="username_hint">Tên</string>
+    <string name="passloginstring">Mật khẩu</string>
+    <string name="password_hint">Mật Khẩu</string>
+    <string name="btn_login_text">Đăng Nhập</string>
+    <string name="btn_login_register">Đăng kí</string>
+    <string name="textview_login_register">Bạn chưa có tài khoản?</string>
+    <string name="textview_login_by_social">Đăng nhập bằng</string>
 
 </resources>
