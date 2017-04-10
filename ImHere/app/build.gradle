@@ -37,4 +37,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'org.jetbrains:annotations-java5:15.0'
     compile group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.1'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }

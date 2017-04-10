@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="appName">ImHere</string>
+    <string name="facebook_app_id">1007129509387503</string>
 
     <!-- Common string-->
     <string name="hour">giờ</string>

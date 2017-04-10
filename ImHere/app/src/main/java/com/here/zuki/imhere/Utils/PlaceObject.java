@@ -13,25 +13,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.UnknownServiceException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import cz.msebera.android.httpclient.client.HttpClient;
-import cz.msebera.android.httpclient.client.cache.Resource;
-import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 
 /**
  * Created by zuki on 3/22/17.
@@ -441,7 +428,7 @@ public class PlaceObject {
             }
         }
 
-        protected void onPostExecute(String file_url) {
+        protected void onPostExecute(String status) {
             progressDialog.dismiss();
         }
     }
