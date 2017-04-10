@@ -2,8 +2,6 @@ package com.here.zuki.imhere.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.BoolRes;
-import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by zuki on 3/9/17.
@@ -114,4 +112,9 @@ public class PrefConfig {
         return instance;
     }
 
+    public void changeUser()
+    {
+        pref = ApplicationContextProvider.getContext().getSharedPreferences(login.getUserName(), Context.MODE_PRIVATE);
+        editor = pref.edit();
+    }
 }

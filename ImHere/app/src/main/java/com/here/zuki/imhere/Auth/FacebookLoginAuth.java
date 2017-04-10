@@ -8,12 +8,8 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -22,7 +18,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.here.zuki.imhere.LoginActivity;
 
 
 /**
@@ -45,6 +40,7 @@ public class FacebookLoginAuth {
     // [END declare_auth_listener]
 
     private CallbackManager mCallbackManager;
+    private ProfileTracker mProfileTracker;
 
     public FacebookLoginAuth(Context context, Activity activity)
     {
@@ -109,6 +105,23 @@ public class FacebookLoginAuth {
                         // ...
                     }
                 });
+        if(Profile.getCurrentProfile() == null) {
+            mProfileTracker = new ProfileTracker() {
+                @Override
+                protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                    // profile2 is the new profile
+                    Log.d(TAG, profile2.getFirstName());
+                    Log.d(TAG, profile2.getId());
+                    mProfileTracker.stopTracking();
+                }
+            };
+            // no need to call startTracking() on mProfileTracker
+            // because it is called by its constructor, internally.
+        }
+        else {
+            Profile profile = Profile.getCurrentProfile();
+            Log.d(TAG,  profile.getFirstName());
+        }
     }
 
     public void AddAuthStateListener()

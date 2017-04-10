@@ -69,5 +69,13 @@ public class Login {
         return this.userName;
     }
 
-
+    public void setUserName(String userName)
+    {
+        this.userName = userName;
+        if(userName != null)
+        {
+            PrefConfig prefConfig = PrefConfig.getInstance();
+            prefConfig.changeUser();
+        }
+    }
 }
