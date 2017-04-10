@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1094198264942",
+    "firebase_url": "https://imhere-cc752.firebaseio.com",
+    "project_id": "imhere-cc752",
+    "storage_bucket": "imhere-cc752.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094198264942:android:c79b05cd1ad357ab",
+        "android_client_info": {
+          "package_name": "com.here.zuki.imhere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094198264942-5ng3cn7do4aobgdtfl7ev9274180ltve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaBwqoJTbZ92Oo6zYwebjxGef9wlwV9mk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
