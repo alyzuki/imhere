@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,6 +18,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.here.zuki.imhere.R;
+import com.here.zuki.imhere.Utils.SessionManager;
 
 /**
  * Created by zuki on 4/10/17.
@@ -32,11 +34,14 @@ public class GMailLoginAuth implements
 
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
+    private SessionManager sessionManager = null;
 
-    public GMailLoginAuth(Context context)
+    public GMailLoginAuth(Context context, Activity activity)
     {
         super();
         this.pContext = context;
+        this.pActivity = activity;
+        sessionManager = SessionManager.getInstance();
         // [START configure_signin]
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -53,7 +58,7 @@ public class GMailLoginAuth implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
+        mGoogleApiClient.connect();
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -79,7 +84,7 @@ public class GMailLoginAuth implements
     public void GmailSignIn()
     {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        //startActivityForResult(signInIntent, RC_SIGN_IN);
+        pActivity.startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void GmailSignOut() {
@@ -92,6 +97,7 @@ public class GMailLoginAuth implements
                         // [END_EXCLUDE]
                     }
                 });
+        mGoogleApiClient.disconnect();
     }
     private void GmailRevokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
@@ -116,8 +122,13 @@ public class GMailLoginAuth implements
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+
+            //IT IS TEMP, NEED NEW METHOD
+            sessionManager.createLoginSession(acct.getDisplayName(), "GMail", true);
+
             //----->updateUI(false);
         } else {
+            result.getStatus();
             // Signed out, show unauthenticated UI.
             //----->updateUI(false);
         }

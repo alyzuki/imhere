@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.here.zuki.imhere.Utils.SessionManager;
 
 
 /**
@@ -41,10 +42,12 @@ public class FacebookLoginAuth {
 
     private CallbackManager mCallbackManager;
     private ProfileTracker mProfileTracker;
+    private SessionManager sessionManager;
 
     public FacebookLoginAuth(Context context, Activity activity)
     {
         super();
+        sessionManager = SessionManager.getInstance();
         this.pContext = context;
         this.pActivity = activity;
         FirebaseApp.initializeApp(pContext);
@@ -113,6 +116,10 @@ public class FacebookLoginAuth {
                     Log.d(TAG, profile2.getFirstName());
                     Log.d(TAG, profile2.getId());
                     mProfileTracker.stopTracking();
+
+                    //IT IS TEMP, NEED NEW METHOD
+                    sessionManager.createLoginSession(profile2.getName(), "Facebook", true);
+
                 }
             };
             // no need to call startTracking() on mProfileTracker

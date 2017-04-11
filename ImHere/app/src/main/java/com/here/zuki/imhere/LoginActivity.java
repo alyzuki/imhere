@@ -26,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.facebook.FacebookCallback;
@@ -37,6 +38,8 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.here.zuki.imhere.Auth.FacebookLoginAuth;
+import com.here.zuki.imhere.Auth.GMailLoginAuth;
+import com.here.zuki.imhere.Utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +49,15 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final String TAG = "LOGIN_ACTIVITY";
+    private  int LoginType = 0;
+    private SessionManager sessionManager = null;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -74,20 +79,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private ImageButton facebtn;
     private LoginButton facebook;
 
-    private FacebookLoginAuth facebookLoginAuth;
+    private FacebookLoginAuth   facebookLoginAuth = null;
+    private GMailLoginAuth      gMailLoginAuth = null;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+        sessionManager = SessionManager.getInstance();
         // Set up the login form.
-        facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
+        //facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
         mAccoutView = (AutoCompleteTextView) findViewById(R.id.comTextViewUserName);
         populateAutoComplete();
 
@@ -115,44 +121,71 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         facebook = (LoginButton) findViewById(R.id.facebook_login);
         facebook.setReadPermissions("email", "public_profile");
 
-        facebook.registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
+        facebtn.setOnClickListener(this);
 
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                facebookLoginAuth.handleFacebookAccessToken(loginResult.getAccessToken());
-            }
+        ((ImageButton) findViewById(R.id.btn_login_gplus)).setOnClickListener(this);
+    }
 
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
-                // ...
-            }
+    @Override
+    public void onClick(View v)
+    {
+        BtnClick(v);
+    }
 
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
-                // ...
-            }
-        });
+    public void BtnClick(View v) {
+        switch(v.getId())
+        {
+            case R.id.btn_login_face:
+                LoginType = 0;
+                if(facebookLoginAuth == null)
+                {
+                    facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
+                    facebookLoginAuth.AddAuthStateListener();
+                    facebook.registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
 
-        facebtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            facebookLoginAuth.handleFacebookAccessToken(loginResult.getAccessToken());
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            Log.d(TAG, "facebook:onCancel");
+                            // ...
+                        }
+
+                        @Override
+                        public void onError(FacebookException error) {
+                            Log.d(TAG, "facebook:onError", error);
+                            // ...
+                        }
+                    });
+                }
                 facebook.performClick();
-            }
-        });
+                break;
+            case R.id.btn_login_gplus:
+                if(gMailLoginAuth == null)
+                {
+                    gMailLoginAuth = new GMailLoginAuth(this, LoginActivity.this);
+                }
+                LoginType = 1;
+                gMailLoginAuth.GmailSignIn();
+                break;
+        }
 
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        facebookLoginAuth.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+        if(LoginType == 0)
+            facebookLoginAuth.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+        else if(LoginType == 1)
+        {
+            gMailLoginAuth.OnActivityResult(requestCode, resultCode, data);
+        }
+        if(sessionManager.isLogin())
+            finish();
     }
 
     private void populateAutoComplete() {
@@ -332,23 +365,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onStart() {
         super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-        facebookLoginAuth.AddAuthStateListener();
         //mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-        facebookLoginAuth.RemoveAuthStateListener();
+        if(facebookLoginAuth != null)
+            facebookLoginAuth.RemoveAuthStateListener();
     }
 
 

@@ -107,18 +107,18 @@
                         android:src="@drawable/face"
                         android:scaleType="fitCenter"
                         android:backgroundTint="@android:color/transparent"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true" />
                     <ImageButton
                         android:layout_width="50dp"
                         android:layout_height="50dp"
 
-                        android:id="@+id/btn_login_zalo"
+                        android:id="@+id/btn_login_gplus"
                         android:layout_weight="1"
                         tools:ignore="ContentDescription,InefficientWeight"
                         style="@style/Widget.AppCompat.ImageButton"
                         android:src="@drawable/zalo"
                         android:scaleType="fitEnd"
-                        android:backgroundTint="@android:color/transparent"/>
+                        android:backgroundTint="@android:color/transparent" />
                 </LinearLayout>
                 <com.facebook.login.widget.LoginButton
                     xmlns:facebook="http://schemas.android.com/apk/res-auto"

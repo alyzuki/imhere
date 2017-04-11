@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1094198264942-p7a8vb0molqp3lko1v8c1n9r7geekvuf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.here.zuki.imhere",
+            "certificate_hash": "66af144e21b9a88ffd83c7447821b6dd4633d5e1"
+          }
+        },
+        {
           "client_id": "1094198264942-5ng3cn7do4aobgdtfl7ev9274180ltve.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094198264942-5ng3cn7do4aobgdtfl7ev9274180ltve.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
