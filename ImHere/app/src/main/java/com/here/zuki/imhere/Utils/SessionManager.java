@@ -3,10 +3,8 @@ package com.here.zuki.imhere.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.ContactsContract;
 
 import com.here.zuki.imhere.LoginActivity;
-import com.here.zuki.imhere.R;
 
 /**
  * Created by zuki on 4/11/17.
@@ -41,6 +39,8 @@ public class SessionManager {
     {
         pref = pContext.getSharedPreferences("Login", Context.MODE_PRIVATE);
         editor = pref.edit();
+        editor.putBoolean(TAG_IS_LOGIN, false);
+        editor.commit();
     }
 
 

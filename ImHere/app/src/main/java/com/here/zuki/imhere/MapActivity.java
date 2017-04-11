@@ -18,9 +18,16 @@ package com.here.zuki.imhere;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -28,6 +35,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -128,6 +136,8 @@ public class MapActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
+        createCircleBitmap(R.id.image_profile, BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.com_facebook_profile_picture_blank_square) );
     }
 
     public void SearchOptClick(View v) {
@@ -278,6 +288,42 @@ public class MapActivity extends AppCompatActivity implements
     {
         Intent addaplace = new Intent(this, AddPlaceActivity.class);
         startActivity(addaplace);
+    }
+
+    private  void createCircleBitmap(int id, Bitmap bitmap)
+    {
+        ImageView image = (ImageView)findViewById(id);
+        image.setImageBitmap(bitmap);
+        RoundedBitmapDrawable roundedImageDrawable = createRoundedBitmapImageDrawableWithBorder(bitmap);
+        image.setImageDrawable(roundedImageDrawable);
+    }
+    private RoundedBitmapDrawable createRoundedBitmapImageDrawableWithBorder(Bitmap bitmap){
+        int bitmapWidthImage = bitmap.getWidth();
+        int bitmapHeightImage = bitmap.getHeight();
+        int borderWidthHalfImage = 4;
+
+        int bitmapRadiusImage = Math.min(bitmapWidthImage,bitmapHeightImage)/2;
+        int bitmapSquareWidthImage = Math.min(bitmapWidthImage,bitmapHeightImage);
+        int newBitmapSquareWidthImage = bitmapSquareWidthImage+borderWidthHalfImage;
+
+        Bitmap roundedImageBitmap = Bitmap.createBitmap(newBitmapSquareWidthImage,newBitmapSquareWidthImage,Bitmap.Config.ARGB_8888);
+        Canvas mcanvas = new Canvas(roundedImageBitmap);
+        mcanvas.drawColor(Color.RED);
+        int i = borderWidthHalfImage + bitmapSquareWidthImage - bitmapWidthImage;
+        int j = borderWidthHalfImage + bitmapSquareWidthImage - bitmapHeightImage;
+
+        mcanvas.drawBitmap(bitmap, i, j, null);
+
+        Paint borderImagePaint = new Paint();
+        borderImagePaint.setStyle(Paint.Style.STROKE);
+        borderImagePaint.setStrokeWidth(borderWidthHalfImage*2);
+        borderImagePaint.setColor(Color.GRAY);
+        mcanvas.drawCircle(mcanvas.getWidth()/2, mcanvas.getWidth()/2, newBitmapSquareWidthImage/2, borderImagePaint);
+
+        RoundedBitmapDrawable roundedImageBitmapDrawable = RoundedBitmapDrawableFactory.create( this.getResources(),roundedImageBitmap);
+        roundedImageBitmapDrawable.setCornerRadius(bitmapRadiusImage);
+        roundedImageBitmapDrawable.setAntiAlias(true);
+        return roundedImageBitmapDrawable;
     }
 
 };
