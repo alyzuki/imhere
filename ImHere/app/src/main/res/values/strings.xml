@@ -17,6 +17,7 @@
     <string name="Minutes">Minutes</string>
     <string name="Seconds">Seconds</string>
     <string name="NetworkProblem">Network problem</string>
+    <string name="Network">Network</string>
     <string name="CommonLoading">Đang tải &#8230;</string>
 
     <!-- add new place dialogue-->

@@ -26,7 +26,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.facebook.FacebookCallback;
@@ -34,9 +33,7 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Auth.GMailLoginAuth;
 import com.here.zuki.imhere.Utils.ApplicationContextProvider;
@@ -100,9 +97,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
         sessionManager = SessionManager.getInstance();
-        if(!Network.checkNetworkStatus(ApplicationContextProvider.getContext(), true))
-            ApplicationContextProvider.appClose();
-
+        if(!Network.checkNetworkStatus(ApplicationContextProvider.getContext())) {
+            Intent intent = new Intent(this, ErrorActivity.class);
+            intent.putExtra("MSG_ERROR", getString(R.string.NetworkProblem));
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return;
+        }
         // Set up the login form.
         //facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
         mAccoutView = (AutoCompleteTextView) findViewById(R.id.comTextViewUserName);

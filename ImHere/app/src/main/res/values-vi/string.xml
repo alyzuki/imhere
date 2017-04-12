@@ -18,6 +18,7 @@
     <string name="Minutes">Phút</string>
     <string name="Seconds">Giây</string>
     <string name="NetworkProblem">Kiểm tra kết nối mạng</string>
+    <string name="Network">Kết nối mạng</string>
     <string name="CommonLoading">Đang tải &#8230;</string>
 
     <!-- add new place dialogue-->

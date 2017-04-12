@@ -28,6 +28,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SettingsActivity" />
         <activity android:name=".SearchActivity" />
+        <activity android:name=".ErrorActivity" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

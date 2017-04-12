@@ -5,11 +5,9 @@ package com.here.zuki.imhere.Utils;
  */
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,15 +29,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-import cz.msebera.android.httpclient.HttpException;
-import cz.msebera.android.httpclient.client.cache.Resource;
-import cz.msebera.android.httpclient.impl.entity.StrictContentLengthStrategy;
-
 public class Network {
 
     public static final int TYPE_WIFI = 1;
     public static final int TYPE_MOBILE = 2;
     public static final int TYPE_NOT_CONNECTED = 0;
+    private static boolean connected = false;
 
 
     public static int getConnectivityStatus(Context context) {
@@ -60,6 +55,7 @@ public class Network {
     public static boolean checkNetworkStatus(Context context) {
         int conn = Network.getConnectivityStatus(context);
         Resources res = context.getResources();
+        connected = true;
         switch (conn)
         {
             case TYPE_WIFI:
@@ -67,30 +63,21 @@ public class Network {
                 break;
             default:
                 Toast.makeText(ApplicationContextProvider.getContext(), res.getText(R.string.NetworkProblem), Toast.LENGTH_LONG).show();
-                return false;
+                connected = false;
         }
-        return true;
+        return connected;
     }
 
-    public static boolean checkNetworkStatus(Context context, boolean showDialog)
-    {
-        if(!showDialog)
-            return checkNetworkStatus(context);
-        if(!checkNetworkStatus(context))
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(context.getResources().getString(R.string.NetworkProblem));
-            builder.show();
-            try {
-                Thread.sleep(10 * Common.SECOND_RATE);
-            }catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-            return false;
-        }
-        return true;
-    }
+//    public static boolean checkNetworkStatus(Context context, boolean showDialog)
+//    {
+//        if(!showDialog)
+//            return checkNetworkStatus(context);
+//        if(checkNetworkStatus(context) == false)
+//        {
+//            Intent intent = new Intent(context, )
+//        }
+//        return connected;
+//    }
 
 
     public static InputStream getHttpConnection(String url, JSONObject object) throws Exception
