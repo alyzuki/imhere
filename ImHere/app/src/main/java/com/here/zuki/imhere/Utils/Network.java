@@ -5,9 +5,11 @@ package com.here.zuki.imhere.Utils;
  */
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -55,7 +57,7 @@ public class Network {
         return TYPE_NOT_CONNECTED;
     }
 
-    public static boolean getConnectivityStatusString(Context context) {
+    public static boolean checkNetworkStatus(Context context) {
         int conn = Network.getConnectivityStatus(context);
         Resources res = context.getResources();
         switch (conn)
@@ -66,6 +68,26 @@ public class Network {
             default:
                 Toast.makeText(ApplicationContextProvider.getContext(), res.getText(R.string.NetworkProblem), Toast.LENGTH_LONG).show();
                 return false;
+        }
+        return true;
+    }
+
+    public static boolean checkNetworkStatus(Context context, boolean showDialog)
+    {
+        if(!showDialog)
+            return checkNetworkStatus(context);
+        if(!checkNetworkStatus(context))
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(context.getResources().getString(R.string.NetworkProblem));
+            builder.show();
+            try {
+                Thread.sleep(10 * Common.SECOND_RATE);
+            }catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
+            return false;
         }
         return true;
     }

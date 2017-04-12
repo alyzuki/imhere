@@ -28,12 +28,15 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -85,6 +88,7 @@ public class MapActivity extends AppCompatActivity implements
     FloatingActionButton add = null;
     FloatingActionButton sos = null;
     SessionManager sessionManager = null;
+    HorizontalScrollView profileView = null;
 
 
     @Override
@@ -136,21 +140,28 @@ public class MapActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
-        createCircleBitmap(R.id.image_profile, BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.com_facebook_profile_picture_blank_square) );
+        profileView = (HorizontalScrollView) findViewById(R.id.scrollview_profile);
+        profileView.setVisibility(View.INVISIBLE);
+        profileView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    View mainContainer = findViewById(R.id.profile_main_container);
+                    if(event.getX() > mainContainer.getWidth()
+                            || event.getY() > mainContainer.getHeight())
+                        profileView.setVisibility(View.INVISIBLE);
+                }
+                return false;
+            }
+        });
     }
 
     public void SearchOptClick(View v) {
         showStylesDialog();
     }
     public void SettingsClick(View v) {
-        if(settingIntent == null) {
-            settingIntent = new Intent(this, SettingsActivity.class);
-            settingIntent.addCategory(Intent.CATEGORY_HOME);
-            settingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        startActivity(settingIntent);
-        overridePendingTransition(R.animator.slide_from_right, R.animator.slide_to_left);
+        profileView.setVisibility(View.VISIBLE);
     }
 
 
@@ -325,5 +336,4 @@ public class MapActivity extends AppCompatActivity implements
         roundedImageBitmapDrawable.setAntiAlias(true);
         return roundedImageBitmapDrawable;
     }
-
 };

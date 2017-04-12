@@ -39,6 +39,8 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Auth.GMailLoginAuth;
+import com.here.zuki.imhere.Utils.ApplicationContextProvider;
+import com.here.zuki.imhere.Utils.Network;
 import com.here.zuki.imhere.Utils.SessionManager;
 
 import java.util.ArrayList;
@@ -57,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final String TAG = "LOGIN_ACTIVITY";
     private  int LoginType = 0;
-    private SessionManager sessionManager = null;
+
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -79,8 +81,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private ImageButton facebtn;
     private LoginButton facebook;
 
+
+    //NetWork
+
+    //Login Author
     private FacebookLoginAuth   facebookLoginAuth = null;
     private GMailLoginAuth      gMailLoginAuth = null;
+    private SessionManager sessionManager = null;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -92,6 +100,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
         sessionManager = SessionManager.getInstance();
+        if(!Network.checkNetworkStatus(ApplicationContextProvider.getContext(), true))
+            ApplicationContextProvider.appClose();
+
         // Set up the login form.
         //facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
         mAccoutView = (AutoCompleteTextView) findViewById(R.id.comTextViewUserName);

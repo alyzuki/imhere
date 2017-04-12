@@ -77,6 +77,13 @@ public class ApplicationContextProvider extends Application{
         return context;
     }
 
+    public static void appClose()
+    {
+        int pid = android.os.Process.myPid();
+        android.os.Process.killProcess(pid);
+        System.exit(0);
+    }
+
   }
 
 

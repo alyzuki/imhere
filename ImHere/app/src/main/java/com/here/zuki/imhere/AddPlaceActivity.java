@@ -106,7 +106,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
         pref = PrefConfig.getInstance();
 
 
-        if(!Network.getConnectivityStatusString(this))
+        if(!Network.checkNetworkStatus(this))
         {
             sharedObject.getCurIntent();
             sharedObject.setCurIntent(null);
@@ -286,7 +286,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
     private void addPlace(View view)
     {
-        if(!Network.getConnectivityStatusString(this))
+        if(!Network.checkNetworkStatus(this))
         {
             return;
         }

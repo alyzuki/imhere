@@ -24,7 +24,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/main_container">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -176,56 +177,354 @@
         android:layout_height="match_parent"
         android:id="@+id/scrollview_profile"
         android:minWidth="300dp"
-        android:layout_width="300dp">
+        android:layout_width="match_parent"
+        android:background="@android:color/transparent">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="ScrollViewSize,UselessLeaf" >
+            tools:ignore="ScrollViewSize"
+            android:id="@+id/profile_main_container">
 
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:ignore="UselessParent">
+                android:background="@drawable/drop_shadow"
+                tools:ignore="ScrollViewSize,UselessParent">
 
-                <RelativeLayout
-                    android:layout_width="300dp"
-                    android:id="@+id/profile_bg"
-                    android:layout_height="150dp"
-                    android:background="@mipmap/imhere">
-
-                    <ImageView
-                        android:id="@+id/image_profile"
-                        tools:ignore="ContentDescription,MissingPrefix"
-                        android:adjustViewBounds="false"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentStart="true" />
-                </RelativeLayout>
-
-                <TextView
-                    android:text="minhhieu.vnuit@gmail.com"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_profile_account"
-                    android:background="@color/wallet_holo_blue_light"
-                    android:textAlignment="viewEnd"
-                    tools:ignore="HardcodedText,RtlSymmetry"
-                    android:paddingEnd="10dp" />
-
-                <ScrollView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/scroll_info">
-
+                    android:orientation="vertical"
+                    tools:ignore="ScrollViewSize"
+                    android:background="@android:color/transparent">
                     <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
-                </ScrollView>
+                        android:layout_height="match_parent"
+                        tools:ignore="UselessParent">
+
+                        <RelativeLayout
+                            android:layout_width="300dp"
+                            android:id="@+id/profile_bg"
+                            android:layout_height="150dp"
+                            android:background="@mipmap/imhere">
+
+                            <ImageView
+                                android:id="@+id/image_profile"
+                                tools:ignore="ContentDescription,MissingPrefix"
+                                android:adjustViewBounds="false"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true" />
+
+                            <ImageButton
+                                android:layout_height="32dp"
+                                app:srcCompat="@drawable/ic_action_logout"
+                                android:id="@+id/btn_profile_logout"
+                                android:background="@drawable/drop_shadow"
+                                android:layout_marginEnd="9dp"
+                                android:layout_marginTop="9dp"
+                                android:contentDescription=""
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_width="32dp"
+                                tools:ignore="ContentDescription" />
+                        </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#000000">
+                        </LinearLayout>
+
+                        <TextView
+                            android:text="minhhieu.vnuit@gmail.com"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_profile_account"
+                            android:background="@color/wallet_holo_blue_light"
+                            android:textAlignment="viewEnd"
+                            tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry"
+                            android:paddingRight="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#000000">
+                        </LinearLayout>
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/scroll_info"
+                            android:paddingLeft="10dp"
+                            tools:ignore="RtlHardcoded,RtlSymmetry"
+                            android:background="#e6f3ff">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                >
+
+                                <CheckBox
+                                    android:text="Remeber me"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/cb_profile_auto_login"
+                                    android:checked="true"
+                                    tools:ignore="HardcodedText"
+                                    android:textSize="@dimen/com_facebook_share_button_compound_drawable_padding"
+                                    android:textStyle="italic"
+                                    style="@style/Widget.AppCompat.CompoundButton.CheckBox" />
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    tools:ignore="UselessLeaf"
+                                    android:background="@android:color/darker_gray"></LinearLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView3"
+                                    android:text="Your Place"
+                                    android:paddingTop="5dp"
+                                    tools:ignore="HardcodedText,SpUsage"
+                                    android:textSize="@dimen/activity_vertical_margin" />
+
+                                <ListView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/profile_places"
+                                    tools:ignore="NestedScrolling" />
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    tools:ignore="UselessLeaf"
+                                    android:background="@android:color/darker_gray"></LinearLayout>
+
+                                <TextView
+                                    android:text="Your follow"
+                                    android:paddingTop="5dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textView9"
+                                    tools:ignore="HardcodedText,SpUsage"
+                                    android:textSize="@dimen/activity_vertical_margin"/>
+
+                                <Spinner
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/spinner" />
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    tools:ignore="UselessLeaf"
+                                    android:background="@android:color/darker_gray"></LinearLayout>
+                                <TextView
+                                    android:text="Settings"
+                                    android:paddingTop="5dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/textViewSetting"
+                                    tools:ignore="HardcodedText,SpUsage"
+                                    android:textSize="@dimen/activity_vertical_margin"/>
+                                <com.here.zuki.imhere.Expandable
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:header="Search"
+                                    app:headerBg="#cce6ff"
+                                    app:containerBg="#e6f3ff"
+                                    app:headerfontsize="16"
+                                    app:paddingStart="30dp"
+                                    android:orientation="vertical"
+                                    android:id="@+id/SearchExpand"
+                                    android:onClick="expandable_toggle">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:id="@+id/notification_container"
+                                        android:orientation="horizontal"
+                                        tools:ignore="TooDeepLayout">
+                                        <CheckBox
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="30dp"
+                                            android:id="@+id/settings_notification_btn"
+                                            android:text="Notify when I am closed in "
+                                            tools:ignore="HardcodedText,TooDeepLayout" />
+
+                                        <EditText
+                                            android:layout_height="wrap_content"
+                                            android:inputType="numberDecimal"
+                                            android:ems="10"
+                                            android:id="@+id/setting_distance"
+                                            android:layout_weight="1"
+                                            tools:ignore="InefficientWeight,LabelFor"
+                                            android:layout_width="5dp"
+                                            android:cursorVisible="false" />
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/setting_km"
+                                            android:text="kilometer"
+                                            tools:ignore="HardcodedText" />
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingStart="30dp"
+                                        android:id="@+id/setting_advance"
+                                        tools:ignore="RtlSymmetry">
+
+                                        <TextView
+                                            android:text="Advanced Search"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/textView2"
+                                            tools:ignore="HardcodedText"
+                                            android:textStyle="normal|bold"
+                                            android:textSize="16sp" />
+
+                                        <LinearLayout
+                                            android:orientation="vertical"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:paddingStart="10dp">
+
+                                            <CheckBox
+                                                android:text="Reporter's name"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/opts_name"
+                                                tools:ignore="HardcodedText,TooDeepLayout" />
+
+                                            <CheckBox
+                                                android:text="Reporter's phone number "
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/opts_num_phone"
+                                                tools:ignore="HardcodedText" />
+
+                                            <CheckBox
+                                                android:text="Reporter's social ID"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/opts_social_id"
+                                                tools:ignore="HardcodedText" />
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+                                </com.here.zuki.imhere.Expandable>
+
+                                <com.here.zuki.imhere.Expandable
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:header="Add a new place "
+                                    app:headerBg="#cce6ff"
+                                    app:containerBg="#e6f3ff"
+                                    app:headerfontsize="16"
+                                    app:paddingStart="30dp"
+                                    android:orientation="vertical"
+                                    android:id="@+id/AddExpand"
+                                    android:onClick="expandable_toggle">
+
+                                    <CheckBox
+                                        android:text="Show Add button on map"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/setting_show_add"
+                                        tools:ignore="HardcodedText"
+                                        android:layout_marginStart="30dp"/>
+
+                                </com.here.zuki.imhere.Expandable>
+
+                                <com.here.zuki.imhere.Expandable
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:header="Object Followable"
+                                    app:headerBg="#cce6ff"
+                                    app:containerBg="#e6f3ff"
+                                    app:headerfontsize="16"
+                                    app:paddingStart="30dp"
+                                    android:orientation="vertical"
+                                    android:id="@+id/FollowExpand"
+                                    android:onClick="expandable_toggle">
+
+                                    <CheckBox
+                                        android:text="CheckBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/checkBox4"
+                                        tools:ignore="HardcodedText"
+                                        android:layout_marginStart="30dp"/>
+
+                                </com.here.zuki.imhere.Expandable>
+
+                                <com.here.zuki.imhere.Expandable
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:header="S.O.S "
+                                    app:headerBg="#cce6ff"
+                                    app:containerBg="#e6f3ff"
+                                    app:headerfontsize="16"
+                                    app:paddingStart="30dp"
+                                    android:orientation="vertical"
+                                    android:id="@+id/SOSExpand"
+                                    android:onClick="expandable_toggle">
+
+                                    <CheckBox
+                                        android:text="Show S.O.S button on map"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/setting_show_SOS"
+                                        tools:ignore="HardcodedText"
+                                        android:layout_marginStart="30dp" />
+
+                                </com.here.zuki.imhere.Expandable>
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    tools:ignore="UselessLeaf"
+                                    android:background="@android:color/darker_gray"></LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingTop="5dp"
+                                    android:text="About"
+                                    tools:ignore="HardcodedText,SpUsage"
+                                    android:textSize="@dimen/activity_vertical_margin"/>
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    tools:ignore="UselessLeaf"
+                                    android:background="@android:color/darker_gray"></LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingTop="5dp"
+                                    android:text="Logout"
+                                    tools:ignore="HardcodedText,SpUsage"
+                                    android:textSize="@dimen/activity_vertical_margin"/>
+                            </LinearLayout>
+                        </ScrollView>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </HorizontalScrollView>
