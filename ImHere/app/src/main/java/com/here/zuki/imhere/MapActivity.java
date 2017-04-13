@@ -16,19 +16,21 @@
 
 package com.here.zuki.imhere;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -39,6 +41,7 @@ import android.widget.CheckBox;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -55,6 +58,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.here.zuki.imhere.Utils.LoadBitmap;
+import com.here.zuki.imhere.Utils.MainHandler;
 import com.here.zuki.imhere.Utils.PlaceObject;
 import com.here.zuki.imhere.Utils.PrefConfig;
 import com.here.zuki.imhere.Utils.SessionManager;
@@ -89,6 +93,9 @@ public class MapActivity extends AppCompatActivity implements
     FloatingActionButton sos = null;
     SessionManager sessionManager = null;
     HorizontalScrollView profileView = null;
+    private static boolean resetPic = true;
+
+    private OurHandler handler = null;
 
 
     @Override
@@ -96,7 +103,7 @@ public class MapActivity extends AppCompatActivity implements
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
+        handler = new OurHandler(this, MapActivity.this);
         if(sessionManager == null)
             sessionManager = SessionManager.getInstance();
 
@@ -162,6 +169,10 @@ public class MapActivity extends AppCompatActivity implements
     }
     public void SettingsClick(View v) {
         profileView.setVisibility(View.VISIBLE);
+        if(resetPic) {
+            createCircleBitmap(R.id.image_profile, null);
+            resetPic = false;
+        }
     }
 
 
@@ -266,8 +277,24 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     @Override
+    public  void onDestroy()
+    {
+        super.onDestroy();
+        handler.setActivity(null);
+        handler.close();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        handler.pause();
+    }
+
+    @Override
     public  void onResume(){
         super.onResume();
+        handler.resume();
         Intent previousIntent = sharedObject.getCurIntent();
         if(previousIntent == null)
             return;
@@ -304,6 +331,8 @@ public class MapActivity extends AppCompatActivity implements
     private  void createCircleBitmap(int id, Bitmap bitmap)
     {
         ImageView image = (ImageView)findViewById(id);
+        if (bitmap == null)
+            bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
         image.setImageBitmap(bitmap);
         RoundedBitmapDrawable roundedImageDrawable = createRoundedBitmapImageDrawableWithBorder(bitmap);
         image.setImageDrawable(roundedImageDrawable);
@@ -335,5 +364,97 @@ public class MapActivity extends AppCompatActivity implements
         roundedImageBitmapDrawable.setCornerRadius(bitmapRadiusImage);
         roundedImageBitmapDrawable.setAntiAlias(true);
         return roundedImageBitmapDrawable;
+    }
+
+    public static class OurHandler extends MainHandler {
+        private Activity pActivity = null;
+        private static OurHandler instance = null;
+
+
+        public static final int WHAT_PROFILE          = 0;
+        public static final int WHAT_PLACE            = 1;
+        public static final int WHAT_TRACKER          = 2;
+        public static final int WHAT_CAR              = 3;
+        public static final int WHAT_SET_SEARCH       = 4;
+        public static final int WHAT_SET_ADD          = 5;
+        public static final int WHAT_SET_FOLLOW       = 6;
+        public static final int WHAT_SET_SOS          = 7;
+        public static final int WHAT_TMP1             = 8;
+        public static final int WHAT_TMP2             = 9;
+        public static final int WHAT_TMP3             = 10;
+        public static final int WHAT_TMP4             = 11;
+
+        public static final int ARG_PROFILE_NAME      = 0;
+        public static final int ARG_PROFILE_PICTURE   = 1;
+
+
+
+        public OurHandler(Context context) {
+            super(context);
+            instance = this;
+        }
+
+        protected OurHandler(Context context, Activity activity)
+        {
+            super(context);
+            pActivity = activity;
+            instance  = this;
+        }
+
+        protected void setActivity(Activity activity)
+        {
+            pActivity = activity;
+        }
+
+        @Override
+        protected void sendMessage(Message msg) {
+            handleMessage(msg);
+        }
+
+        @Override
+        protected void processMessage(Message message) {
+            final Activity activity = pActivity;
+            if(activity == null)
+                return;
+            switch (message.what)
+            {
+                case WHAT_PROFILE:
+                    switch (message.arg1)
+                    {
+                        case ARG_PROFILE_NAME:
+                            String name = (String) message.obj;
+                            ((TextView)pActivity.findViewById(R.id.tv_profile_account)).setText(name);
+                            break;
+                        case ARG_PROFILE_PICTURE:
+                            new LoadBitmap((ImageView)pActivity.findViewById(R.id.image_profile), (String)message.obj).execute();
+                            resetPic = true;
+                            break;
+                    }
+                    break;
+                case 1:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        protected boolean storeMessage(Message message) {
+            return true;
+        }
+
+        @Override
+        public Message obtainMessage(int whatcode, int arg1, Object obj) {
+            Message msg = Message.obtain();
+            msg.what = whatcode;
+            msg.arg1 = arg1;
+            msg.obj = obj;
+            return msg;
+        }
+
+        public static synchronized OurHandler getInstance()
+        {
+            return instance;
+        }
     }
 };

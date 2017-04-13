@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -36,8 +37,6 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.Thing;
 import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Auth.GMailLoginAuth;
-import com.here.zuki.imhere.Utils.ApplicationContextProvider;
-import com.here.zuki.imhere.Utils.Network;
 import com.here.zuki.imhere.Utils.SessionManager;
 
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private LoginButton facebook;
 
     private boolean     isAutoLogin;
-
+    private MapActivity.OurHandler handler;
 
     //NetWork
 
@@ -103,7 +102,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         sessionManager = SessionManager.getInstance();
 
-
+        handler = MapActivity.OurHandler.getInstance();
+        facebook = (LoginButton) findViewById(R.id.facebook_login);
+        facebook.setReadPermissions("email", "public_profile");
         try_auto_login();
 
         // Set up the login form.
@@ -132,9 +133,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         facebtn = (ImageButton) findViewById(R.id.btn_login_face);
-        facebook = (LoginButton) findViewById(R.id.facebook_login);
-        facebook.setReadPermissions("email", "public_profile");
-
         facebtn.setOnClickListener(this);
 
         ((ImageButton) findViewById(R.id.btn_login_gplus)).setOnClickListener(this);
@@ -172,8 +170,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         {
             gMailLoginAuth.OnActivityResult(requestCode, resultCode, data);
         }
-        if(sessionManager.isLogin())
+        if(sessionManager.isLogin()) {
+            Message msg = handler
+                    .obtainMessage(
+                    MapActivity.OurHandler.WHAT_PROFILE,
+                    MapActivity.OurHandler.ARG_PROFILE_NAME,
+                    sessionManager.getLastLogin());
+            handler.sendMessage(msg);
+            msg = handler
+                    .obtainMessage(
+                            MapActivity.OurHandler.WHAT_PROFILE,
+                            MapActivity.OurHandler.ARG_PROFILE_PICTURE,
+                            "wedding.png");
+            handler.sendMessage(msg);
             finish();
+        }
     }
 
     private void populateAutoComplete() {
