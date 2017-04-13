@@ -52,7 +52,7 @@ public class Network {
         return TYPE_NOT_CONNECTED;
     }
 
-    public static boolean checkNetworkStatus(Context context) {
+    public static boolean checkNetworkStatus(Context context, boolean showDialog) {
         int conn = Network.getConnectivityStatus(context);
         Resources res = context.getResources();
         connected = true;
@@ -62,7 +62,8 @@ public class Network {
             case TYPE_MOBILE:
                 break;
             default:
-                Toast.makeText(ApplicationContextProvider.getContext(), res.getText(R.string.NetworkProblem), Toast.LENGTH_LONG).show();
+                if(showDialog)
+                    Toast.makeText(context, res.getText(R.string.NetworkProblem), Toast.LENGTH_LONG).show();
                 connected = false;
         }
         return connected;

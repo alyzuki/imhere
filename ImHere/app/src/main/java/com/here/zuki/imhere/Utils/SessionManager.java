@@ -22,6 +22,7 @@ public class SessionManager {
     private static final String TAG_ACCOUNT         = "Account";
     private static final String TAG_ACCOUNT_TYPE    = "Type";
     private static final String TAG_OFFLINE         = "IsOfflineAllow";
+    private static final String TAG_AUTOLOG         = "IsAutoLogin";
 
     public SessionManager(Context context)
     {
@@ -95,7 +96,18 @@ public class SessionManager {
         return pref.getString(TAG_ACCOUNT, "");
     }
 
-    private String getLastLoginType()
+    public boolean getAutoLogin()
+    {
+        return pref.getBoolean(TAG_AUTOLOG, false);
+    }
+
+    public void  setTagAutolog(boolean auto)
+    {
+        editor.putBoolean(TAG_AUTOLOG, auto);
+        editor.commit();
+    }
+
+    public String getLastLoginType()
     {
         return pref.getString(TAG_ACCOUNT_TYPE, "");
     }

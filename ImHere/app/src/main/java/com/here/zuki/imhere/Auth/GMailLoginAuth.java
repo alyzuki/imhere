@@ -30,6 +30,7 @@ public class GMailLoginAuth implements
     private Context pContext;
     private Activity pActivity;
     private static final int RC_SIGN_IN = 9001;
+    GoogleSignInAccount acct = null;
 
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
@@ -92,9 +93,7 @@ public class GMailLoginAuth implements
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        //----->updateUI(false);
-                        // [END_EXCLUDE]
+                        acct = null;
                     }
                 });
         mGoogleApiClient.disconnect();
@@ -112,25 +111,15 @@ public class GMailLoginAuth implements
     }
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+        acct = null;
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-
-            //IT IS TEMP, NEED NEW METHOD
-            sessionManager.createLoginSession(acct.getDisplayName(), "GMail", true);
-
-            //----->updateUI(false);
+            acct = result.getSignInAccount();
         } else {
-            result.getStatus();
-            // Signed out, show unauthenticated UI.
-            //----->updateUI(false);
+            acct = null;
         }
     }
 

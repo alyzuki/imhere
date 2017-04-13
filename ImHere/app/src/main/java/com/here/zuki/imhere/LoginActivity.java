@@ -54,8 +54,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    private static final String TAG = "LOGIN_ACTIVITY";
-    private  int LoginType = 0;
+    private static final String TAG         = "LOGIN_ACTIVITY";
+    private static final String TAG_FACE    = "Facebook";
+    private static final String TAG_GMAIL   = "GMail";
+    private  int LoginType = -1;
 
 
     /**
@@ -76,7 +78,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private ImageButton facebtn;
+    private ImageButton gmailbtn;
     private LoginButton facebook;
+
+    private boolean     isAutoLogin;
 
 
     //NetWork
@@ -97,14 +102,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
         sessionManager = SessionManager.getInstance();
-        if(!Network.checkNetworkStatus(ApplicationContextProvider.getContext())) {
-            Intent intent = new Intent(this, ErrorActivity.class);
-            intent.putExtra("MSG_ERROR", getString(R.string.NetworkProblem));
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            return;
-        }
+
+
+        try_auto_login();
+
         // Set up the login form.
         //facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
         mAccoutView = (AutoCompleteTextView) findViewById(R.id.comTextViewUserName);
@@ -150,37 +151,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         {
             case R.id.btn_login_face:
                 LoginType = 0;
-                if(facebookLoginAuth == null)
-                {
-                    facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
-                    facebookLoginAuth.AddAuthStateListener();
-                    facebook.registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
-
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            facebookLoginAuth.handleFacebookAccessToken(loginResult.getAccessToken());
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            Log.d(TAG, "facebook:onCancel");
-                            // ...
-                        }
-
-                        @Override
-                        public void onError(FacebookException error) {
-                            Log.d(TAG, "facebook:onError", error);
-                            // ...
-                        }
-                    });
-                }
+                facebook_init();
                 facebook.performClick();
                 break;
             case R.id.btn_login_gplus:
-                if(gMailLoginAuth == null)
-                {
-                    gMailLoginAuth = new GMailLoginAuth(this, LoginActivity.this);
-                }
+                gmail_init();
                 LoginType = 1;
                 gMailLoginAuth.GmailSignIn();
                 break;
@@ -456,6 +431,96 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    public void try_auto_login()
+    {
+        boolean isLogined = false;
+        //get the login information
+//        isAutoLogin = sessionManager.getAutoLogin();
+//        if(!isAutoLogin)
+//            return;
+//        String      account = sessionManager.getLastLogin();
+//        if(account.isEmpty())
+//            return;
+        String type = sessionManager.getLastLoginType();
+        if(type.isEmpty())
+            return;
+        if(type.equals(TAG_FACE))
+        {
+            facebook_init();
+            if(facebookLoginAuth.getCurLoginUser() != null)
+            {
+                return;
+            }
+            LoginType = 0;
+            facebook.performClick();
+            return;
+        }
+
+        if(type.equals(TAG_GMAIL))
+        {
+            gmail_init();
+            LoginType = 1;
+            gMailLoginAuth.GmailSignIn();
+            return;
+        }
+
+        if(type.equals("Other"))
+        {
+
+        }
+    }
+
+    private void gmail_init()
+    {
+        if(gMailLoginAuth == null)
+        {
+            gMailLoginAuth = new GMailLoginAuth(this, LoginActivity.this);
+        }
+    }
+
+    private void facebook_init()
+    {
+        if(facebookLoginAuth == null)
+        {
+            facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
+            facebookLoginAuth.AddAuthStateListener();
+            facebook.registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
+
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    facebookLoginAuth.handleFacebookAccessToken(loginResult.getAccessToken());
+                }
+
+                @Override
+                public void onCancel() {
+                    Log.d(TAG, "facebook:onCancel");
+                    // ...
+                }
+
+                @Override
+                public void onError(FacebookException error) {
+                    Log.d(TAG, "facebook:onError", error);
+                    // ...
+                }
+            });
+        }
+    }
+
+    private void updateUI()
+    {
+        switch (LoginType)
+        {
+            case 0: //facebook
+                break;
+            case 1: //gmail
+                break;
+        }
+    }
+
+    private void profile_update(String name, String profilePic)
+    {
+
+    }
 
 }
 

@@ -30,7 +30,8 @@ public class FacebookLoginAuth {
     private static final String TAG = ":::::FacebookLoginAuth";
     private Context pContext;
     private Activity pActivity;
-
+    private boolean isLogined = false;
+    private  FirebaseUser user;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -58,7 +59,7 @@ public class FacebookLoginAuth {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
@@ -71,10 +72,6 @@ public class FacebookLoginAuth {
                 // [END_EXCLUDE]
             }
         };
-        // [END auth_state_listener]
-
-        // [START initialize_fblogin]
-        // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
     }
 
@@ -141,5 +138,10 @@ public class FacebookLoginAuth {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    public  FirebaseUser getCurLoginUser()
+    {
+        return this.user;
     }
 }
