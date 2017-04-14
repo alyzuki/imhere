@@ -88,7 +88,7 @@ public class Network {
 
     public static InputStream getHttpConnection(String url, JSONObject object, int timeout) throws Exception
     {
-        return getHttpConnection(url, null, object, null, null, timeout);
+        return getHttpConnection(url, null, object, null, null, timeout, false);
     }
 
     public static InputStream getHttpConnection(String url, String method, List<NameValuePair> params) throws Exception
@@ -98,7 +98,7 @@ public class Network {
 
     public static InputStream getHttpConnection(String url, String method, List<NameValuePair> params, int timeout) throws Exception
     {
-        return getHttpConnection(url, method, null, null, params, timeout);
+        return getHttpConnection(url, method, null, null, params, timeout, false);
     }
 
     public static InputStream getHttpConnection(String url, String method, List<NameValuePair> params,  List<NameValuePair> requestProperty) throws Exception
@@ -108,7 +108,7 @@ public class Network {
 
     public static InputStream getHttpConnection(String url, String method, List<NameValuePair> params,  List<NameValuePair> requestProperty, int timeout) throws Exception
     {
-        return getHttpConnection(url, method, null, requestProperty, params, timeout);
+        return getHttpConnection(url, method, null, requestProperty, params, timeout, false);
     }
 
     public static InputStream getHttpConnection(String url) throws Exception
@@ -121,17 +121,22 @@ public class Network {
         return getHttpConnection(url, method, -1);
     }
 
+    public static InputStream getHttpConnection(String url, String method, boolean special) throws Exception
+    {
+        return getHttpConnection(url, method, null, null, null, -1, special);
+    }
+
     public static InputStream getHttpConnection(String url, String method, int timeout) throws Exception
     {
-        return getHttpConnection(url, method, null, null, null, timeout);
+        return getHttpConnection(url, method, null, null, null, timeout, false);
     }
 
     public static InputStream getHttpConnection(String url, int timeout) throws Exception
     {
-        return getHttpConnection(url, null, null, null, null, timeout);
+        return getHttpConnection(url, null, null, null, null, timeout, false);
     }
 
-    private  static InputStream getHttpConnection(String urlString, String method, JSONObject jsonObject, List<NameValuePair> requestProperty, List<NameValuePair> params, int timeout)
+    private  static InputStream getHttpConnection(String urlString, String method, JSONObject jsonObject, List<NameValuePair> requestProperty, List<NameValuePair> params, int timeout, boolean special)
             throws Exception {
         String HTTP="HTTPCON_LOG";
         OutputStreamWriter osw = null;
@@ -155,11 +160,13 @@ public class Network {
             if(timeout == -1) {
                 timeout = Common.TIMEOUT_SECOND;
             }
-            httpConnection.setConnectTimeout(timeout * Common.SECOND_RATE);
-            httpConnection.setReadTimeout(timeout * Common.SECOND_RATE);
 
-            httpConnection.setDoInput(true);
-            httpConnection.setDoOutput(true);
+            if(!special) {
+                httpConnection.setConnectTimeout(timeout * Common.SECOND_RATE);
+                httpConnection.setReadTimeout(timeout * Common.SECOND_RATE);
+                httpConnection.setDoInput(true);
+                httpConnection.setDoOutput(true);
+            }
             //set json
             if(jsonObject != null) {
                 httpConnection.setRequestProperty("Content-Type", "application/json");

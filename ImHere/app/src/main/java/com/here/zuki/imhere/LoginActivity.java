@@ -29,14 +29,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.Thing;
 import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Auth.GMailLoginAuth;
+import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.SessionManager;
 
 import java.util.ArrayList;
@@ -54,8 +58,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final String TAG         = "LOGIN_ACTIVITY";
-    private static final String TAG_FACE    = "Facebook";
-    private static final String TAG_GMAIL   = "GMail";
+    public static final String TAG_FACE    = "Facebook";
+    public static final String TAG_GMAIL   = "GMail";
     private  int LoginType = -1;
 
 
@@ -81,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private LoginButton facebook;
 
     private boolean     isAutoLogin;
-    private MapActivity.OurHandler handler;
+    protected MapActivity.OurHandler handler;
 
     //NetWork
 
@@ -171,18 +175,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             gMailLoginAuth.OnActivityResult(requestCode, resultCode, data);
         }
         if(sessionManager.isLogin()) {
-            Message msg = handler
-                    .obtainMessage(
-                    MapActivity.OurHandler.WHAT_PROFILE,
-                    MapActivity.OurHandler.ARG_PROFILE_NAME,
-                    sessionManager.getLastLogin());
-            handler.sendMessage(msg);
-            msg = handler
-                    .obtainMessage(
-                            MapActivity.OurHandler.WHAT_PROFILE,
-                            MapActivity.OurHandler.ARG_PROFILE_PICTURE,
-                            "wedding.png");
-            handler.sendMessage(msg);
             finish();
         }
     }
@@ -458,12 +450,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(type.equals(TAG_FACE))
         {
             facebook_init();
-            if(facebookLoginAuth.getCurLoginUser() != null)
+            Common.appSleep(2);
+            LoginType = 0;
+            if(facebookLoginAuth.getCurLoginUser() != null ||  AccessToken.getCurrentAccessToken() != null  || Profile.getCurrentProfile()!=null)
             {
                 return;
             }
-            LoginType = 0;
-            facebook.performClick();
+            //facebook.performClick();
             return;
         }
 
@@ -471,6 +464,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         {
             gmail_init();
             LoginType = 1;
+            Common.appSleep(2);
             gMailLoginAuth.GmailSignIn();
             return;
         }
@@ -493,7 +487,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     {
         if(facebookLoginAuth == null)
         {
-            facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
+            facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this, handler);
             facebookLoginAuth.AddAuthStateListener();
             facebook.registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
 
@@ -514,24 +508,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     // ...
                 }
             });
+            LoginManager.getInstance().registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    Log.d("A", "A");
+                }
+
+                @Override
+                public void onCancel() {
+                    Log.d("A", "A");
+                }
+
+                @Override
+                public void onError(FacebookException error) {
+                    Log.d("A", "A");
+                }
+            });
         }
     }
-
-    private void updateUI()
-    {
-        switch (LoginType)
-        {
-            case 0: //facebook
-                break;
-            case 1: //gmail
-                break;
-        }
-    }
-
-    private void profile_update(String name, String profilePic)
-    {
-
-    }
-
 }
 

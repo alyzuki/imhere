@@ -6,6 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.here.zuki.imhere.LoginActivity;
+import com.here.zuki.imhere.MapActivity;
+
 /**
  * Created by zuki on 3/23/17.
  */
@@ -13,23 +16,21 @@ public class LoadBitmap   extends AsyncTask<String, Void, Bitmap>
 {
 
     private String name;
-    private Bitmap bitmap;
     private Object obj;
 
-    public LoadBitmap(ImageView imageView, String imageName)
+    public LoadBitmap(Object obj, String imageName)
     {
-        this.obj = imageView;
+        this.obj = obj;
         this.name = imageName;
     }
 
-    public LoadBitmap(ImageButton btn, String imageName)
-    {
-        this.obj = btn;
-        this.name = imageName;
-    }
     @Override
     protected Bitmap doInBackground(String... params) {
         BitmapUrlUtils buu = BitmapUrlUtils.getInstance();
+        if(name.contains("http://") || name.contains("https://"))
+        {
+            return buu.getBitmapFromUrl(name);
+        }
         return buu.getBitmap(this.name);
     }
 

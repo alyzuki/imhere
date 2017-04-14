@@ -2,6 +2,8 @@ package com.here.zuki.imhere.Auth;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.here.zuki.imhere.LoginActivity;
+import com.here.zuki.imhere.MapActivity;
 import com.here.zuki.imhere.Utils.SessionManager;
 
 
@@ -30,46 +34,44 @@ public class FacebookLoginAuth {
     private static final String TAG = ":::::FacebookLoginAuth";
     private Context pContext;
     private Activity pActivity;
-    private boolean isLogined = false;
     private  FirebaseUser user;
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
-    // [START declare_auth_listener]
     private FirebaseAuth.AuthStateListener mAuthListener;
-    // [END declare_auth_listener]
 
     private CallbackManager mCallbackManager;
     private ProfileTracker mProfileTracker;
     private SessionManager sessionManager;
+    private MapActivity.OurHandler handler;
+    private Profile curProfile;
 
-    public FacebookLoginAuth(Context context, Activity activity)
+    public FacebookLoginAuth(Context context, final Activity activity, MapActivity.OurHandler handler)
     {
         super();
         sessionManager = SessionManager.getInstance();
         this.pContext = context;
         this.pActivity = activity;
+        this.handler = handler;
         FirebaseApp.initializeApp(pContext);
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
-
-        // [START auth_state_listener]
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    if(!user.getProviderData().isEmpty() && user.getProviderData().size() > 1)
+                        updateProfile(user.getDisplayName(),user.getProviderData().get (1).getUid());
+                    else
+                        updateProfile(user.getDisplayName(),"none");
+                    sessionManager.createLoginSession(user.getDisplayName(), LoginActivity.TAG_FACE);
+                    if(LoginActivity.class == activity.getClass()) {
+                        activity.finish();
+                    }
                 } else {
-                    // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // [START_EXCLUDE]
-                //updateUI(user);
-                // [END_EXCLUDE]
+
             }
         };
         mCallbackManager = CallbackManager.Factory.create();
@@ -84,47 +86,34 @@ public class FacebookLoginAuth {
     public final Context getContext() { return this.pContext; }
 
     public void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener( pActivity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(getContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-
-                        // ...
                     }
                 });
-        if(Profile.getCurrentProfile() == null) {
+        curProfile  = Profile.getCurrentProfile();
+        if( null == curProfile) {
             mProfileTracker = new ProfileTracker() {
                 @Override
                 protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
-                    // profile2 is the new profile
-                    Log.d(TAG, profile2.getFirstName());
-                    Log.d(TAG, profile2.getId());
+                    curProfile = profile2;
+                    updateProfile(curProfile.getName(), curProfile.getId());
+                    sessionManager.createLoginSession(user.getDisplayName(), LoginActivity.TAG_FACE);
                     mProfileTracker.stopTracking();
-
-                    //IT IS TEMP, NEED NEW METHOD
-                    sessionManager.createLoginSession(profile2.getName(), "Facebook", true);
 
                 }
             };
-            // no need to call startTracking() on mProfileTracker
-            // because it is called by its constructor, internally.
-        }
-        else {
-            Profile profile = Profile.getCurrentProfile();
-            Log.d(TAG,  profile.getFirstName());
+
+        }else
+        {
+            updateProfile(curProfile.getName(), curProfile.getId());
+            sessionManager.createLoginSession(user.getDisplayName(), LoginActivity.TAG_FACE);
         }
     }
 
@@ -143,5 +132,24 @@ public class FacebookLoginAuth {
     public  FirebaseUser getCurLoginUser()
     {
         return this.user;
+    }
+
+    public void updateProfile(String name, String  id)
+    {
+        if(user != null)
+        {
+            Message msg = handler
+                    .obtainMessage(
+                            MapActivity.OurHandler.WHAT_PROFILE,
+                            MapActivity.OurHandler.ARG_PROFILE_NAME,
+                            name);
+            handler.sendMessage(msg);
+            msg = handler
+                    .obtainMessage(
+                            MapActivity.OurHandler.WHAT_PROFILE,
+                            MapActivity.OurHandler.ARG_PROFILE_PICTURE,
+                            "https://graph.facebook.com/" + id +"/picture?type=large");
+            handler.sendMessage(msg);
+        }
     }
 }

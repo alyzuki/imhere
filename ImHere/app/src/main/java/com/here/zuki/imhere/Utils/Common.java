@@ -108,4 +108,15 @@ public class Common extends AppCompatActivity{
        }
 
    }
+
+    public static void appSleep(int seconds)
+    {
+        try
+        {
+            Thread.sleep(seconds * SECOND_RATE);
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 }

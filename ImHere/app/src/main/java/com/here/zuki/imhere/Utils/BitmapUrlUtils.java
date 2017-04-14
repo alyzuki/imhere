@@ -118,6 +118,34 @@ public class BitmapUrlUtils {
         }
     }
 
+
+    public Bitmap getBitmapFromUrl(String urlString)
+    {
+
+        if(urlString == null)
+            return null;
+        Bitmap pic = null;
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inSampleSize = 1;
+
+        InputStream stream = null;
+        try {
+            stream = Network.getHttpConnection(urlString, "GET", true);
+            pic = BitmapFactory.
+                    decodeStream(stream, null, bmOptions);
+            if(stream != null)
+                stream.close();
+        }catch (Exception Ex)
+        {
+            Log.e("Error", Ex.getMessage());
+            Ex.printStackTrace();
+            pic = null;
+        }
+        finally {
+            return pic;
+        }
+    }
+
     public void removeFile()
     {
         File file = new File("/data/data/com.here.zuki.imhere/app_profile/placeholder.png");

@@ -101,10 +101,21 @@ public class SessionManager {
         return pref.getBoolean(TAG_AUTOLOG, false);
     }
 
-    public void  setTagAutolog(boolean auto)
+    public void  setAutolog(boolean auto)
     {
         editor.putBoolean(TAG_AUTOLOG, auto);
         editor.commit();
+    }
+
+    public boolean setOffline(boolean allow)
+    {
+        editor.putBoolean(TAG_OFFLINE, allow);
+        return editor.commit();
+    }
+
+    public boolean getOffline()
+    {
+        return pref.getBoolean(TAG_OFFLINE, false);
     }
 
     public String getLastLoginType()
@@ -112,14 +123,23 @@ public class SessionManager {
         return pref.getString(TAG_ACCOUNT_TYPE, "");
     }
 
-    public void createLoginSession(String name, String type, boolean Offline)
+    public boolean createLoginSession(String name, String type)
     {
         if (name == null || name.isEmpty() || type == null || type.isEmpty())
-            return;
-        editor.putBoolean(TAG_OFFLINE, Offline);
+            return false;
         editor.putBoolean(TAG_IS_LOGIN, true);
         editor.putString(TAG_ACCOUNT, name);
         editor.putString(TAG_ACCOUNT_TYPE, type);
-        editor.commit();
+        return  editor.commit();
+    }
+
+    public boolean createLoginSession(String name, String type, boolean Offline)
+    {
+        if(createLoginSession(name, type))
+        {
+            editor.putBoolean(TAG_OFFLINE, Offline);
+            return editor.commit();
+        }
+        return false;
     }
 }

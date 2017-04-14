@@ -28,6 +28,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -38,6 +39,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -57,6 +59,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.here.zuki.imhere.Utils.ApplicationContextProvider;
 import com.here.zuki.imhere.Utils.LoadBitmap;
 import com.here.zuki.imhere.Utils.MainHandler;
 import com.here.zuki.imhere.Utils.PlaceObject;
@@ -162,6 +165,24 @@ public class MapActivity extends AppCompatActivity implements
                 return false;
             }
         });
+
+        CheckBox autolog = (CheckBox)findViewById(R.id.cb_profile_auto_login);
+        autolog.setChecked(sessionManager.getAutoLogin());
+        autolog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                sessionManager.setAutolog(isChecked);
+            }
+        });
+
+        CheckBox offline = (CheckBox)findViewById(R.id.cb_profile_offline_using);
+        offline.setChecked(sessionManager.getOffline());
+        offline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                sessionManager.setOffline(isChecked);
+            }
+        });
     }
 
     public void SearchOptClick(View v) {
@@ -170,8 +191,7 @@ public class MapActivity extends AppCompatActivity implements
     public void SettingsClick(View v) {
         profileView.setVisibility(View.VISIBLE);
         if(resetPic) {
-            createCircleBitmap(R.id.image_profile, null);
-            resetPic = false;
+            resetPic = !createCircleBitmap(R.id.image_profile, null);
         }
     }
 
@@ -328,14 +348,21 @@ public class MapActivity extends AppCompatActivity implements
         startActivity(addaplace);
     }
 
-    private  void createCircleBitmap(int id, Bitmap bitmap)
+    private  boolean createCircleBitmap(int id, Bitmap bitmap)
     {
         ImageView image = (ImageView)findViewById(id);
-        if (bitmap == null)
-            bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        try {
+            if (bitmap == null)
+                bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+        }catch (NullPointerException npe)
+        {
+            npe.printStackTrace();
+            return false;
+        }
         image.setImageBitmap(bitmap);
         RoundedBitmapDrawable roundedImageDrawable = createRoundedBitmapImageDrawableWithBorder(bitmap);
         image.setImageDrawable(roundedImageDrawable);
+        return true;
     }
     private RoundedBitmapDrawable createRoundedBitmapImageDrawableWithBorder(Bitmap bitmap){
         int bitmapWidthImage = bitmap.getWidth();
@@ -407,7 +434,7 @@ public class MapActivity extends AppCompatActivity implements
         }
 
         @Override
-        protected void sendMessage(Message msg) {
+        public void sendMessage(Message msg) {
             handleMessage(msg);
         }
 
@@ -426,7 +453,7 @@ public class MapActivity extends AppCompatActivity implements
                             ((TextView)pActivity.findViewById(R.id.tv_profile_account)).setText(name);
                             break;
                         case ARG_PROFILE_PICTURE:
-                            new LoadBitmap((ImageView)pActivity.findViewById(R.id.image_profile), (String)message.obj).execute();
+                            new LoadBitmap((ImageView)pActivity.findViewById(R.id.image_profile), (String) message.obj).execute();
                             resetPic = true;
                             break;
                     }
