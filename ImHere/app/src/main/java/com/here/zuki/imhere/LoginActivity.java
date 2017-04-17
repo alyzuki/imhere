@@ -154,12 +154,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             case R.id.btn_login_face:
                 LoginType = 0;
                 facebook_init();
-                facebook.performClick();
+                facebookLoginAuth.signIn();
                 break;
             case R.id.btn_login_gplus:
                 gmail_init();
                 LoginType = 1;
-                gMailLoginAuth.GmailSignIn();
+                gMailLoginAuth.signIn();
                 break;
         }
 
@@ -169,11 +169,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(LoginType == 0)
-            facebookLoginAuth.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+            facebookLoginAuth.OnActivityResult(requestCode, resultCode, data);
         else if(LoginType == 1)
-        {
             gMailLoginAuth.OnActivityResult(requestCode, resultCode, data);
-        }
+
         if(sessionManager.isLogin()) {
             finish();
         }
@@ -452,6 +451,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             facebook_init();
             Common.appSleep(2);
             LoginType = 0;
+            facebookLoginAuth.signIn();
             if(facebookLoginAuth.getCurLoginUser() != null ||  AccessToken.getCurrentAccessToken() != null  || Profile.getCurrentProfile()!=null)
             {
                 return;
@@ -465,7 +465,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             gmail_init();
             LoginType = 1;
             Common.appSleep(2);
-            gMailLoginAuth.GmailSignIn();
+            gMailLoginAuth.signIn();
             return;
         }
 
@@ -488,42 +488,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(facebookLoginAuth == null)
         {
             facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this, handler);
-            facebookLoginAuth.AddAuthStateListener();
-            facebook.registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
-
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    facebookLoginAuth.handleFacebookAccessToken(loginResult.getAccessToken());
-                }
-
-                @Override
-                public void onCancel() {
-                    Log.d(TAG, "facebook:onCancel");
-                    // ...
-                }
-
-                @Override
-                public void onError(FacebookException error) {
-                    Log.d(TAG, "facebook:onError", error);
-                    // ...
-                }
-            });
-            LoginManager.getInstance().registerCallback(facebookLoginAuth.getCallbackManager(), new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    Log.d("A", "A");
-                }
-
-                @Override
-                public void onCancel() {
-                    Log.d("A", "A");
-                }
-
-                @Override
-                public void onError(FacebookException error) {
-                    Log.d("A", "A");
-                }
-            });
         }
     }
 }

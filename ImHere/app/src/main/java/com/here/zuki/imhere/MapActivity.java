@@ -189,7 +189,7 @@ public class MapActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 if(sessionManager.getLastLoginType().equals(LoginActivity.TAG_FACE))
                 {
-                    new FacebookLoginAuth(MapActivity.this, MapActivity.this, handler).Logout();
+                    FacebookLoginAuth.getInstance().signOut();
                 }
             }
         });

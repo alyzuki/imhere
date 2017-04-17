@@ -81,14 +81,14 @@ public class GMailLoginAuth implements
         }
     }
 
-    public void GmailSignIn()
+    public void signIn()
     {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         pActivity.startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
 
-    private void GmailSignOut() {
+    public void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
@@ -98,7 +98,7 @@ public class GMailLoginAuth implements
                 });
         mGoogleApiClient.disconnect();
     }
-    private void GmailRevokeAccess() {
+    private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
