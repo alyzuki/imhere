@@ -2,7 +2,6 @@ package com.here.zuki.imhere.Auth;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -12,6 +11,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -46,6 +46,7 @@ public class FacebookLoginAuth {
     private MapActivity.OurHandler handler;
     private Profile curProfile;
 
+    public FacebookLoginAuth(){}
     public FacebookLoginAuth(Context context, final Activity activity, MapActivity.OurHandler handler)
     {
         super();
@@ -150,6 +151,14 @@ public class FacebookLoginAuth {
                             MapActivity.OurHandler.ARG_PROFILE_PICTURE,
                             "https://graph.facebook.com/" + id +"/picture?type=large");
             handler.sendMessage(msg);
+        }
+    }
+
+    public final void Logout()
+    {
+        if(AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null)
+        {
+            LoginManager.getInstance().logOut();
         }
     }
 }

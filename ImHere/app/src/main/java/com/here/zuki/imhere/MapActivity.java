@@ -28,7 +28,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -59,7 +58,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.here.zuki.imhere.Utils.ApplicationContextProvider;
+import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Utils.LoadBitmap;
 import com.here.zuki.imhere.Utils.MainHandler;
 import com.here.zuki.imhere.Utils.PlaceObject;
@@ -181,6 +180,17 @@ public class MapActivity extends AppCompatActivity implements
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 sessionManager.setOffline(isChecked);
+            }
+        });
+
+        ImageButton logout = (ImageButton)findViewById(R.id.btn_profile_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(sessionManager.getLastLoginType().equals(LoginActivity.TAG_FACE))
+                {
+                    new FacebookLoginAuth(MapActivity.this, MapActivity.this, handler).Logout();
+                }
             }
         });
     }
