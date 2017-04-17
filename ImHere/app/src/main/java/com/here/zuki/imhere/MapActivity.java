@@ -424,6 +424,9 @@ public class MapActivity extends AppCompatActivity implements
         public static final int ARG_PROFILE_NAME      = 0;
         public static final int ARG_PROFILE_PICTURE   = 1;
 
+        public static final int ARG_FACE_PROFILE      = 0;
+        public static final int ARG_GMAIL_PROFILE     = 1;
+
 
 
         public OurHandler(Context context) {
@@ -463,8 +466,24 @@ public class MapActivity extends AppCompatActivity implements
                             ((TextView)pActivity.findViewById(R.id.tv_profile_account)).setText(name);
                             break;
                         case ARG_PROFILE_PICTURE:
-                            new LoadBitmap((ImageView)pActivity.findViewById(R.id.image_profile), (String) message.obj).execute();
                             resetPic = true;
+                            String url = null;
+                            switch (message.arg2)
+                            {
+                                case -1:
+                                    url = (String) message.obj;
+                                    break;
+                                case  0:
+                                    url = "https://graph.facebook.com/" + (String) message.obj +"/picture?type=small";
+                                    break;
+                                case  1:
+                                default:
+                                    url = pContext.getString(R.string.nonStr);
+                                    break;
+                            }
+                            if(url != null && url.equals(pContext.getString(R.string.nonStr)))
+                                break;
+                            new LoadBitmap((ImageView)pActivity.findViewById(R.id.image_profile), url).execute();
                             break;
                     }
                     break;
@@ -485,6 +504,17 @@ public class MapActivity extends AppCompatActivity implements
             Message msg = Message.obtain();
             msg.what = whatcode;
             msg.arg1 = arg1;
+            msg.arg2 = -1;
+            msg.obj = obj;
+            return msg;
+        }
+
+
+        public Message obtainMessage(int whatcode, int arg1, int arg2, Object obj) {
+            Message msg = Message.obtain();
+            msg.what = whatcode;
+            msg.arg1 = arg1;
+            msg.arg2 = arg2;
             msg.obj = obj;
             return msg;
         }

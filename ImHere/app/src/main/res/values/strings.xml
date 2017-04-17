@@ -2,6 +2,8 @@
     <string name="app_name">ImHere</string>
     <string name="facebook_app_id">1007129509387503</string>
     <string name="server_client_id">1094198264942-5ng3cn7do4aobgdtfl7ev9274180ltve.apps.googleusercontent.com</string>
+    <string name="authorfail">Authentication failed</string>
+    <string name="nonStr">None</string>
 
     <!-- Common string-->
     <string name="hour">hour</string>

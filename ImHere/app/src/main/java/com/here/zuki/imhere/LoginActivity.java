@@ -11,13 +11,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,15 +27,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.Profile;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.Thing;
+import com.here.zuki.imhere.Auth.Authcred;
 import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Auth.GMailLoginAuth;
 import com.here.zuki.imhere.Utils.Common;
@@ -83,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private ImageButton facebtn;
     private ImageButton gmailbtn;
     private LoginButton facebook;
+    private Authcred    mAuthor;
 
     private boolean     isAutoLogin;
     protected MapActivity.OurHandler handler;
@@ -108,11 +102,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         handler = MapActivity.OurHandler.getInstance();
         facebook = (LoginButton) findViewById(R.id.facebook_login);
-        facebook.setReadPermissions("email", "public_profile");
+
+        mAuthor = new Authcred(this, LoginActivity.this , handler);
+        facebookLoginAuth.setButtonLoginCallback(facebook);
+
+
         try_auto_login();
 
         // Set up the login form.
-        //facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this);
         mAccoutView = (AutoCompleteTextView) findViewById(R.id.comTextViewUserName);
         populateAutoComplete();
 
@@ -361,8 +358,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onStop() {
         super.onStop();
-        if(facebookLoginAuth != null)
-            facebookLoginAuth.RemoveAuthStateListener();
+        mAuthor.stop();
     }
 
 
@@ -452,10 +448,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Common.appSleep(2);
             LoginType = 0;
             facebookLoginAuth.signIn();
-            if(facebookLoginAuth.getCurLoginUser() != null ||  AccessToken.getCurrentAccessToken() != null  || Profile.getCurrentProfile()!=null)
-            {
-                return;
-            }
+
             //facebook.performClick();
             return;
         }
