@@ -104,10 +104,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         facebook = (LoginButton) findViewById(R.id.facebook_login);
 
         mAuthor = new Authcred(this, LoginActivity.this , handler);
-        facebookLoginAuth.setButtonLoginCallback(facebook);
+//        facebookLoginAuth.setButtonLoginCallback(facebook);
 
 
-        try_auto_login();
+        //try_auto_login();
 
         // Set up the login form.
         mAccoutView = (AutoCompleteTextView) findViewById(R.id.comTextViewUserName);
@@ -151,7 +151,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             case R.id.btn_login_face:
                 LoginType = 0;
                 facebook_init();
-                facebookLoginAuth.signIn();
+                facebookLoginAuth.setButtonLoginCallback(facebook);
+                facebook.performClick();
                 break;
             case R.id.btn_login_gplus:
                 gmail_init();
@@ -169,10 +170,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             facebookLoginAuth.OnActivityResult(requestCode, resultCode, data);
         else if(LoginType == 1)
             gMailLoginAuth.OnActivityResult(requestCode, resultCode, data);
-
-        if(sessionManager.isLogin()) {
-            finish();
-        }
+//        if(sessionManager.isLogin()) {
+//            finish();
+//        }
     }
 
     private void populateAutoComplete() {

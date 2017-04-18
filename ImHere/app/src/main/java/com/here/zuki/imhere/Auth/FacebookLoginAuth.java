@@ -112,7 +112,7 @@ public class FacebookLoginAuth {
 
                 }
             };
-
+            mProfileTracker.startTracking();
         }else
         {
             updateProfile(curProfile.getName(), curProfile.getId());
@@ -145,7 +145,7 @@ public class FacebookLoginAuth {
     {
         if(instance == null)
             return;
-        LoginManager.getInstance().logInWithReadPermissions(pActivity, Arrays.asList("email", "public_profile", "user_friends"));
+        LoginManager.getInstance().logInWithReadPermissions(pActivity, Arrays.asList("email", "user_friends"));
     }
 
     public void signOut()
@@ -178,23 +178,6 @@ public class FacebookLoginAuth {
 
     public void setButtonLoginCallback(LoginButton faceLogBtn)
     {
-        faceLogBtn.setReadPermissions("email", "public_profile", "user_friends");
-        faceLogBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "Button Login Success");
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "Button Login Cancel");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "Button Login Error");
-            }
-        });
+        faceLogBtn.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends"));
     }
 }

@@ -12,10 +12,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.here.zuki.imhere.R;
 import com.here.zuki.imhere.Utils.SessionManager;
 
@@ -32,9 +36,11 @@ public class GMailLoginAuth implements
     private static final int RC_SIGN_IN = 9001;
     GoogleSignInAccount acct = null;
 
+
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
     private SessionManager sessionManager = null;
+    private Authcred mAuthor = Authcred.getInstance();
 
     public GMailLoginAuth(Context context, Activity activity)
     {
@@ -42,53 +48,29 @@ public class GMailLoginAuth implements
         this.pContext = context;
         this.pActivity = activity;
         sessionManager = SessionManager.getInstance();
-        // [START configure_signin]
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.EMAIL))
+                .requestIdToken("firebase_web_client_id_for_google")
                 .requestEmail()
                 .build();
-        // [END configure_signin]
-
-        // [START build_client]
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(pContext)
                 .enableAutoManage((FragmentActivity) pActivity /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
         mGoogleApiClient.connect();
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
-            Log.d(TAG, "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
-        } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
-            showProgressDialog();
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    hideProgressDialog();
-                    handleSignInResult(googleSignInResult);
-                }
-            });
-        }
+
     }
 
     public void signIn()
     {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         pActivity.startActivityForResult(signInIntent, RC_SIGN_IN);
+        showProgressDialog();
 
     }
 
     public void signOut() {
+        mAuthor.signOut();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
@@ -118,6 +100,9 @@ public class GMailLoginAuth implements
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             acct = result.getSignInAccount();
+            AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+            if(mAuthor != null)
+                mAuthor.signInWithCredential(credential);
         } else {
             acct = null;
         }

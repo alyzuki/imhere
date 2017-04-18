@@ -2,7 +2,7 @@
 <resources>
     <string name="appName">ImHere</string>
     <string name="facebook_app_id">1007129509387503</string>
-    <string name="server_client_id">1094198264942-5ng3cn7do4aobgdtfl7ev9274180ltve.apps.googleusercontent.com</string>
+    <string name="server_client_id">1094198264942-oq0q8keg8elf78qq1sm4kl1dnd3dg7ko.apps.googleusercontent.com</string>
     <string name="authorfail">Lỗi xác thực</string>
     <string name="nonStr">None</string>
 

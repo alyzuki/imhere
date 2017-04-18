@@ -58,6 +58,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.here.zuki.imhere.Auth.Authcred;
 import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Utils.LoadBitmap;
 import com.here.zuki.imhere.Utils.MainHandler;
@@ -187,10 +188,11 @@ public class MapActivity extends AppCompatActivity implements
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sessionManager.getLastLoginType().equals(LoginActivity.TAG_FACE))
-                {
-                    FacebookLoginAuth.getInstance().signOut();
-                }
+                Authcred.getInstance().signOut();
+//                if(sessionManager.getLastLoginType().equals(LoginActivity.TAG_FACE))
+//                {
+//                    FacebookLoginAuth.getInstance().signOut();
+//                }
             }
         });
     }

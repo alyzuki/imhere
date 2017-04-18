@@ -115,6 +115,9 @@ public class Authcred {
                         if(!task.isSuccessful())
                         {
                             Toast.makeText(pContext, pContext.getText(R.string.authorfail), Toast.LENGTH_SHORT).show();
+                        }else
+                        {
+                            Toast.makeText(pContext, "Login successful", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
