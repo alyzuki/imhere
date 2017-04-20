@@ -67,6 +67,10 @@ import com.here.zuki.imhere.Utils.PrefConfig;
 import com.here.zuki.imhere.Utils.SessionManager;
 import com.here.zuki.imhere.Utils.SharedObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * This shows how UI settings can be toggled.
  */
@@ -371,6 +375,10 @@ public class MapActivity extends AppCompatActivity implements
             npe.printStackTrace();
             return false;
         }
+        if(bitmap == null) {
+
+            return false;
+        }
         image.setImageBitmap(bitmap);
         RoundedBitmapDrawable roundedImageDrawable = createRoundedBitmapImageDrawableWithBorder(bitmap);
         image.setImageDrawable(roundedImageDrawable);
@@ -467,25 +475,33 @@ public class MapActivity extends AppCompatActivity implements
                             String name = (String) message.obj;
                             ((TextView)pActivity.findViewById(R.id.tv_profile_account)).setText(name);
                             break;
+
                         case ARG_PROFILE_PICTURE:
-                            resetPic = true;
                             String url = null;
-                            switch (message.arg2)
-                            {
-                                case -1:
-                                    url = (String) message.obj;
-                                    break;
-                                case  0:
-                                    url = "https://graph.facebook.com/" + (String) message.obj +"/picture?type=small";
-                                    break;
-                                case  1:
-                                default:
-                                    url = pContext.getString(R.string.nonStr);
-                                    break;
+                            String id = null;
+                            resetPic = true;
+
+                            if(message.obj instanceof String)
+                                id = (String) message.obj;
+                            else {
+                                try {
+                                    id = pContext.getString(R.string.identityPic);
+                                    List<String> list = (List<String>) message.obj;
+                                    if (!list.get(1).equals(pContext.getString(R.string.nonStr))) {
+                                        id = list.get(1);
+                                        String type = list.get(0);
+                                        if (type.equals(pContext.getString(R.string.faceId)))
+                                            url = "https://graph.facebook.com/" + id + "/picture?type=large";
+                                        else if (type.equals(pContext.getString(R.string.googleId))) {
+
+                                        }
+                                    }
+                                }catch (Exception ex)
+                                {
+                                    ex.printStackTrace();
+                                }
                             }
-                            if(url != null && url.equals(pContext.getString(R.string.nonStr)))
-                                break;
-                            new LoadBitmap((ImageView)pActivity.findViewById(R.id.image_profile), url).execute();
+                            new LoadBitmap((ImageView)pActivity.findViewById(R.id.image_profile), id, pContext.getString(R.string.identityPic)).execute(url);
                             break;
                     }
                     break;

@@ -100,24 +100,7 @@ public class FacebookLoginAuth {
         final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         if(auth != null)
             auth.signInWithCredential(credential);
-        curProfile  = Profile.getCurrentProfile();
-        if( null == curProfile) {
-            mProfileTracker = new ProfileTracker() {
-                @Override
-                protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
-                    curProfile = profile2;
-                    updateProfile(curProfile.getName(), curProfile.getId());
-                    sessionManager.createLoginSession(curProfile.getName(), LoginActivity.TAG_FACE);
-                    mProfileTracker.stopTracking();
 
-                }
-            };
-            mProfileTracker.startTracking();
-        }else
-        {
-            updateProfile(curProfile.getName(), curProfile.getId());
-            sessionManager.createLoginSession(curProfile.getName(), LoginActivity.TAG_FACE);
-        }
     }
 
     public void updateProfile(String name, String  id)

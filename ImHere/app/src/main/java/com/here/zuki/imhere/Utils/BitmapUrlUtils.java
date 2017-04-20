@@ -43,6 +43,7 @@ public class BitmapUrlUtils {
         ownDir = cw.getDir("profile", Context.MODE_PRIVATE);
         if(!ownDir.exists())
             ownDir.mkdir();
+        //removeFile();
     }
 
     //override constructor
@@ -56,6 +57,11 @@ public class BitmapUrlUtils {
     }
 
     public Bitmap getBitmap(String picName)
+    {
+       return getBitmap(picName, null);
+    }
+
+    public Bitmap getBitmap(String picName, String url)
     {
         if(picName == null)
             return null;
@@ -85,7 +91,10 @@ public class BitmapUrlUtils {
 
         InputStream stream = null;
         try {
-            stream = Network.getHttpConnection(Url + picName, "GET");
+            if(url == null)
+                stream = Network.getHttpConnection(Url + picName, "GET");
+            else
+                stream = Network.getHttpConnection(url, "GET", true);
             pic = BitmapFactory.
                     decodeStream(stream, null, bmOptions);
             stream.close();
@@ -155,6 +164,8 @@ public class BitmapUrlUtils {
         file = new File("/data/data/com.here.zuki.imhere/app_profile/party.png");
         file.delete();
         file = new File("/data/data/com.here.zuki.imhere/app_profile/beer.png");
+        file.delete();
+        file = new File("/data/data/com.here.zuki.imhere/app_profile/1703268413023141");
         file.delete();
     }
 }

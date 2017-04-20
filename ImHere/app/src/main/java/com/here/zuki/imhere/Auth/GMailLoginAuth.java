@@ -50,7 +50,7 @@ public class GMailLoginAuth implements
         sessionManager = SessionManager.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(Scopes.EMAIL))
-                .requestIdToken("firebase_web_client_id_for_google")
+                .requestIdToken(pContext.getResources().getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(pContext)
