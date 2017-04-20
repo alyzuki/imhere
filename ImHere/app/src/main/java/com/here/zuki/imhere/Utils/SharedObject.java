@@ -2,7 +2,7 @@ package com.here.zuki.imhere.Utils;
 
 import android.content.Intent;
 
-import com.here.zuki.imhere.CatalogueActivity;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -26,6 +26,8 @@ public class SharedObject {
 
     private int catalogueType;
 
+    private FirebaseUser curUser;
+
     protected SharedObject()
     {
         this.foundGroupEvent = null;
@@ -34,6 +36,7 @@ public class SharedObject {
         this.curIntentList = new ArrayList<Intent>();
         this.catalogueType = Common.CATALOGUE_TIME;
         this.catalogueItem = null;
+        this .curUser = null;
     }
 
     public static synchronized SharedObject getInstance(){
@@ -71,4 +74,18 @@ public class SharedObject {
     public void setCatalogueItem(EventItem item) { this.catalogueItem = item;}
 
     public EventItem getCatalogueItem() { return this.catalogueItem; }
+
+    public FirebaseUser getCurUser()
+    {
+        if(instance == null)
+            return  null;
+        return this.curUser;
+    }
+
+    public void setCurUser(FirebaseUser user)
+    {
+        if(instance == null)
+            return;
+        this.curUser = user;
+    }
 }

@@ -13,7 +13,6 @@ public class PrefConfig {
     private Context context;
     private static SharedPreferences pref = null;
     private SharedPreferences.Editor editor = null;
-    private Login login;
 
     public PrefConfig()
     {
@@ -33,8 +32,7 @@ public class PrefConfig {
 
     private void constructor()
     {
-        login = Login.getInstance();
-        pref = this.context.getSharedPreferences(login.getUserName(), context.MODE_PRIVATE);
+        pref = this.context.getSharedPreferences("", context.MODE_PRIVATE);
         editor = pref.edit();
         instance = this;
     }
@@ -99,11 +97,6 @@ public class PrefConfig {
         return  pref.getString(key, defVal);
     }
 
-    public String getUser()
-    {
-        return this.login.getUserName();
-    }
-
     public static synchronized PrefConfig getInstance(){
         if(instance == null)
         {
@@ -112,9 +105,9 @@ public class PrefConfig {
         return instance;
     }
 
-    public void changeUser()
+    public void changeUser(String userName)
     {
-        pref = ApplicationContextProvider.getContext().getSharedPreferences(login.getUserName(), Context.MODE_PRIVATE);
+        pref = ApplicationContextProvider.getContext().getSharedPreferences(userName, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
 }

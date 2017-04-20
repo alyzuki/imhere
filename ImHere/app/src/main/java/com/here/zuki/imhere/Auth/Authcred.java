@@ -2,7 +2,6 @@ package com.here.zuki.imhere.Auth;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -13,16 +12,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.here.zuki.imhere.LoginActivity;
 import com.here.zuki.imhere.MapActivity;
 import com.here.zuki.imhere.R;
-import com.here.zuki.imhere.Utils.BitmapUrlUtils;
 import com.here.zuki.imhere.Utils.SessionManager;
+import com.here.zuki.imhere.Utils.SharedObject;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +29,7 @@ import java.util.List;
 
 public class Authcred {
 
-    private final static  String TAG = "AuthorCredential";
+    private final static  String TAG = "---->AuthCred<-----";
     private static Authcred instance;
     private MapActivity.OurHandler pHandler;
     //Author
@@ -57,26 +54,19 @@ public class Authcred {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
-                Bitmap bitmap;
+                updateProfile(user);
                 if(user != null)
                 {
-                    //User is logined
                     Log.d(TAG, "User be already to use");
-                    if(!user.getProviderData().isEmpty())
-                    {
-                        updateProfile(user);
-                        bitmap = BitmapUrlUtils.getInstance().getBitmapFromUrl(user.getPhotoUrl().toString());
-                    }
                     if(LoginActivity.class == pActivity.getClass()) {
                         pActivity.finish();
                     }
-
                 }
                 else
                 {
                     Log.d(TAG, "User is signed out");
-                    updateProfile(null);
                 }
+                SharedObject.getInstance().setCurUser(user);
             }
         };
         mAuthor.addAuthStateListener(mAuthListener);
@@ -114,7 +104,8 @@ public class Authcred {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful())
                         {
-                            Toast.makeText(pContext, pContext.getText(R.string.authorfail), Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, task.getException().toString());
+                            Toast.makeText(pContext, pContext.getText(R.string.authorfail) + "\n" + task.getException().toString(), Toast.LENGTH_SHORT).show();
                         }else
                         {
                             Toast.makeText(pContext, "Login successful", Toast.LENGTH_SHORT).show();

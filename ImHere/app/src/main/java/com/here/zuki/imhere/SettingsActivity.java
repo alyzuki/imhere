@@ -133,7 +133,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        Log.d("SETTING", "user" + pref.getUser());
+//        Log.d("SETTING", "user" + pref.getUser());
 
     }
 

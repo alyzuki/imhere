@@ -33,7 +33,6 @@ import com.google.android.gms.appindexing.Thing;
 import com.here.zuki.imhere.Auth.Authcred;
 import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Auth.GMailLoginAuth;
-import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.SessionManager;
 
 import java.util.ArrayList;
@@ -51,8 +50,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final String TAG         = "LOGIN_ACTIVITY";
-    public static final String TAG_FACE    = "Facebook";
-    public static final String TAG_GMAIL   = "GMail";
     private  int LoginType = -1;
 
 
@@ -442,25 +439,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String type = sessionManager.getLastLoginType();
         if(type.isEmpty())
             return;
-        if(type.equals(TAG_FACE))
-        {
-            facebook_init();
-            Common.appSleep(2);
-            LoginType = 0;
-            facebookLoginAuth.signIn();
-
-            //facebook.performClick();
-            return;
-        }
-
-        if(type.equals(TAG_GMAIL))
-        {
-            gmail_init();
-            LoginType = 1;
-            Common.appSleep(2);
-            gMailLoginAuth.signIn();
-            return;
-        }
+//        if(type.equals(TAG_FACE))
+//        {
+//            facebook_init();
+//            Common.appSleep(2);
+//            LoginType = 0;
+//            facebookLoginAuth.signIn();
+//
+//            //facebook.performClick();
+//            return;
+//        }
+//
+//        if(type.equals(TAG_GMAIL))
+//        {
+//            gmail_init();
+//            LoginType = 1;
+//            Common.appSleep(2);
+//            gMailLoginAuth.signIn();
+//            return;
+//        }
 
         if(type.equals("Other"))
         {

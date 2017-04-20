@@ -58,8 +58,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseUser;
 import com.here.zuki.imhere.Auth.Authcred;
-import com.here.zuki.imhere.Auth.FacebookLoginAuth;
 import com.here.zuki.imhere.Utils.LoadBitmap;
 import com.here.zuki.imhere.Utils.MainHandler;
 import com.here.zuki.imhere.Utils.PlaceObject;
@@ -67,8 +67,6 @@ import com.here.zuki.imhere.Utils.PrefConfig;
 import com.here.zuki.imhere.Utils.SessionManager;
 import com.here.zuki.imhere.Utils.SharedObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -192,11 +190,12 @@ public class MapActivity extends AppCompatActivity implements
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sessionManager.logoutUser();
                 Authcred.getInstance().signOut();
-//                if(sessionManager.getLastLoginType().equals(LoginActivity.TAG_FACE))
-//                {
-//                    FacebookLoginAuth.getInstance().signOut();
-//                }
+                FirebaseUser user = sharedObject.getCurUser();
+                user = null;
+                sessionManager.checkLogin();
+
             }
         });
     }
@@ -542,4 +541,22 @@ public class MapActivity extends AppCompatActivity implements
             return instance;
         }
     }
+
+    private void updateUserInfo()
+    {
+        FirebaseUser user = sharedObject.getCurUser();
+        if(user == null)
+            return;
+        String name = user.getDisplayName();
+        pref.changeUser(name);
+
+        //update config
+
+        handler.pause();
+        //update place
+        //update car
+        handler.resume();
+
+    }
+
 };

@@ -1,13 +1,10 @@
 package com.here.zuki.imhere;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,13 +37,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.here.zuki.imhere.Utils.ApplicationContextProvider;
-import com.here.zuki.imhere.Utils.BitmapUrlUtils;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
 import com.here.zuki.imhere.Utils.Network;
 import com.here.zuki.imhere.Utils.PlaceObject;
 import com.here.zuki.imhere.Utils.PrefConfig;
+import com.here.zuki.imhere.Utils.SessionManager;
 import com.here.zuki.imhere.Utils.SharedObject;
 
 import java.util.ArrayList;
@@ -215,7 +212,7 @@ public class AddPlaceActivity extends AppCompatActivity implements
 
         pref.configSetValue(PREF_LANG, "vi");
         TextView tvloginAccount = (TextView)findViewById(R.id.tv_login_account);
-        tvloginAccount.setText(pref.getUser());
+        tvloginAccount.setText(SessionManager.getInstance().getLastLogin());
 
         EditText edit = (EditText)findViewById(R.id.edit_yr_name);
         edit.setText(pref.configGetString(this.TAG_NAME, ""));
