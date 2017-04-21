@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.here.zuki.imhere.MapActivity;
 import com.here.zuki.imhere.R;
 import com.here.zuki.imhere.Utils.SessionManager;
 
@@ -42,6 +43,8 @@ public class GMailLoginAuth implements
     private SessionManager sessionManager = null;
     private Authcred mAuthor = Authcred.getInstance();
 
+    private static GMailLoginAuth instance;
+
     public GMailLoginAuth(Context context, Activity activity)
     {
         super();
@@ -58,7 +61,7 @@ public class GMailLoginAuth implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         mGoogleApiClient.connect();
-
+        instance = this;
     }
 
     public void signIn()
@@ -129,5 +132,19 @@ public class GMailLoginAuth implements
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
         }
+    }
+
+    public  static  synchronized  GMailLoginAuth getInstance()
+    {
+        return  instance;
+    }
+
+    public  static  synchronized  GMailLoginAuth getInstance(Context context, Activity activity)
+    {
+        if(instance == null)
+            new GMailLoginAuth(context, activity);
+        instance.pContext = context;
+        instance.pActivity = activity;
+        return  instance;
     }
 }

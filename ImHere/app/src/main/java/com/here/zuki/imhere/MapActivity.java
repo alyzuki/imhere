@@ -195,6 +195,7 @@ public class MapActivity extends AppCompatActivity implements
                 FirebaseUser user = sharedObject.getCurUser();
                 user = null;
                 sessionManager.checkLogin();
+                profileView.setVisibility(View.INVISIBLE);
 
             }
         });

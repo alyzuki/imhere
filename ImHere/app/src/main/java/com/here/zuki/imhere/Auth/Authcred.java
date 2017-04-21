@@ -17,6 +17,7 @@ import com.google.firebase.auth.UserInfo;
 import com.here.zuki.imhere.LoginActivity;
 import com.here.zuki.imhere.MapActivity;
 import com.here.zuki.imhere.R;
+import com.here.zuki.imhere.Utils.ApplicationContextProvider;
 import com.here.zuki.imhere.Utils.SessionManager;
 import com.here.zuki.imhere.Utils.SharedObject;
 
@@ -53,20 +54,7 @@ public class Authcred {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                updateProfile(user);
-                if(user != null)
-                {
-                    Log.d(TAG, "User be already to use");
-                    if(LoginActivity.class == pActivity.getClass()) {
-                        pActivity.finish();
-                    }
-                }
-                else
-                {
-                    Log.d(TAG, "User is signed out");
-                }
-                SharedObject.getInstance().setCurUser(user);
+                loginUpdate(0);
             }
         };
         mAuthor.addAuthStateListener(mAuthListener);
@@ -89,6 +77,24 @@ public class Authcred {
     public void signOut()
     {
         mAuthor.signOut();
+        if(user == null)
+            return;
+        List<UserInfo> infos = (List<UserInfo>) user.getProviderData();
+        if(!infos.isEmpty()  && infos.size() > 1)
+        {
+            String sType = infos.get(1).getProviderId();
+            if(sType.equals(ApplicationContextProvider.getContext().getString(R.string.faceId)))
+            {
+                FacebookLoginAuth f = FacebookLoginAuth.getInstance();
+                if(f != null)
+                    f.signOut();
+            }else if(sType.equals(ApplicationContextProvider.getContext().getString(R.string.googleId)))
+            {
+                GMailLoginAuth g = GMailLoginAuth.getInstance();
+                if(g!= null)
+                    g.signOut();
+            }
+        }
         user = null;
     }
 
@@ -110,6 +116,7 @@ public class Authcred {
                         {
                             Toast.makeText(pContext, "Login successful", Toast.LENGTH_SHORT).show();
                         }
+                        loginUpdate(1);
                     }
                 }
         );
@@ -168,6 +175,30 @@ public class Authcred {
         {
 
         }
+    }
+
+    private void loginUpdate(int type)
+    {
+        user = mAuthor.getCurrentUser();
+        updateProfile(user);
+        if(user != null)
+        {
+            if(type == 0)
+                Log.d(TAG, "User be already to use");
+            else
+                Log.d(TAG, "Login successfull");
+            if(LoginActivity.class == pActivity.getClass()) {
+                pActivity.finish();
+            }
+        }
+        else
+        {
+            if(type == 0)
+                Log.d(TAG, "User is signed out");
+            else
+                Log.d(TAG, "Login failed");
+        }
+        SharedObject.getInstance().setCurUser(user);
     }
 
 }

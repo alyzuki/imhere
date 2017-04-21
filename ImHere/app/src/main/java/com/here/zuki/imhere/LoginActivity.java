@@ -477,7 +477,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     {
         if(facebookLoginAuth == null)
         {
-            facebookLoginAuth = new FacebookLoginAuth(this, LoginActivity.this, handler);
+            facebookLoginAuth = FacebookLoginAuth.getInstance(this, LoginActivity.this);
         }
     }
 }

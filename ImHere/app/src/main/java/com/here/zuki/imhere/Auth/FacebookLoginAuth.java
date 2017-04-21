@@ -44,21 +44,19 @@ public class FacebookLoginAuth {
     private CallbackManager mCallbackManager;
     private ProfileTracker mProfileTracker;
     private SessionManager sessionManager;
-    private MapActivity.OurHandler handler;
     private Profile curProfile;
     private Authcred auth = Authcred.getInstance();
 
     public static FacebookLoginAuth instance = null;
 
     public FacebookLoginAuth(){}
-    public FacebookLoginAuth(Context context, final Activity activity, MapActivity.OurHandler handler)
+    public FacebookLoginAuth(Context context, final Activity activity)
     {
         super();
         instance = this;
         sessionManager = SessionManager.getInstance();
         this.pContext = context;
         this.pActivity = activity;
-        this.handler = handler;
 
         mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -103,24 +101,18 @@ public class FacebookLoginAuth {
 
     }
 
-    public void updateProfile(String name, String  id)
-    {
-        Message msg = handler
-                .obtainMessage(
-                        MapActivity.OurHandler.WHAT_PROFILE,
-                        MapActivity.OurHandler.ARG_PROFILE_NAME,
-                        name);
-        handler.sendMessage(msg);
-        msg = handler
-                .obtainMessage(
-                        MapActivity.OurHandler.WHAT_PROFILE,
-                        MapActivity.OurHandler.ARG_PROFILE_PICTURE,
-                        "https://graph.facebook.com/" + id +"/picture?type=large");
-        handler.sendMessage(msg);
-    }
+
 
     public  static  synchronized FacebookLoginAuth getInstance()
     {
+        return instance;
+    }
+    public static synchronized  FacebookLoginAuth getInstance(Context context, Activity activity)
+    {
+        if(instance == null)
+            new FacebookLoginAuth(context, activity);
+        instance.pContext = context;
+        instance.pActivity = activity;
         return instance;
     }
 
