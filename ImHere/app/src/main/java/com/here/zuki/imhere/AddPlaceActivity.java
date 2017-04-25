@@ -20,7 +20,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -38,7 +37,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.here.zuki.imhere.Utils.ApplicationContextProvider;
 import com.here.zuki.imhere.Utils.Common;
-import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.GPSTracker;
 import com.here.zuki.imhere.Utils.Network;
 import com.here.zuki.imhere.Utils.PlaceObject;
@@ -64,6 +62,9 @@ public class AddPlaceActivity extends AppCompatActivity implements
     private final static String TAG_NAME    = "yrName";
     private final static String TAG_PHONE   = "yrPhone";
     private final static String TAG_MAIL    = "yrMail";
+    public  final static String REQUEST     = "requestCode";
+    public  final static String RES_NAME    = "resName";
+    public  final static String RES_VAL     = "resValue";
 
 
     private  final  float SECONDELAY = 3;
@@ -460,23 +461,23 @@ public class AddPlaceActivity extends AppCompatActivity implements
         Intent intent = sharedObject.getCurIntent();
         if(intent == null) return;
 
-        String previousClass = intent.getComponent().getClassName();
-        if(previousClass.equals(CatalogueActivity.class.getCanonicalName())) {
-            EventItem item = sharedObject.getCatalogueItem();
-            if (item != null) {
-                Toast.makeText(AddPlaceActivity.this, item.getEventNane(), Toast.LENGTH_LONG).show();
-                if(sharedObject.getCatalogueType() == Common.CATALOGUE_TIME)
-                {
-                    place.setTimeLapse(item.getType());
-                    ((EditText)findViewById(R.id.ed_add_place_timelapse)).setText(item.getEventNane());
-                }else
-                {
-                    ((EditText)findViewById(R.id.ed_add_place_catalogue)).setText(item.getEventNane());
-                    place.setEventName(item.getEventNane());
-                    place.setEvID(item.getType());
-                }
-            }
-        }
+//        String previousClass = intent.getComponent().getClassName();
+//        if(previousClass.equals(CatalogueActivity.class.getCanonicalName())) {
+//            EventItem item = sharedObject.getCatalogueItem();
+//            if (item != null) {
+//                Toast.makeText(AddPlaceActivity.this, item.getEventNane(), Toast.LENGTH_LONG).show();
+//                if(sharedObject.getCatalogueType() == Common.CATALOGUE_TIME)
+//                {
+//                    place.setTimeLapse(item.getType());
+//                    ((EditText)findViewById(R.id.ed_add_place_timelapse)).setText(item.getEventNane());
+//                }else
+//                {
+//                    ((EditText)findViewById(R.id.ed_add_place_catalogue)).setText(item.getEventNane());
+//                    place.setEventName(item.getEventNane());
+//                    place.setEvID(item.getType());
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -495,6 +496,29 @@ public class AddPlaceActivity extends AppCompatActivity implements
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(ApplicationContextProvider.setLocale());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        String name = data.getStringExtra(RES_NAME);
+        if (name == null)
+            return;
+        int val = data.getIntExtra(RES_VAL, -1);
+        if(val < 0)
+            return;
+        switch (requestCode)
+        {
+            case Common.CATALOGUE_EVENT:
+                ((EditText)findViewById(R.id.ed_add_place_catalogue)).setText(name);
+                place.setEventName(name);
+                place.setEvID(val);
+            case Common.CATALOGUE_TIME:
+                ((EditText)findViewById(R.id.ed_add_place_timelapse)).setText(name);
+                place.setTimeLapse(val);
+                break;
+        }
     }
 
 };

@@ -69,4 +69,11 @@
     <string name="textview_login_register">Bạn chưa có tài khoản?</string>
     <string name="textview_login_by_social">Đăng nhập bằng</string>
 
+    <!-- Map -->
+    <string name="distance_is_empty">Không được để trống</string>
+    <string name="distance_is_small">Khoảng cách quá ngắn</string>
+    <string name="distance_is_far">Khoảng cách quá xa</string>
+    <string name="profile_logout">Thoát</string>
+    <string name="profile_about">Giới thiệu</string>
+
 </resources>

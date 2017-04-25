@@ -78,7 +78,7 @@
         tools:ignore="InefficientWeight,UselessLeaf">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -86,7 +86,10 @@
             tools:ignore="UselessParent"
             android:background="@drawable/drop_shadow"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:weightSum="1">
 
             <EditText
                 android:layout_width="match_parent"
@@ -102,11 +105,29 @@
                 android:editable="false"
                 android:enabled="false" />
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center_vertical">
+
+                <ImageButton
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_catalogue_new"
+                    android:layout_weight="1"
+                    tools:ignore="ContentDescription,RtlHardcoded"
+                    android:layout_width="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="1dp" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:background="@drawable/drop_shadow"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"

@@ -1,31 +1,28 @@
 package com.here.zuki.imhere;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.here.zuki.imhere.Adapter.PlaceAdapter;
 import com.here.zuki.imhere.Utils.ApplicationContextProvider;
-import com.here.zuki.imhere.Utils.BitmapUrlUtils;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.LoadBitmap;
-import com.here.zuki.imhere.Utils.PlaceObject;
 import com.here.zuki.imhere.Utils.SharedObject;
 
 import java.util.ArrayList;
@@ -34,11 +31,15 @@ import java.util.ArrayList;
  * Created by zuki on 3/30/17.
  */
 
-public class CatalogueActivity extends AppCompatActivity {
+public class CatalogueActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedObject sharedObject = SharedObject.getInstance();
     private  ArrayList<EventItem> list = null;
     private  AdapterCatalogue adapter;
+    private  int requestCode;
+
+    private static final String TAG = ":::CATALOG:::";
+    private EventItem selectedItem = null;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -55,46 +56,49 @@ public class CatalogueActivity extends AppCompatActivity {
         final ListView lview = (ListView)findViewById(R.id.lv_catalogueItem);
         this.list = new ArrayList<EventItem>();
         adapter = new AdapterCatalogue(list, this);
-        if(sharedObject.getCatalogueType() == Common.CATALOGUE_EVENT)
-        {
-            createEventCatalogue();
-        }
-        else if(sharedObject.getCatalogueType() == Common.CATALOGUE_TIME)
-        {
-            createTimeCatalogue();
-        }
-        lview.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
         lview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventItem item = (EventItem) lview.getItemAtPosition(position);
-                sharedObject.setCatalogueItem(item);
-                ((EditText)findViewById(R.id.edit_catalogue_selected)).setText(item.getEventNane());
+                selectedItem = (EventItem) lview.getItemAtPosition(position);
+                ((EditText)findViewById(R.id.edit_catalogue_selected)).setText(selectedItem.getEventNane());
             }
         });
 
-        ImageButton btnCancel = (ImageButton)findViewById(R.id.btn_catalogue_cancel);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sharedObject.setCatalogueItem(null);
-                finish();
-            }
-        });
+        findViewById(R.id.btn_catalogue_apply).setOnClickListener(this);
+        findViewById(R.id.btn_catalogue_cancel).setOnClickListener(this);
+        findViewById(R.id.btn_catalogue_new).setOnClickListener(this);
+        ((ImageButton)findViewById(R.id.btn_catalogue_new)).setImageBitmap(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_input_add));
 
-        ImageButton btnApply = (ImageButton)findViewById(R.id.btn_catalogue_apply);
-        btnApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        requestCode = getIntent().getIntExtra(AddPlaceActivity.REQUEST, -1);
+        if(requestCode == Common.CATALOGUE_EVENT)
+            createEventCatalogue();
+        else if(requestCode == Common.CATALOGUE_TIME )
+            createTimeCatalogue();
+        else {
+            Log.d(TAG, "Request code invalid");
+            finish();
+        }
+        lview.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setResultValues()
+    {
+        Intent parent = new Intent();
+        String name = selectedItem != null ? selectedItem.getEventNane() : null;
+        parent.putExtra(AddPlaceActivity.RES_NAME, name);
+        int value = selectedItem != null ? selectedItem.getType() : -1;
+        parent.putExtra(AddPlaceActivity.RES_VAL, value);
+        if(selectedItem == null)
+            setResult(Activity.RESULT_CANCELED, parent);
+        else
+            setResult(Activity.RESULT_OK, parent);
+        finish();
     }
 
     private void createEventCatalogue()
     {
+        findViewById(R.id.btn_catalogue_new).setVisibility(View.VISIBLE);
         ((EditText)findViewById(R.id.edit_catalogue_selected)).setHint(R.string.catalog_choose_event_hint);
         ((TextView)findViewById(R.id.tv_catalogue_name)).setText(R.string.catalog_choose_event);
         new EventItem().getCatalogueList(this.list, this, adapter);
@@ -104,6 +108,7 @@ public class CatalogueActivity extends AppCompatActivity {
     {
         ((EditText)findViewById(R.id.edit_catalogue_selected)).setHint(R.string.catalog_choose_time_hint);
         ((TextView)findViewById(R.id.tv_catalogue_name)).setText(R.string.catalog_choose_time);
+        findViewById(R.id.btn_catalogue_new).setVisibility(View.INVISIBLE);
 
         this.list.add(new EventItem("5 " + getText(R.string.minutes),        5));
         this.list.add(new EventItem("10 " + getText(R.string.minutes),       10));
@@ -116,6 +121,8 @@ public class CatalogueActivity extends AppCompatActivity {
         this.list.add(new EventItem("3 " + getText(R.string.hours),          180));
         this.list.add(new EventItem("4 " + getText(R.string.hours),          240));
     }
+
+
 
     public final class CatalogueItem
     {
@@ -213,4 +220,30 @@ public class CatalogueActivity extends AppCompatActivity {
         super.attachBaseContext(ApplicationContextProvider.setLocale());
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.btn_catalogue_cancel:
+                selectedItem = null;
+            case R.id.btn_catalogue_apply:
+                setResultValues();
+                break;
+            case R.id.btn_catalogue_new:
+                EditText name = (EditText)findViewById(R.id.edit_catalogue_selected);
+                if(name.isFocusable())
+                {
+                    //check name was existed
+                    name.setFocusable(false);
+                    ((ImageButton)v).setImageBitmap(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_input_add));
+                }
+                else
+                {
+                    name.setFocusable(true);
+                    ((ImageButton)v).setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.apply));
+                }
+                break;
+        }
+    }
 }

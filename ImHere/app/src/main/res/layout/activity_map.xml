@@ -534,9 +534,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="5dp"
-                                    android:text="About"
+                                    android:text="@string/profile_about"
                                     tools:ignore="HardcodedText,SpUsage"
-                                    android:textSize="@dimen/activity_vertical_margin"/>
+                                    android:textSize="@dimen/activity_vertical_margin"
+                                    android:id="@+id/profile_about" />
                                 <LinearLayout
                                     android:orientation="vertical"
                                     android:layout_width="match_parent"
@@ -547,9 +548,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="5dp"
-                                    android:text="Logout"
+                                    android:text="@string/profile_logout"
                                     tools:ignore="HardcodedText,SpUsage"
-                                    android:textSize="@dimen/activity_vertical_margin"/>
+                                    android:textSize="@dimen/activity_vertical_margin"
+                                    android:id="@+id/profile_logoutString" />
                             </LinearLayout>
                         </ScrollView>
                     </LinearLayout>

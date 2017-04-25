@@ -33,6 +33,8 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -82,6 +84,7 @@ public class MapActivity extends AppCompatActivity implements
     private UiSettings mUiSettings;
 
     private SharedObject sharedObject = SharedObject.getInstance();
+    private static final String TAG = ":::MAP:::";
 
     /**
      * Flag indicating whether a requested permission has been denied after returning in
@@ -146,6 +149,41 @@ public class MapActivity extends AppCompatActivity implements
 
         loadConfig();
 
+        final EditText distance = ((EditText)findViewById(R.id.setting_distance));
+        distance.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try
+                {
+                    if(s.length() <= 0)
+                    {
+                        distance.setError(getText(R.string.distance_is_empty));
+                    }
+                    float dis = Float.parseFloat(s.toString());
+                    if(dis < 0.5 )
+                    {
+                        distance.setError(getText(R.string.distance_is_small));
+                    }else if (dis > 10)
+                    {
+                        distance.setError(getText(R.string.distance_is_far));
+                    }else
+                        pref.configSetValue(SETTINGS_DISTANCE, dis);
+                }catch (NumberFormatException nfEx)
+                {
+                    Log.d(TAG, "Wrong format");
+                }
+            }
+        });
         //setting button click
         findViewById(R.id.FollowExpand).setOnClickListener(this);
         findViewById(R.id.SearchExpand).setOnClickListener(this);
@@ -161,6 +199,9 @@ public class MapActivity extends AppCompatActivity implements
 
         //setting checkbox click
         ((CheckBox) findViewById(R.id.cb_profile_offline_using)).setOnCheckedChangeListener(this);
+        ((CheckBox) findViewById(R.id.setting_show_SOS)).setOnCheckedChangeListener(this);
+        ((CheckBox) findViewById(R.id.setting_show_add)).setOnCheckedChangeListener(this);
+        ((CheckBox) findViewById(R.id.cb_settings_notification)).setOnCheckedChangeListener(this);
 
 
     }
@@ -210,7 +251,18 @@ public class MapActivity extends AppCompatActivity implements
             case R.id.cb_profile_offline_using:
                 sessionManager.setOffline(isChecked);
                 break;
-
+            case R.id.cb_settings_notification:
+                findViewById(R.id.setting_distance).setVisibility(isChecked ? View.VISIBLE: View.INVISIBLE);
+                pref.configSetValue(SETTINGS_NOTIFY, isChecked);
+                break;
+            case R.id.setting_show_add:
+                findViewById(R.id.fab_add_btn).setVisibility(isChecked ? View.VISIBLE: View.INVISIBLE);
+                pref.configSetValue(SETTINGS_ADD_PLA, isChecked);
+                break;
+            case R.id.setting_show_SOS:
+                findViewById(R.id.fab_sos_btn).setVisibility(isChecked ? View.VISIBLE: View.INVISIBLE);
+                pref.configSetValue(SETTINGS_ADD_SOS, isChecked);
+                break;
         }
     }
 

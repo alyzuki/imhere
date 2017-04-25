@@ -78,6 +78,13 @@
     <string name="textview_login_register">Do you have an account?</string>
     <string name="textview_login_by_social">Login with</string>
 
+    <!-- Map -->
+    <string name="distance_is_empty">Distance must not empty</string>
+    <string name="distance_is_small">This is so nearly</string>
+    <string name="distance_is_far">This is so far</string>
+    <string name="profile_logout">Logout</string>
+    <string name="profile_about">About</string>
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
