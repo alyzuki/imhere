@@ -469,7 +469,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     {
         if(gMailLoginAuth == null)
         {
-            gMailLoginAuth = new GMailLoginAuth(this, LoginActivity.this);
+            gMailLoginAuth = GMailLoginAuth.getInstance(this, LoginActivity.this);
         }
     }
 

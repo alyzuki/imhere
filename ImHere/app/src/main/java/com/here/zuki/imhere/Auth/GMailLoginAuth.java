@@ -14,7 +14,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
@@ -57,7 +56,7 @@ public class GMailLoginAuth implements
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(pContext)
-                .enableAutoManage((FragmentActivity) pActivity /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage((FragmentActivity) MapActivity.OurHandler.getInstance().getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         mGoogleApiClient.connect();
@@ -73,7 +72,6 @@ public class GMailLoginAuth implements
     }
 
     public void signOut() {
-        mAuthor.signOut();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
@@ -81,7 +79,7 @@ public class GMailLoginAuth implements
                         acct = null;
                     }
                 });
-        mGoogleApiClient.disconnect();
+       // mGoogleApiClient.disconnect();
     }
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(

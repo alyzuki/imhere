@@ -276,23 +276,14 @@
                                 >
 
                                 <CheckBox
-                                    android:text="Remeber me"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/cb_profile_auto_login"
-                                    android:checked="true"
-                                    tools:ignore="HardcodedText"
-                                    android:textSize="@dimen/com_facebook_share_button_compound_drawable_padding"
-                                    android:textStyle="italic"
-                                    style="@style/Widget.AppCompat.CompoundButton.CheckBox" />
-
-                                <CheckBox
                                     android:text="Using offline data"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:id="@+id/cb_profile_offline_using"
                                     android:checked="true"
-                                    tools:ignore="HardcodedText" />
+                                    tools:ignore="HardcodedText"
+                                    android:textStyle="normal|italic"
+                                    android:textSize="12sp" />
 
                                 <LinearLayout
                                     android:orientation="vertical"
@@ -315,6 +306,37 @@
                                     android:layout_height="wrap_content"
                                     android:id="@+id/profile_places"
                                     tools:ignore="NestedScrolling" />
+
+                                <Button
+                                    android:text="@string/AddNewPlaceTile"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/btn_profile_add_place"
+                                    android:background="@android:color/transparent" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/adasdczcjasda"
+                                    android:text="Your Tracker"
+                                    android:paddingTop="5dp"
+                                    tools:ignore="HardcodedText,SpUsage"
+                                    android:textSize="@dimen/activity_vertical_margin" />
+
+                                <ListView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/profile_device"
+                                    tools:ignore="DuplicateIds,NestedScrolling" />
+
+                                <Button
+                                    android:text="Add new device"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/btn_profile_add_device"
+                                    android:background="@android:color/transparent"
+                                    tools:ignore="HardcodedText" />
+
                                 <LinearLayout
                                     android:orientation="vertical"
                                     android:layout_width="match_parent"
@@ -359,8 +381,7 @@
                                     app:headerfontsize="16"
                                     app:paddingStart="30dp"
                                     android:orientation="vertical"
-                                    android:id="@+id/SearchExpand"
-                                    android:onClick="expandable_toggle">
+                                    android:id="@+id/SearchExpand">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -372,7 +393,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginStart="30dp"
-                                            android:id="@+id/settings_notification_btn"
+                                            android:id="@+id/cb_settings_notification"
                                             android:text="Notify when I am closed in "
                                             tools:ignore="HardcodedText,TooDeepLayout" />
 
@@ -450,8 +471,7 @@
                                     app:headerfontsize="16"
                                     app:paddingStart="30dp"
                                     android:orientation="vertical"
-                                    android:id="@+id/AddExpand"
-                                    android:onClick="expandable_toggle">
+                                    android:id="@+id/AddExpand">
 
                                     <CheckBox
                                         android:text="Show Add button on map"
@@ -472,8 +492,7 @@
                                     app:headerfontsize="16"
                                     app:paddingStart="30dp"
                                     android:orientation="vertical"
-                                    android:id="@+id/FollowExpand"
-                                    android:onClick="expandable_toggle">
+                                    android:id="@+id/FollowExpand">
 
                                     <CheckBox
                                         android:text="CheckBox"
@@ -494,8 +513,7 @@
                                     app:headerfontsize="16"
                                     app:paddingStart="30dp"
                                     android:orientation="vertical"
-                                    android:id="@+id/SOSExpand"
-                                    android:onClick="expandable_toggle">
+                                    android:id="@+id/SOSExpand">
 
                                     <CheckBox
                                         android:text="Show S.O.S button on map"

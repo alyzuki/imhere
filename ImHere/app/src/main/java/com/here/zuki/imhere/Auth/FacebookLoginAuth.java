@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
 
@@ -21,8 +20,6 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
-import com.here.zuki.imhere.LoginActivity;
-import com.here.zuki.imhere.MapActivity;
 import com.here.zuki.imhere.Utils.SessionManager;
 
 import java.security.MessageDigest;
@@ -129,7 +126,6 @@ public class FacebookLoginAuth {
             return;
         //Firebase signOut
         try {
-            auth.signOut();
             LoginManager.getInstance().logOut();
             AccessToken.setCurrentAccessToken(null);
         }

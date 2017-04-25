@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -69,11 +70,12 @@ import com.here.zuki.imhere.Utils.SharedObject;
 
 import java.util.List;
 
+
 /**
  * This shows how UI settings can be toggled.
  */
 public class MapActivity extends AppCompatActivity implements
-        OnMapReadyCallback {
+        OnMapReadyCallback , View.OnClickListener, CheckBox.OnCheckedChangeListener {
 
     private GoogleMap mMap;
 
@@ -122,36 +124,9 @@ public class MapActivity extends AppCompatActivity implements
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        pref = new PrefConfig("Hieu", this.getApplicationContext());
-        if(add == null){
-            add = (FloatingActionButton)findViewById(R.id.fab_add_btn);
-            add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent addaplace = new Intent(MapActivity.this, AddPlaceActivity.class);
-                    startActivity(addaplace);
-                }
-            });
-        }
-        if (sos == null)
-        {
-            sos = (FloatingActionButton)findViewById(R.id.fab_sos_btn);
-//            sos.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
-            new LoadBitmap(sos, "sos.png").execute();
-        }
+        pref = new PrefConfig(sessionManager.getLastLogin(), this.getApplicationContext());
 
-        findViewById(R.id.search_string).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+
         profileView = (HorizontalScrollView) findViewById(R.id.scrollview_profile);
         profileView.setVisibility(View.INVISIBLE);
         profileView.setOnTouchListener(new View.OnTouchListener() {
@@ -167,48 +142,80 @@ public class MapActivity extends AppCompatActivity implements
                 return false;
             }
         });
+        new LoadBitmap((FloatingActionButton)findViewById(R.id.fab_sos_btn), "sos.png").execute();
 
-        CheckBox autolog = (CheckBox)findViewById(R.id.cb_profile_auto_login);
-        autolog.setChecked(sessionManager.getAutoLogin());
-        autolog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sessionManager.setAutolog(isChecked);
-            }
-        });
+        loadConfig();
 
-        CheckBox offline = (CheckBox)findViewById(R.id.cb_profile_offline_using);
-        offline.setChecked(sessionManager.getOffline());
-        offline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sessionManager.setOffline(isChecked);
-            }
-        });
+        //setting button click
+        findViewById(R.id.FollowExpand).setOnClickListener(this);
+        findViewById(R.id.SearchExpand).setOnClickListener(this);
+        findViewById(R.id.AddExpand).setOnClickListener(this);
+        findViewById(R.id.SOSExpand).setOnClickListener(this);
+        findViewById(R.id.btn_profile_logout).setOnClickListener(this);
+        findViewById(R.id.btn_profile_add_device).setOnClickListener(this);
+        findViewById(R.id.btn_profile_add_place).setOnClickListener(this);
+        findViewById(R.id.fab_add_btn).setOnClickListener(this);
+        findViewById(R.id.fab_sos_btn).setOnClickListener(this);
+        findViewById(R.id.search_string).setOnClickListener(this);
+        findViewById(R.id.appMenu).setOnClickListener(this);
 
-        ImageButton logout = (ImageButton)findViewById(R.id.btn_profile_logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //setting checkbox click
+        ((CheckBox) findViewById(R.id.cb_profile_offline_using)).setOnCheckedChangeListener(this);
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.fab_add_btn:
+            case R.id.btn_profile_add_place:
+                startAddPlace(v);
+                break;
+            case R.id.fab_sos_btn:
+                break;
+            case R.id.search_string:
+                Intent intent = new Intent(MapActivity.this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_profile_logout:
                 sessionManager.logoutUser();
                 Authcred.getInstance().signOut();
                 FirebaseUser user = sharedObject.getCurUser();
                 user = null;
                 sessionManager.checkLogin();
                 profileView.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.SearchExpand:
+            case R.id.AddExpand:
+            case R.id.FollowExpand:
+            case R.id.SOSExpand:
+                ((Expandable)v).toggle();
+                break;
+            case R.id.appMenu:
+                profileView.setVisibility(View.VISIBLE);
+                if(resetPic) {
+                    resetPic = !createCircleBitmap(R.id.image_profile, null);
+                }
+                break;
+        }
+    }
 
-            }
-        });
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId())
+        {
+            case R.id.cb_profile_offline_using:
+                sessionManager.setOffline(isChecked);
+                break;
+
+        }
     }
 
     public void SearchOptClick(View v) {
         showStylesDialog();
-    }
-    public void SettingsClick(View v) {
-        profileView.setVisibility(View.VISIBLE);
-        if(resetPic) {
-            resetPic = !createCircleBitmap(R.id.image_profile, null);
-        }
     }
 
 
@@ -335,10 +342,11 @@ public class MapActivity extends AppCompatActivity implements
         if(previousIntent == null)
             return;
         String previousClass = previousIntent.getComponent().getClassName();
-        if(previousClass.equals(SettingsActivity.class.getCanonicalName())) {
-            add.setVisibility(pref.configGetBoolean(SettingsActivity.ADDSHOW, false) ? View.VISIBLE : View.INVISIBLE);
-            sos.setVisibility(pref.configGetBoolean(SettingsActivity.SOSSHOW, false) ? View.VISIBLE : View.INVISIBLE);
-        }else  if(previousClass.equals(SearchActivity.class.getCanonicalName()))
+//        if(previousClass.equals(SettingsActivity.class.getCanonicalName())) {
+//            add.setVisibility(pref.configGetBoolean(SettingsActivity.ADDSHOW, false) ? View.VISIBLE : View.INVISIBLE);
+//            sos.setVisibility(pref.configGetBoolean(SettingsActivity.SOSSHOW, false) ? View.VISIBLE : View.INVISIBLE);
+//        }else
+        if(previousClass.equals(SearchActivity.class.getCanonicalName()))
         {
             PlaceObject place = sharedObject.getFoundPlace();
             if(place != null)
@@ -360,7 +368,7 @@ public class MapActivity extends AppCompatActivity implements
 
     public   void startAddPlace(View view)
     {
-        Intent addaplace = new Intent(this, AddPlaceActivity.class);
+        Intent addaplace = new Intent(MapActivity.this, AddPlaceActivity.class);
         startActivity(addaplace);
     }
 
@@ -455,6 +463,8 @@ public class MapActivity extends AppCompatActivity implements
         {
             pActivity = activity;
         }
+
+        public  Activity getActivity() { return  pActivity;}
 
         @Override
         public void sendMessage(Message msg) {
@@ -560,4 +570,21 @@ public class MapActivity extends AppCompatActivity implements
 
     }
 
+
+    private void loadConfig()
+    {
+        pref.changeUser(sessionManager.getLastLogin());
+        ((CheckBox)findViewById(R.id.cb_profile_offline_using)).setChecked(pref.configGetBoolean(SETTINGS_USE_OFF, true));
+        ((CheckBox)findViewById(R.id.cb_settings_notification)).setChecked(pref.configGetBoolean(SETTINGS_NOTIFY, true));
+        ((EditText)findViewById(R.id.setting_distance)).setText(String.valueOf(pref.configGetFloat(SETTINGS_DISTANCE, (float) 1)));
+        ((CheckBox)findViewById(R.id.setting_show_add)).setChecked(pref.configGetBoolean(SETTINGS_ADD_PLA, true));
+        ((CheckBox)findViewById(R.id.setting_show_SOS)).setChecked(pref.configGetBoolean(SETTINGS_ADD_SOS, false));
+    }
+
+    public final String SETTINGS_NOTIFY     = "notification";
+    public final String SETTINGS_ADD_PLA    = "showBtnAddPlace";
+    public final String SETTINGS_DEV_CONT   = "ShowDeviceControl";
+    public final String SETTINGS_USE_OFF    = "offlineAllow";
+    public final String SETTINGS_DISTANCE   = "distances";
+    public final String SETTINGS_ADD_SOS    = "showBtnSOS";
 };
