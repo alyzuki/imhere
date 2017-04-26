@@ -1,10 +1,15 @@
 package com.here.zuki.imhere;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.app.VoiceInteractor;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,14 +23,27 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.here.zuki.imhere.Utils.ApplicationContextProvider;
 import com.here.zuki.imhere.Utils.Common;
 import com.here.zuki.imhere.Utils.EventItem;
 import com.here.zuki.imhere.Utils.LoadBitmap;
+import com.here.zuki.imhere.Utils.Network;
 import com.here.zuki.imhere.Utils.SharedObject;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zuki on 3/30/17.
@@ -60,14 +78,20 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedItem = (EventItem) lview.getItemAtPosition(position);
-                ((EditText)findViewById(R.id.edit_catalogue_selected)).setText(selectedItem.getEventNane());
+                EditText edit = ((EditText)findViewById(R.id.edit_catalogue_selected));
+                edit.setText(selectedItem.getEventNane());
+                ((ImageButton)findViewById(R.id.btn_catalogue_new)).setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.add));
+                edit.setEnabled(false);
+                edit.setClickable(false);
+                edit.setFocusable(false);
+                edit.setFocusableInTouchMode(false);
             }
         });
 
         findViewById(R.id.btn_catalogue_apply).setOnClickListener(this);
         findViewById(R.id.btn_catalogue_cancel).setOnClickListener(this);
         findViewById(R.id.btn_catalogue_new).setOnClickListener(this);
-        ((ImageButton)findViewById(R.id.btn_catalogue_new)).setImageBitmap(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_input_add));
+        ((ImageButton)findViewById(R.id.btn_catalogue_new)).setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.add));
 
         requestCode = getIntent().getIntExtra(AddPlaceActivity.REQUEST, -1);
         if(requestCode == Common.CATALOGUE_EVENT)
@@ -232,18 +256,123 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.btn_catalogue_new:
                 EditText name = (EditText)findViewById(R.id.edit_catalogue_selected);
-                if(name.isFocusable())
+                boolean isFocusable = name.isFocusable();
+                if(isFocusable)
                 {
-                    //check name was existed
-                    name.setFocusable(false);
-                    ((ImageButton)v).setImageBitmap(BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_input_add));
+                    String eventName = name.getText().toString();
+                    if(eventName.isEmpty())
+                    {
+                        Toast.makeText(CatalogueActivity.this, getString(R.string.eventItemNull),Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    new NewEvent(CatalogueActivity.this).execute(eventName);
                 }
                 else
                 {
-                    name.setFocusable(true);
                     ((ImageButton)v).setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.apply));
                 }
+                name.setEnabled(!isFocusable);
+                name.setClickable(!isFocusable);
+                name.setFocusable(!isFocusable);
+                name.setFocusableInTouchMode(!isFocusable);
                 break;
+        }
+    }
+
+    private class NewEvent extends AsyncTask<String, Void, Boolean>
+    {
+        private static final String url ="";
+        private ProgressDialog progressDialog;
+        private Context pContext;
+        private JSONObject jsonObject;
+
+
+        public NewEvent(Context context)
+        {
+            super();
+            this.pContext = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(!Network.checkNetworkStatus(pContext, false))
+                this.cancel(false);
+            progressDialog = Network.newLoadingDialog(pContext);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try
+            {
+                if(params != null && params.length >= 1 && params[0] != null)
+                {
+                    InputStream is;
+                    List<NameValuePair> request = new ArrayList<NameValuePair>();
+                    request.add(new BasicNameValuePair("eventname", params[0]));
+                    jsonObject = Network.makeHttpResponseToJSONObject(Network.getHttpConnection(this.url, "POST", request));
+
+                }
+            }
+            catch (JSONException jsEx)
+            {
+                jsonObject = null;
+                jsEx.printStackTrace();
+            }
+            catch (Exception ex)
+            {
+                jsonObject = null;
+                ex.printStackTrace();
+            }finally {
+                return false;
+            }
+        }
+
+        protected void onPostExecutes(boolean result)
+        {
+            try
+            {
+                int success = jsonObject.getInt(Common.TAG_SUCCESS);
+
+                if (success == 1) {
+                    Toast.makeText(pContext, pContext.getText(R.string.catalog_addSucc),Toast.LENGTH_LONG).show();
+                    JSONArray events = jsonObject.getJSONArray("Events");
+                    JSONObject object = events.getJSONObject(0);
+                    selectedItem = EventItem.getItemFromJSONObj(object);
+                    setResultValues();
+                    return;
+                }else
+                {
+                    String msg = jsonObject.getString("Message");
+                    if(msg.equals("EXISTED"))
+                        msg = getText(R.string.catalog_existed).toString();
+                    new AlertDialog.Builder(this.pContext)
+                            .setMessage(msg)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).create().show();
+                    return;
+                }
+            }catch (JSONException jsEx)
+            {
+                jsEx.printStackTrace();
+            }catch ( Exception Ex)
+            {
+                Ex.printStackTrace();
+            }finally {
+                new AlertDialog.Builder(this.pContext)
+                        .setMessage(pContext.getString(R.string.catalog_neterr))
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create().show();
+                return;
+            }
         }
     }
 }

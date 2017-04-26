@@ -379,11 +379,7 @@ public class PlaceObject {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(this.pContext);
-            progressDialog.setMessage(pContext.getResources().getText(R.string.anp_msg_add_processing));
-            progressDialog.setIndeterminate(false);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            progressDialog = Network.newLoadingDialog(pContext);
         }
 
         @Override

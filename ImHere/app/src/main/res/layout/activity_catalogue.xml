@@ -64,6 +64,7 @@
                     android:backgroundTint="@android:color/transparent"
                     tools:ignore="ContentDescription"
                     style="@android:style/Widget.ImageButton" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -71,25 +72,20 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:ignore="InefficientWeight,UselessLeaf">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:ignore="UselessParent"
+        android:background="@drawable/drop_shadow"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:weightSum="1">
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            tools:ignore="UselessParent"
-            android:background="@drawable/drop_shadow"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
-            android:layout_gravity="end"
-            android:gravity="end"
-            android:weightSum="1">
+            android:layout_height="match_parent">
 
             <EditText
                 android:layout_width="match_parent"
@@ -103,27 +99,34 @@
                 android:focusableInTouchMode="false"
                 android:cursorVisible="false"
                 android:editable="false"
-                android:enabled="false" />
+                android:enabled="false"
+                android:layout_gravity="center_vertical|end"
+                android:layout_toStartOf="@+id/btn_catalogue_new"
+                style="@style/Widget.AppCompat.EditText" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center_vertical">
+            <ImageButton
+                android:id="@+id/btn_catalogue_new"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription,ObsoleteLayoutParam,RtlHardcoded"
+                android:background="@android:color/transparent"
+                android:paddingRight="5dp"
+                android:paddingLeft="1dp"
+                apps:srcCompat="@drawable/apply"
+                android:scaleType="centerInside"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="11dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </RelativeLayout>
+    </LinearLayout>
 
-                <ImageButton
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btn_catalogue_new"
-                    android:layout_weight="1"
-                    tools:ignore="ContentDescription,RtlHardcoded"
-                    android:layout_width="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:paddingRight="5dp"
-                    android:paddingLeft="1dp" />
-
-            </LinearLayout>
-        </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:ignore="InefficientWeight,UselessLeaf">
 
         <LinearLayout
             android:orientation="vertical"
@@ -131,7 +134,8 @@
             android:background="@drawable/drop_shadow"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_marginRight="20dp"
+            tools:ignore="UselessParent">
 
             <ListView
                 android:layout_width="match_parent"

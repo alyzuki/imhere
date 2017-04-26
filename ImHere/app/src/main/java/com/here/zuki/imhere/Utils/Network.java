@@ -4,6 +4,7 @@ package com.here.zuki.imhere.Utils;
  * Created by zuki on 4/5/17.
  */
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
@@ -111,7 +112,7 @@ public class Network {
         return getHttpConnection(url, method, null, requestProperty, params, timeout, false);
     }
 
-    public static InputStream getHttpConnection(String url) throws Exception
+    public static InputStream getHttpConnection(String url, List<NameValuePair> request) throws Exception
     {
         return getHttpConnection(url, -1);
     }
@@ -277,6 +278,16 @@ public class Network {
         if(json == null)
             return null;
         return new JSONObject(json);
+    }
+
+    public static ProgressDialog newLoadingDialog(Context pContext)
+    {
+        ProgressDialog progressDialog = new ProgressDialog(pContext);
+        progressDialog.setMessage(pContext.getResources().getText(R.string.anp_msg_add_processing));
+        progressDialog.setIndeterminate(false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        return progressDialog;
     }
 }
 

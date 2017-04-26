@@ -48,6 +48,8 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.here.zuki.imhere.Utils.Common.CATALOGUE_EVENT;
+import static com.here.zuki.imhere.Utils.Common.CATALOGUE_TIME;
 import static com.here.zuki.imhere.Utils.Common.PREF_LANG;
 
 /**
@@ -173,9 +175,9 @@ public class AddPlaceActivity extends AppCompatActivity implements
         tvCatalogue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedObject.setCatalogueType(Common.CATALOGUE_EVENT);
                 Intent intent = new Intent(AddPlaceActivity.this,  CatalogueActivity.class);
-                startActivity(intent);
+                intent.putExtra(REQUEST, CATALOGUE_EVENT);
+                startActivityForResult(intent, Common.CATALOGUE_EVENT);
             }
         });
 
@@ -183,9 +185,9 @@ public class AddPlaceActivity extends AppCompatActivity implements
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedObject.setCatalogueType(Common.CATALOGUE_TIME);
                 Intent intent = new Intent(AddPlaceActivity.this,  CatalogueActivity.class);
-                startActivity(intent);
+                intent.putExtra(REQUEST, CATALOGUE_TIME);
+                startActivityForResult(intent, Common.CATALOGUE_TIME);
             }
         });
 
@@ -502,22 +504,26 @@ public class AddPlaceActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        String name = data.getStringExtra(RES_NAME);
-        if (name == null)
-            return;
-        int val = data.getIntExtra(RES_VAL, -1);
-        if(val < 0)
-            return;
-        switch (requestCode)
+        try {
+            String name = data.getStringExtra(RES_NAME);
+            if (name == null)
+                return;
+            int val = data.getIntExtra(RES_VAL, -1);
+            if (val < 0)
+                return;
+            switch (requestCode) {
+                case Common.CATALOGUE_EVENT:
+                    ((EditText) findViewById(R.id.ed_add_place_catalogue)).setText(name);
+                    place.setEventName(name);
+                    place.setEvID(val);
+                case Common.CATALOGUE_TIME:
+                    ((EditText) findViewById(R.id.ed_add_place_timelapse)).setText(name);
+                    place.setTimeLapse(val);
+                    break;
+            }
+        }catch (Exception ex)
         {
-            case Common.CATALOGUE_EVENT:
-                ((EditText)findViewById(R.id.ed_add_place_catalogue)).setText(name);
-                place.setEventName(name);
-                place.setEvID(val);
-            case Common.CATALOGUE_TIME:
-                ((EditText)findViewById(R.id.ed_add_place_timelapse)).setText(name);
-                place.setTimeLapse(val);
-                break;
+            ex.printStackTrace();
         }
     }
 

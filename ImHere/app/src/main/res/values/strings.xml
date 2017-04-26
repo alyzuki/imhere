@@ -56,16 +56,10 @@
     <string name="catalog_choose_time_hint">Time</string>
     <string name="catalog_choose_event">Choose Catalogue</string>
     <string name="catalog_choose_event_hint">Event</string>
-
-
-    <string name="title_activity_maps">Map</string>
-    <string name="choice_option">Select search options</string>
-    <string name="phone_opt">Phone numbers</string>
-    <string name="name_opt">Hosts name</string>
-    <string name="email_opt">Hosts email</string>
-    <string name="social_opt">Hosts social ID</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="catalog_dialog">Loading catalogue. Please wait &#8230;</string>
+    <string name="catalog_existed">Existed name</string>
+    <string name="catalog_neterr">Process error, please try again.</string>
+    <string name="catalog_addSucc">Successful</string>
+    <string name="eventItemNull">Event's name is empty</string>
 
 
     <!-- login -->
@@ -85,6 +79,18 @@
     <string name="profile_logout">Logout</string>
     <string name="profile_about">About</string>
 
+
+
+
+    <!-- Not control here -->
+    <string name="title_activity_maps">Map</string>
+    <string name="choice_option">Select search options</string>
+    <string name="phone_opt">Phone numbers</string>
+    <string name="name_opt">Hosts name</string>
+    <string name="email_opt">Hosts email</string>
+    <string name="social_opt">Hosts social ID</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="catalog_dialog">Loading catalogue. Please wait &#8230;</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->

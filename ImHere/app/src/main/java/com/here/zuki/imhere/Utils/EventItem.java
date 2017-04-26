@@ -111,7 +111,7 @@ public class EventItem {
         load.execute();
     }
 
-    public EventItem getItemFromJSONObj(JSONObject jsonObject)
+    public static EventItem getItemFromJSONObj(JSONObject jsonObject)
     {
         EventItem item = null;
         if(jsonObject == null)
@@ -163,11 +163,7 @@ public class EventItem {
         protected void onPreExecute() {
             super.onPreExecute();
             eventList.clear();
-            pDialog = new ProgressDialog(this.parentContext);
-            pDialog.setMessage(this.parentContext.getText(R.string.catalog_dialog));
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
+            pDialog = Network.newLoadingDialog(this.parentContext);
         }
 
 

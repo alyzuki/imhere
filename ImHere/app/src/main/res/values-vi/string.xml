@@ -57,6 +57,10 @@
     <string name="catalog_choose_event">Chọn sự kiện</string>
     <string name="catalog_choose_event_hint">Sự kiện</string>
     <string name="catalog_dialog">Đang tải. Vui lòng chờ &#8230;</string>
+    <string name="catalog_existed">Tên đã được sử dụng</string>
+    <string name="catalog_neterr">Lỗi xử lý, vui lòng thử lại.</string>
+    <string name="catalog_addSucc">Thao tác thành công</string>
+    <string name="eventItemNull">Tên sự kiện không để trống</string>
 
 
     <!-- login -->
