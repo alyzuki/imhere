@@ -286,7 +286,6 @@ public class Network {
         progressDialog.setMessage(pContext.getResources().getText(R.string.anp_msg_add_processing));
         progressDialog.setIndeterminate(false);
         progressDialog.setCancelable(false);
-        progressDialog.show();
         return progressDialog;
     }
 }

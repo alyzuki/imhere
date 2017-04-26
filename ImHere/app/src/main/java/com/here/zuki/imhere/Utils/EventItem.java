@@ -3,12 +3,9 @@ package com.here.zuki.imhere.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.here.zuki.imhere.Adapter.EventAdapter;
 import com.here.zuki.imhere.CatalogueActivity;
-import com.here.zuki.imhere.R;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -19,11 +16,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.UnknownServiceException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by zuki on 3/26/17.
@@ -164,6 +157,7 @@ public class EventItem {
             super.onPreExecute();
             eventList.clear();
             pDialog = Network.newLoadingDialog(this.parentContext);
+            pDialog.show();
         }
 
 

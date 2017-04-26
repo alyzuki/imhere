@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.here.zuki.imhere.R;
-
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -380,6 +378,7 @@ public class PlaceObject {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = Network.newLoadingDialog(pContext);
+            progressDialog.show();
         }
 
         @Override

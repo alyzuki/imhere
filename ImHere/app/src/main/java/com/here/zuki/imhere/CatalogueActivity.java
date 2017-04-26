@@ -2,7 +2,6 @@ package com.here.zuki.imhere;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,10 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -281,7 +277,7 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
 
     private class NewEvent extends AsyncTask<String, Void, Boolean>
     {
-        private static final String url ="";
+        private static final String url ="http://bdssmart.net/databaseconnector/addnewevent.php";
         private ProgressDialog progressDialog;
         private Context pContext;
         private JSONObject jsonObject;
@@ -299,6 +295,7 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
             if(!Network.checkNetworkStatus(pContext, false))
                 this.cancel(false);
             progressDialog = Network.newLoadingDialog(pContext);
+            progressDialog.show();
         }
 
         @Override
@@ -324,14 +321,15 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
                 jsonObject = null;
                 ex.printStackTrace();
             }finally {
-                return false;
+                return true;
             }
         }
 
-        protected void onPostExecutes(boolean result)
+        protected void onPostExecute(Boolean result)
         {
             try
             {
+                progressDialog.dismiss();
                 int success = jsonObject.getInt(Common.TAG_SUCCESS);
 
                 if (success == 1) {
