@@ -177,7 +177,7 @@ public class Network {
             //set parameter
             else if(params != null)
             {
-                httpConnection.setRequestProperty("Content-Type", "text/plain");
+                //httpConnection.setRequestProperty("Content-Type", "text/plain");
                 httpWriter = true;
             }
             //set request
@@ -187,11 +187,11 @@ public class Network {
                     httpConnection.setRequestProperty(nvp.getName(), nvp.getValue());
                 }
             }
-            httpConnection.connect();
+
 
             if(httpWriter)
             {
-
+                httpConnection.setDoOutput(true);
                 os = httpConnection.getOutputStream();
                 osw = new OutputStreamWriter(os);
                 StringBuilder sb = new StringBuilder("");
@@ -203,9 +203,7 @@ public class Network {
                 {
                     for (NameValuePair nvp: params)
                     {
-                        if("".equals(sb.toString()))
-                            sb.append("?");
-                        else
+                        if(!sb.toString().isEmpty())
                             sb.append("&");
                         sb.append(nvp.getName());
                         sb.append("=");
@@ -220,7 +218,7 @@ public class Network {
                 osw.close();
                 os.close();
             }
-
+            httpConnection.connect();
             if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 is = httpConnection.getInputStream();
             }

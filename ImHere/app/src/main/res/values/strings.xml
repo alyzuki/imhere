@@ -60,6 +60,7 @@
     <string name="catalog_neterr">Process error, please try again.</string>
     <string name="catalog_addSucc">Successful</string>
     <string name="eventItemNull">Event\'s name is empty</string>
+    <string name="catalog_just_create">You just created a new events, please try after.</string>
 
 
     <!-- login -->

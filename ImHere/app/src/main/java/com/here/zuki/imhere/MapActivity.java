@@ -104,6 +104,7 @@ public class MapActivity extends AppCompatActivity implements
     SessionManager sessionManager = null;
     HorizontalScrollView profileView = null;
     private static boolean resetPic = true;
+    private  boolean isPause = false;
 
     private OurHandler handler = null;
 
@@ -384,12 +385,14 @@ public class MapActivity extends AppCompatActivity implements
     {
         super.onPause();
         handler.pause();
+        isPause = true;
     }
 
     @Override
     public  void onResume(){
         super.onResume();
         handler.resume();
+        isPause = false;
         Intent previousIntent = sharedObject.getCurIntent();
         if(previousIntent == null)
             return;

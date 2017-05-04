@@ -304,7 +304,6 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
             {
                 if(params != null && params.length >= 1 && params[0] != null)
                 {
-                    InputStream is;
                     List<NameValuePair> request = new ArrayList<NameValuePair>();
                     request.add(new BasicNameValuePair("eventname", params[0]));
                     jsonObject = Network.makeHttpResponseToJSONObject(Network.getHttpConnection(this.url, "POST", request));
@@ -327,6 +326,7 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
 
         protected void onPostExecute(Boolean result)
         {
+            String msg = pContext.getString(R.string.catalog_neterr);
             try
             {
                 progressDialog.dismiss();
@@ -341,18 +341,13 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
                     return;
                 }else
                 {
-                    String msg = jsonObject.getString("Message");
-                    if(msg.equals("EXISTED"))
+                    String message = jsonObject.getString("Message");
+                    if(message.equals("EXISTED"))
                         msg = getText(R.string.catalog_existed).toString();
-                    new AlertDialog.Builder(this.pContext)
-                            .setMessage(msg)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            }).create().show();
-                    return;
+                    else if (message.equals("Invalid Time"))
+                    {
+                        msg = getText(R.string.catalog_just_create).toString();
+                    }
                 }
             }catch (JSONException jsEx)
             {
@@ -362,7 +357,7 @@ public class CatalogueActivity extends AppCompatActivity implements View.OnClick
                 Ex.printStackTrace();
             }finally {
                 new AlertDialog.Builder(this.pContext)
-                        .setMessage(pContext.getString(R.string.catalog_neterr))
+                        .setMessage(msg)
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
